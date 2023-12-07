@@ -34,10 +34,11 @@ public class Adachikumin : ChikuminBase
 
     private void Wait()
     {
-
+        agent.speed = 0;
     }
     private void Move()
     {
+        changeStatus();
         agent.SetDestination(targetPlayer.transform.position);
     }
     private void  changeStatus()
