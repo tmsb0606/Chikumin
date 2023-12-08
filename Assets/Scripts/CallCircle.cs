@@ -7,6 +7,7 @@ public class CallCircle : MonoBehaviour
     // Start is called before the first frame update
 
     public PlayerController player;
+    public List<GameObject> chikuminList = new List<GameObject>();
     void Start()
     {
         
@@ -23,19 +24,26 @@ public class CallCircle : MonoBehaviour
         {
             return;
         }
+       
         if (player.mouseState == PlayerController.MouseState.callTiku)
         {
 
             print(other.gameObject.name);
             other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.MOVE;
+            if (!player.callTikuminList.Contains(other.gameObject))
+            {
+                player.callTikuminList.Add(other.gameObject);
+            }
         }else if(player.mouseState == PlayerController.MouseState.waitTiku)
         {
             print(other.gameObject.name);
-            other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.WAIT;
+            other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.IDLE;
+
+            player.callTikuminList.Remove(other.gameObject);
+
         }
     }
-    public void OnCollisionEnter(Collision collision)
-    {
 
-    }
+
+
 }

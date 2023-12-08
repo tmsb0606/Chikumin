@@ -29,8 +29,20 @@ public class PlayerController : MonoBehaviour
     private GameObject pointCircle;
     public MouseState mouseState = MouseState.nothing;
 
+    public List<GameObject> callTikuminList = new List<GameObject>();
+
+    [SerializeField, Range(0F, 90F), Tooltip("射出する角度")]
+    private float ThrowingAngle;
+
     [SerializeField]
     private LayerMask layerMask;
+
+
+
+    [SerializeField] Transform endPos;  //終点座標
+    [SerializeField] float flightTime = 2;  //滞空時間
+    [SerializeField] float speedRate = 1;   //滞空時間を基準とした移動速度倍率
+    private const float gravity = -9.8f;    //重力
 
     void Start()
     {
@@ -127,6 +139,15 @@ public class PlayerController : MonoBehaviour
     }
     private void OnThrow()
     {
-        print("投げた");
+
+        Vector3 endPos = new Vector3(pointCircle.transform.position.x, pointCircle.transform.position.y + 1, pointCircle.transform.position.z);
+        StartCoroutine(callTikuminList[0].gameObject.GetComponent<Adachikumin>().Jump(endPos, flightTime, speedRate, gravity));
+        callTikuminList[0].gameObject.GetComponent<Adachikumin>().aiState = ChikuminBase.ChikuminAiState.WAIT;
+        callTikuminList.Remove(callTikuminList[0]);
+
+
     }
+
+
+
 }

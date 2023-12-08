@@ -9,6 +9,11 @@ public class Adachikumin : ChikuminBase
     NavMeshAgent agent;
     private GameObject targetPlayer;
     public CharacterStatus status;
+    private bool isPlayer = false;
+    private bool isEnemy = false;
+    private bool isItem = false;
+    private List<GameObject> hitList = new List<GameObject>();
+
     void Start()
     {
         targetPlayer = GameObject.Find("Player");
@@ -22,6 +27,9 @@ public class Adachikumin : ChikuminBase
 
         switch (aiState)
         {
+            case ChikuminAiState.IDLE:
+                Idle();
+                break;
             case ChikuminAiState.WAIT:
                 Wait();
                 break;
@@ -35,6 +43,17 @@ public class Adachikumin : ChikuminBase
     private void Wait()
     {
         agent.speed = 0;
+        //今後の動作判定
+        if(hitList.Count != 0)
+        {
+            print(hitList[0]);
+        }
+        
+
+    }
+    private void Idle()
+    {
+        agent.speed = 0;
     }
     private void Move()
     {
@@ -44,5 +63,44 @@ public class Adachikumin : ChikuminBase
     private void  changeStatus()
     {
         agent.speed = status.moveSpeed;
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        this.GetComponent<Rigidbody>().isKinematic = true;
+       
+       if (other.gameObject.tag != "ground"&& other.gameObject.tag != "tiku")
+        {
+            hitList.Add(other.gameObject);
+        }
+    }
+    public void OnTriggerExit(Collider other)
+    {
+        //this.GetComponent<Rigidbody>().isKinematic = true;
+        if (other.gameObject.tag != "ground" && other.gameObject.tag != "tiku")
+        {
+            hitList.Remove(other.gameObject);
+        }
+
+    }
+    public IEnumerator Jump(Vector3 endPos, float flightTime, float speedRate, float gravity)
+    {
+        //if (isFlag)
+        //{
+            //yield break;
+        //}
+        var startPos = transform.position; // 初期位置
+        var diffY = (endPos - startPos).y; // 始点と終点のy成分の差分
+        var vn = (diffY - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vn
+
+        // 放物運動
+        for (var t = 0f; t < flightTime; t += (Time.deltaTime * speedRate))
+        {
+            var p = Vector3.Lerp(startPos, endPos, t / flightTime);   //水平方向の座標を求める (x,z座標)
+            p.y = startPos.y + vn * t + 0.5f * gravity * t * t; // 鉛直方向の座標 y
+            transform.position = p;
+            yield return null; //1フレーム経過
+        }
+        // 終点座標へ補正
+        transform.position = endPos;
     }
 }
