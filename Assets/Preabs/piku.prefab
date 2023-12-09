@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -6510555959800784059}
   m_Layer: 5
   m_Name: piku
-  m_TagString: Untagged
+  m_TagString: circle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,3 +127,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b5e9d15046e8c4491d2d6e9a4320f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  chikuminList: []

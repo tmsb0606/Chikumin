@@ -11,11 +11,14 @@ public class ChikuminBase : MonoBehaviour
         MOVE,           //ˆÚ“®
         ATTACK,     //’â~‚µ‚ÄUŒ‚
         IDLE,           //‘Ò‹@
+        CARRY,          //ƒAƒCƒeƒ€‚ğ‰^‚Ô
     }
     public ChikuminAiState aiState = ChikuminAiState.MOVE;
     NavMeshAgent agent;
     private GameObject targetPlayer;
-    
+    public List<GameObject> hitList = new List<GameObject>();
+    public GameObject carryObject; 
+
     // Start is called before the first frame update
     void Start()
     {
