@@ -28,7 +28,7 @@ public class CallCircle : MonoBehaviour
         if (player.mouseState == PlayerController.MouseState.callTiku)
         {
 
-            print(other.gameObject.name);
+            //print(other.gameObject.name);
             other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.MOVE;
             if (other.gameObject.GetComponent<ChikuminBase>().carryObject != null)
             {
@@ -43,7 +43,7 @@ public class CallCircle : MonoBehaviour
             }
         }else if(player.mouseState == PlayerController.MouseState.waitTiku)
         {
-            print(other.gameObject.name);
+            //print(other.gameObject.name);
             other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.IDLE;
 
             player.callTikuminList.Remove(other.gameObject);

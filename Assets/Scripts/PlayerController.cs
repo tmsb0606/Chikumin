@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public MouseState mouseState = MouseState.nothing;
 
     public List<GameObject> callTikuminList = new List<GameObject>();
+    public List<GameObject> hitTikuminList = new List<GameObject>();
 
     [SerializeField, Range(0F, 90F), Tooltip("射出する角度")]
     private float ThrowingAngle;
@@ -44,17 +45,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float speedRate = 1;   //滞空時間を基準とした移動速度倍率
     private const float gravity = -9.8f;    //重力
 
+    private AudioSource audioSource;
+    public AudioClip ComeOnSE;
+    public AudioClip WaitSE;
+
     void Start()
     {
         Cursor.visible = false;
         mouseState = MouseState.nothing;
         mainCamera = Camera.main;
         rb = gameObject.GetComponent<Rigidbody>();
+        audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
     }
 
     void Update()
     {
         //print(mouseState);
+        //print(hitTikuminList.Count);
         drawCursor();
         if (Input.GetMouseButton(0))
         {
@@ -126,26 +133,81 @@ public class PlayerController : MonoBehaviour
     private void OnCall()
     {
         print("call");
+        audioSource.PlayOneShot(ComeOnSE);
         mouseState = MouseState.callTiku;
     }
     private void OnStay()
     {
         mouseState = MouseState.waitTiku;
+        audioSource.PlayOneShot(WaitSE);
     }
     private void OnCancel()
     {
-        print("cancel");
+        //print("cancel");
         mouseState = MouseState.nothing;
     }
     private void OnThrow()
     {
-
+        GameObject obj = NearObject(callTikuminList);
+        if(obj == null)
+        {
+            return;
+        }
         Vector3 endPos = new Vector3(pointCircle.transform.position.x, pointCircle.transform.position.y + 1, pointCircle.transform.position.z);
-        StartCoroutine(callTikuminList[0].gameObject.GetComponent<Adachikumin>().Jump(endPos, flightTime, speedRate, gravity));
-        callTikuminList[0].gameObject.GetComponent<Adachikumin>().aiState = ChikuminBase.ChikuminAiState.WAIT;
-        callTikuminList.Remove(callTikuminList[0]);
+        StartCoroutine(obj.gameObject.GetComponent<Adachikumin>().Jump(endPos, flightTime, speedRate, gravity));
+        obj.gameObject.GetComponent<Adachikumin>().aiState = ChikuminBase.ChikuminAiState.WAIT;
+        callTikuminList.Remove(obj);
 
 
+    }
+
+    private GameObject NearObject(List<GameObject> gameObjects)
+    {
+        foreach (GameObject a in hitTikuminList)
+        {
+            print(a);
+        }
+        if (gameObjects.Count == 0)
+        {
+            return null;
+        }
+        if (gameObjects.Count == 1)
+        {
+            if (hitTikuminList.Contains(gameObjects[0]))
+            {
+                return gameObjects[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        GameObject nearObj = gameObjects[0];
+     
+        //gameObjects.Remove(gameObjects[0]);
+        float dis = Vector3.Distance(nearObj.transform.position, this.transform.position);
+        foreach (GameObject obj in gameObjects)
+        {
+            print(hitTikuminList.Contains(obj));
+
+            //print("aiueo");
+
+            float dis2 = Vector3.Distance(obj.transform.position, this.transform.position);
+
+            if (dis >= dis2)
+            {
+                dis = dis2;
+                nearObj = obj;
+            }
+
+
+        }
+        if (!hitTikuminList.Contains(nearObj))
+        {
+            return null;
+        }
+        return nearObj;
     }
 
 

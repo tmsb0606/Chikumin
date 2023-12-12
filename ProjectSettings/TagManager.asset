@@ -10,6 +10,7 @@ TagManager:
   - enemy
   - circle
   - goal
+  - atm
   layers:
   - Default
   - TransparentFX

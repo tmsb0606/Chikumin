@@ -16,6 +16,11 @@ public class Adachikumin : ChikuminBase
     private bool isEnemy = false;
     private bool isItem = false;
     private bool isGround = false;
+
+    public float moveDis = 1.0f;
+
+    private AudioSource audioSource;
+    public AudioClip throwSE;
     //public List<GameObject> hitList = new List<GameObject>();
 
     void Start()
@@ -24,6 +29,7 @@ public class Adachikumin : ChikuminBase
         goalObject = GameObject.Find("Goal");
         agent = GetComponent<NavMeshAgent>();
         changeStatus();
+        audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -65,7 +71,7 @@ public class Adachikumin : ChikuminBase
         if(hitList.Count != 0)
         {
             targetObject = NearObject(hitList);
-            print(targetObject);
+            //print(targetObject);
             if (targetObject.tag == "enemy")
             {
 
@@ -78,6 +84,12 @@ public class Adachikumin : ChikuminBase
                 hitList.Remove(targetObject);
                 aiState = ChikuminAiState.CARRY;
             }
+            else if (targetObject.tag == "atm")
+            {
+                targetObject.GetComponent<ATMController>().ReleaseMoney();
+                hitList.Remove(targetObject);
+                aiState = ChikuminAiState.WAIT;
+            }
         }
         
 
@@ -88,8 +100,15 @@ public class Adachikumin : ChikuminBase
     }
     private void Move()
     {
-        changeStatus();
-        agent.SetDestination(targetPlayer.transform.position);
+        if (Vector3.Distance(targetPlayer.transform.position, this.transform.position) > moveDis)
+        {
+            changeStatus();
+            agent.SetDestination(targetPlayer.transform.position);
+        }
+        else
+        {
+            agent.speed = 0;
+        }
     }
     private void Attack()
     {
@@ -130,7 +149,7 @@ public class Adachikumin : ChikuminBase
     {
         agent.speed = status.moveSpeed;
     }
-    public void OnTriggerEnter(Collider other)
+    public void OnCollisionEnter(UnityEngine.Collision other)
     {
         this.GetComponent<Rigidbody>().isKinematic = true;
        
@@ -143,21 +162,21 @@ public class Adachikumin : ChikuminBase
 
         if (other.gameObject.tag == "goal")
         {
-            print("goal");
+            //print("goal");
             carryObject.transform.parent = null;
             carryObject.SetActive(false);
             carryObject = null;
         }
     }
-    public void OnTriggerStay(Collider other)
+    public void OnCollisionStay(UnityEngine.Collision other)
     {
-        print(other.gameObject.tag);
+        //print(other.gameObject.tag);
         if (other.gameObject.tag == "ground")
         {
            // isGround = true;
         }
     }
-    public void OnTriggerExit(Collider other)
+    public void OnCollisionExit(UnityEngine.Collision other)
     {
         //this.GetComponent<Rigidbody>().isKinematic = true;
         if (other.gameObject.tag != "tiku" && other.gameObject.tag != "circle")
@@ -174,6 +193,7 @@ public class Adachikumin : ChikuminBase
     public IEnumerator Jump(Vector3 endPos, float flightTime, float speedRate, float gravity)
     {
         changeStatus();
+        audioSource.PlayOneShot(throwSE);
         isGround = false;
         var startPos = transform.position; // 初期位置
         var diffY = (endPos - startPos).y; // 始点と終点のy成分の差分
