@@ -19,15 +19,16 @@ public class SearchController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //print("search”ÍˆÍ");
-        if (other.gameObject.tag != "ground" && other.gameObject.tag != "tiku"&& other.gameObject.tag != "circle")
+        if (other.gameObject.tag == "item" || other.gameObject.tag == "atm"|| other.gameObject.tag == "enemy")
         {
             transform.root.gameObject.GetComponent<ChikuminBase>().hitList.Add(other.gameObject);
         }
+
     }
     private void OnTriggerExit(Collider other)
     {
         //print("search”ÍˆÍ");
-        if (other.gameObject.tag != "ground" && other.gameObject.tag != "tiku" && other.gameObject.tag != "circle")
+        if (other.gameObject.tag == "item" || other.gameObject.tag == "atm" || other.gameObject.tag == "enemy")
         {
             transform.root.gameObject.GetComponent<ChikuminBase>().hitList.Remove(other.gameObject);
         }

@@ -27,7 +27,10 @@ public class ATMController : MonoBehaviour
             print("ÉäÉäÅ[ÉX");
             GameObject money = Instantiate(moneyPrefab);
             money.transform.position = this.transform.position;
-            this.gameObject.SetActive(false);
+            Vector3 vec = new Vector3(100,100,100);
+            money.GetComponent<Rigidbody>().AddForce(vec);
+            //this.gameObject.SetActive(false);
+            this.gameObject.tag = "Untagged";
         }
     }
 

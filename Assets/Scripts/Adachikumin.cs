@@ -13,7 +13,6 @@ public class Adachikumin : ChikuminBase
     
     public CharacterStatus status;
     private bool isHit = false;
-    private bool isEnemy = false;
     private bool isItem = false;
     private bool isGround = false;
 
@@ -35,6 +34,7 @@ public class Adachikumin : ChikuminBase
     // Update is called once per frame
     void Update()
     {
+        //print(isHit);
 
         switch (aiState)
         {
@@ -86,6 +86,7 @@ public class Adachikumin : ChikuminBase
             }
             else if (targetObject.tag == "atm")
             {
+                print("aaaaa");
                 targetObject.GetComponent<ATMController>().ReleaseMoney();
                 hitList.Remove(targetObject);
                 aiState = ChikuminAiState.WAIT;
@@ -113,17 +114,45 @@ public class Adachikumin : ChikuminBase
     private void Attack()
     {
         //print("attack");
-        changeStatus();
-        agent.SetDestination(targetObject.transform.position);
-        targetObject.gameObject.GetComponent<IDamageable>().Damage(1);
+        //changeStatus();
+        if (isHit)
+        {
+            agent.speed = 0;
+            targetObject.gameObject.GetComponent<IDamageable>().Damage(1);
+        }
+        else
+        {
+            changeStatus();
+            agent.SetDestination(targetObject.transform.position);
+        }
+        
+        
     }
     private void Carry()
     {
         if(carryObject == null)
         {
             carryObject = targetObject.gameObject;
-            carryObject.transform.parent = this.transform;
+            if(carryObject.GetComponent<Item>().maxCarryNum> carryObject.GetComponent<Item>().carryObjects.Count)
+            {
+                carryObject.GetComponent<ICarriable>().Carry(this.gameObject);
+
+                carryObject.GetComponent<Rigidbody>().isKinematic = true;
+                carryObject.GetComponent<Rigidbody>().useGravity = false;
+
+                carryObject.transform.parent = this.transform;
+                carryObject.transform.localPosition = new Vector3(0, 0, 1);
+                carryObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+            else
+            {
+                carryObject = null;
+                aiState = ChikuminAiState.WAIT;
+            }
+
+
         }
+        //carryObject.transform.position = this.transform.position + (Vector3.forward*-0.5f);
         
         changeStatus();
         agent.SetDestination(goalObject.transform.position);
@@ -163,9 +192,20 @@ public class Adachikumin : ChikuminBase
         if (other.gameObject.tag == "goal")
         {
             //print("goal");
-            carryObject.transform.parent = null;
-            carryObject.SetActive(false);
-            carryObject = null;
+            //carryObject.transform.parent = null;
+            //carryObject.SetActive(false);
+            //carryObject = null;
+            
+
+        }
+
+        if (other.gameObject.tag == "enemy")
+        {
+            isHit = true;
+        }
+        if (other.gameObject.tag == "Player")
+        {
+            aiState = ChikuminBase.ChikuminAiState.MOVE;
         }
     }
     public void OnCollisionStay(UnityEngine.Collision other)
@@ -187,6 +227,10 @@ public class Adachikumin : ChikuminBase
         if (other.gameObject.tag == "ground")
         {
            // isGround = false;
+        }
+        if (other.gameObject.tag == "enemy"|| other.gameObject.tag == "item"|| other.gameObject.tag == "atm")
+        {
+            isHit = false;
         }
 
     }

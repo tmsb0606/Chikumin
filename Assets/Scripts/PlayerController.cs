@@ -44,10 +44,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float flightTime = 2;  //滞空時間
     [SerializeField] float speedRate = 1;   //滞空時間を基準とした移動速度倍率
     private const float gravity = -9.8f;    //重力
+    Vector3 latestPos;
 
     private AudioSource audioSource;
     public AudioClip ComeOnSE;
     public AudioClip WaitSE;
+
+   //[SerializeField] private GameObject _camera;
+
+    [SerializeField] private CameraController _camera;
 
     void Start()
     {
@@ -72,6 +77,18 @@ public class PlayerController : MonoBehaviour
 
         // rigidbodyのAddForceを使用してプレイヤーを動かす。
         rb.AddForce(movement * speed);
+
+        Vector3 differenceDis = new Vector3(transform.position.x, 0, transform.position.z) - new Vector3(latestPos.x, 0, latestPos.z);
+        latestPos = transform.position;
+        if (Mathf.Abs(differenceDis.x) > 0.001f || Mathf.Abs(differenceDis.z) > 0.001f)
+        {
+            if (movement == new Vector3(0, 0, 0)) return;
+            Quaternion rot = Quaternion.LookRotation(differenceDis);
+            rot = Quaternion.Slerp(rb.transform.rotation, rot, 0.2f);
+            this.transform.rotation = rot;
+        }
+        
+
     }
 
     void OnDrawGizmos()
@@ -159,6 +176,15 @@ public class PlayerController : MonoBehaviour
         callTikuminList.Remove(obj);
 
 
+    }
+    private void OnRotaionCamera()
+    {
+        //print("rotaion");
+        //float x = _camera.transform.position.x * Mathf.Cos(this.transform.rotation.y) - _camera.transform.position.z*Mathf.Sin(this.transform.rotation.y);
+        //float z = _camera.transform.position.z * Mathf.Cos(this.transform.rotation.y) - _camera.transform.position.x * Mathf.Sin(this.transform.rotation.y);
+        //_camera.GetComponent<CinemachineCameraOffset>().m_Offset = new Vector3(x, _camera.transform.position.y, z);
+        //_camera.transform.position = new Vector3(x, _camera.transform.position.y, z);
+        _camera.Rotaion();
     }
 
     private GameObject NearObject(List<GameObject> gameObjects)

@@ -5,9 +5,9 @@ using UnityEngine;
 public class Item : MonoBehaviour, ICarriable
 {
     // Start is called before the first frame update
-    public List<GameObject> carryObject = new List<GameObject>();
+    public List<GameObject> carryObjects = new List<GameObject>();
     public int minCarryNum = 1;
-    public int maxCarryNum = 5;
+    public int maxCarryNum = 1;
 
     void Start()
     {
@@ -21,6 +21,6 @@ public class Item : MonoBehaviour, ICarriable
     }
     public void Carry(GameObject gameObject)
     {
-
+        carryObjects.Add(gameObject);
     }
 }

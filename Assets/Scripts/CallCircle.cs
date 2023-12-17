@@ -32,6 +32,7 @@ public class CallCircle : MonoBehaviour
             other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.MOVE;
             if (other.gameObject.GetComponent<ChikuminBase>().carryObject != null)
             {
+                other.gameObject.GetComponent<ChikuminBase>().carryObject.GetComponent<Item>().carryObjects.Remove(other.gameObject);
                 other.gameObject.GetComponent<ChikuminBase>().carryObject.transform.parent = null;
                 other.gameObject.GetComponent<ChikuminBase>().carryObject = null;
                 other.gameObject.GetComponent<ChikuminBase>().hitList.Remove(other.gameObject.GetComponent<ChikuminBase>().carryObject);
