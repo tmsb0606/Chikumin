@@ -50,9 +50,10 @@ public class PlayerController : MonoBehaviour
     public AudioClip ComeOnSE;
     public AudioClip WaitSE;
 
-   //[SerializeField] private GameObject _camera;
+    //[SerializeField] private GameObject _camera;
 
-    [SerializeField] private CameraController _camera;
+    [SerializeField] private GameObject _cameraObject;
+     private CameraController _camera;
 
     void Start()
     {
@@ -61,6 +62,7 @@ public class PlayerController : MonoBehaviour
         mainCamera = Camera.main;
         rb = gameObject.GetComponent<Rigidbody>();
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
+        _camera = _cameraObject.GetComponent<CameraController>();
     }
 
     void Update()
@@ -73,9 +75,19 @@ public class PlayerController : MonoBehaviour
             CallChikumin();
         }
         // 入力値を元に3軸ベクトルを作成
-        Vector3 movement = new Vector3(movementX, 0.0f, movementY);
+        //float Mathf.Lerp(_camera.prevYRota, _cameraObject.transform.localEulerAngles.y,Time.deltaTime);
+        float angle = (-_cameraObject.transform.localEulerAngles.y)* Mathf.Deg2Rad;
+        print(Mathf.Sin( angle));
+        //print(angle);
+        float x = -Mathf.Sin(angle)*movementY +Mathf.Cos(angle)*movementX;
+        float y = Mathf.Sin(angle) * movementX + Mathf.Cos(angle) * movementY;
+        Vector3 movement = new Vector3(x, 0.0f, y);
+        //print(movementX + " : " + movementY);
+         //movement =movement.normalized;
 
         // rigidbodyのAddForceを使用してプレイヤーを動かす。
+
+        //Vector3 vec = movement * _camera.transform.localEulerAngles.y;
         rb.AddForce(movement * speed);
 
         Vector3 differenceDis = new Vector3(transform.position.x, 0, transform.position.z) - new Vector3(latestPos.x, 0, latestPos.z);
