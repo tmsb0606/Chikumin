@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
         // 入力値を元に3軸ベクトルを作成
         //float Mathf.Lerp(_camera.prevYRota, _cameraObject.transform.localEulerAngles.y,Time.deltaTime);
         float angle = (-_cameraObject.transform.localEulerAngles.y)* Mathf.Deg2Rad;
-        print(Mathf.Sin( angle));
+        //print(Mathf.Sin( angle));
         //print(angle);
         float x = -Mathf.Sin(angle)*movementY +Mathf.Cos(angle)*movementX;
         float y = Mathf.Sin(angle) * movementX + Mathf.Cos(angle) * movementY;

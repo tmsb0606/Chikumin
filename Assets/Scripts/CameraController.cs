@@ -8,14 +8,15 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _dis = 10f;
     [SerializeField] private Quaternion _vRota;
     [SerializeField] public Quaternion _hRota;
+    [SerializeField] private float _rotaSpeed = 0.05f;
 
-    public float prevYRota;
+    public Quaternion prevYRota;
     // Start is called before the first frame update
     void Start()
     {
         _vRota = Quaternion.Euler(30, 0, 0);
         _hRota = Quaternion.identity;
-        prevYRota = 0;
+        prevYRota = _hRota;
 
         this.transform.rotation = _hRota * _vRota;
         transform.position = _lookObject.transform.position - transform.rotation * Vector3.forward * _dis;
@@ -28,9 +29,12 @@ public class CameraController : MonoBehaviour
 
 
         //å„Ç©ÇÁèëÇ≠ÅBèôÅXÇ…ÉJÉÅÉâà⁄ìÆ
-        //prevYRota = Mathf.Lerp(prevYRota,_hRota.y,Time.deltaTime*2f);
-        //Quaternion quaternion = new Quaternion(_hRota.x, prevYRota, _hRota.z, _hRota.w);
-        //transform.rotation = quaternion * _vRota;
+        prevYRota = Quaternion.Lerp(prevYRota,_hRota,_rotaSpeed);
+        //prevYRota = _hRota.y;
+        //Quaternion quaternion = new Quaternion(_hRota.x, prevYRota.y, _hRota.z, _hRota.w);
+        transform.rotation = prevYRota * _vRota;
+        print(",_hRota.y" +_hRota.y);
+        print("prev"+ prevYRota);
     }
 
     public void ChangeTransform()
@@ -41,10 +45,11 @@ public class CameraController : MonoBehaviour
     }
     public void Rotaion()
     {
-        prevYRota = this.transform.localEulerAngles.y;
+        prevYRota = _hRota;
         //print(prevYRota);
         _hRota = Quaternion.Euler(0, _lookObject.transform.localEulerAngles.y, 0);
-        transform.rotation = _hRota * _vRota;
+        
+        //transform.rotation = _hRota * _vRota;
 
     }
 }
