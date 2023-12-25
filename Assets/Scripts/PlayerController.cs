@@ -183,8 +183,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
         Vector3 endPos = new Vector3(pointCircle.transform.position.x, pointCircle.transform.position.y + 1, pointCircle.transform.position.z);
-        StartCoroutine(obj.gameObject.GetComponent<Adachikumin>().Jump(endPos, flightTime, speedRate, gravity));
-        obj.gameObject.GetComponent<Adachikumin>().aiState = ChikuminBase.ChikuminAiState.WAIT;
+        StartCoroutine(obj.gameObject.GetComponent<IJampable>().Jump(endPos, flightTime, speedRate, gravity));
+        obj.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.WAIT;
         callTikuminList.Remove(obj);
 
 

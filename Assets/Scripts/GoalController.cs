@@ -20,7 +20,7 @@ public class GoalController : MonoBehaviour
     {
         if (collision.gameObject.tag == "item")
         {
-            collision.gameObject.GetComponent<Item>().carryObjects[0].GetComponent<Adachikumin>().carryObject = null;
+            collision.gameObject.GetComponent<Item>().carryObjects[0].GetComponent<ChikuminBase>().carryObjectList[0] = null;
             collision.gameObject.transform.parent = null;
             collision.gameObject.SetActive(false);
             score += 100;

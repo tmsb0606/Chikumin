@@ -30,12 +30,12 @@ public class CallCircle : MonoBehaviour
 
             //print(other.gameObject.name);
             other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.MOVE;
-            if (other.gameObject.GetComponent<ChikuminBase>().carryObject != null)
+            if (other.gameObject.GetComponent<ChikuminBase>().carryObjectList.Count > 0)
             {
-                other.gameObject.GetComponent<ChikuminBase>().carryObject.GetComponent<Item>().carryObjects.Remove(other.gameObject);
-                other.gameObject.GetComponent<ChikuminBase>().carryObject.transform.parent = null;
-                other.gameObject.GetComponent<ChikuminBase>().carryObject = null;
-                other.gameObject.GetComponent<ChikuminBase>().hitList.Remove(other.gameObject.GetComponent<ChikuminBase>().carryObject);
+                other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0].GetComponent<Item>().carryObjects.Remove(other.gameObject);
+                other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0].transform.parent = null;
+                other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0] = null;
+                other.gameObject.GetComponent<ChikuminBase>().hitList.Remove(other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0]);
             }
     
             if (!player.callTikuminList.Contains(other.gameObject))

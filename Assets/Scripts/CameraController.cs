@@ -33,8 +33,8 @@ public class CameraController : MonoBehaviour
         //prevYRota = _hRota.y;
         //Quaternion quaternion = new Quaternion(_hRota.x, prevYRota.y, _hRota.z, _hRota.w);
         transform.rotation = prevYRota * _vRota;
-        print(",_hRota.y" +_hRota.y);
-        print("prev"+ prevYRota);
+        //print(",_hRota.y" +_hRota.y);
+        //print("prev"+ prevYRota);
     }
 
     public void ChangeTransform()
