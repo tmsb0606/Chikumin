@@ -146,7 +146,7 @@ public class Adachikumin : ChikuminBase,IJampable
              }
              else
              {
-                 carryObjectList[0] = null;
+                 //carryObjectList[0] = null;
                  aiState = ChikuminAiState.WAIT;
              }
             
