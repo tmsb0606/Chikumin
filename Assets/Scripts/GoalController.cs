@@ -26,4 +26,14 @@ public class GoalController : MonoBehaviour
             score += 100;
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "item")
+        {
+            other.gameObject.GetComponent<Item>().carryObjects[0].GetComponent<ChikuminBase>().carryObjectList.Clear();
+            other.gameObject.transform.parent = null;
+            other.gameObject.SetActive(false);
+            score += 100;
+        }
+    }
 }

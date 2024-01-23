@@ -148,6 +148,7 @@ public class Adachikumin : ChikuminBase,IJampable
              {
                  //carryObjectList[0] = null;
                  aiState = ChikuminAiState.WAIT;
+                carryObjectList.Clear();
              }
             
              //時間があったらアイテムの方向に移動して拾うモーションが欲しい。
