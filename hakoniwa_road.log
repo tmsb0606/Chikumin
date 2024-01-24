@@ -1,0 +1,13 @@
+2024/01/24 18:48:58.143 DEBUG parent=Roads
+2024/01/24 18:48:58.262 DEBUG parent=Roads
+2024/01/24 18:49:16.384 DEBUG parent=Roads
+2024/01/24 18:49:20.285 DEBUG parent=Roads
+2024/01/24 18:49:20.292 DEBUG road4 : road_pos.instance scale=(53.00, 2.00, 53.00)
+2024/01/24 18:49:20.294 DEBUG road1 : road_pos.instance scale=(21.00, 2.00, 39.00)
+2024/01/24 18:49:20.296 DEBUG road2 : road_pos.instance scale=(37.00, 2.00, 37.00)
+2024/01/24 18:49:20.297 DEBUG road2 : road_pos.instance scale=(37.00, 2.00, 37.00)
+2024/01/24 18:49:20.297 DEBUG road1 : road_pos.instance scale=(21.00, 2.00, 39.00)
+2024/01/24 18:49:20.298 DEBUG road2 : road_pos.instance scale=(37.00, 2.00, 37.00)
+2024/01/24 18:49:20.298 DEBUG road2 : road_pos.instance scale=(37.00, 2.00, 37.00)
+2024/01/24 18:49:20.298 DEBUG road2 : road_pos.instance scale=(37.00, 2.00, 37.00)
+2024/01/24 18:49:20.300 DEBUG road2 : road_pos.instance scale=(37.00, 2.00, 37.00)

@@ -60,7 +60,7 @@ public class Minatokumin : ChikuminBase, IJampable
 
     private void Wait()
     {
-        print("bbbb");
+        
         agent.speed = 0;
         //print(isGround);
         if (!isGround)
