@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         _camera = _cameraObject.GetComponent<CameraController>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         //print(mouseState);
         //print(hitTikuminList.Count);

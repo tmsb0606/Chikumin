@@ -17,11 +17,15 @@ public class GameDirector : MonoBehaviour
     }
     // Start is called before the first frame update
     private int _score = 0;
-    private float _timeLimit = 100f;
+    private float _timeLimit = 10f;
     private GoalController _goalController;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timeText;
     public GameState gameState = GameState.Start;
+
+    public GameObject ResultPanel;
+    public GameObject UIPanel;
+    public TextMeshProUGUI resultScore;
 
     public PlayableDirector EndPlayableDirector;
     void Start()
@@ -49,7 +53,10 @@ public class GameDirector : MonoBehaviour
                 EndPlayableDirector.Play();
                 break;
             case GameState.Result:
-                SceneManager.LoadScene("ResultScene");
+                //SceneManager.LoadScene("ResultScene");
+                UIPanel.SetActive(false);
+                ResultPanel.SetActive(true);
+                resultScore.text = _goalController.score + "Y";
                 break;
 
         }
