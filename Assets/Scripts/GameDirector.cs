@@ -13,6 +13,7 @@ public class GameDirector : MonoBehaviour
         Play,
         Pause,
         End,
+        ResultProduction,
         Result,
     }
     // Start is called before the first frame update
@@ -28,6 +29,7 @@ public class GameDirector : MonoBehaviour
     public TextMeshProUGUI resultScore;
 
     public PlayableDirector EndPlayableDirector;
+    public PlayableDirector ResultPlayableDirector;
     void Start()
     {
         _goalController = GameObject.Find("Goal").GetComponent<GoalController>();
@@ -52,11 +54,14 @@ public class GameDirector : MonoBehaviour
             case GameState.End:
                 EndPlayableDirector.Play();
                 break;
-            case GameState.Result:
+            case GameState.ResultProduction:
                 //SceneManager.LoadScene("ResultScene");
                 UIPanel.SetActive(false);
                 ResultPanel.SetActive(true);
                 resultScore.text = _goalController.score + "Y";
+                ResultPlayableDirector.Play();
+                break;
+            case GameState.Result:
                 break;
 
         }
