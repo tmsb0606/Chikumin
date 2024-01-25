@@ -18,7 +18,7 @@ public class GameDirector : MonoBehaviour
     }
     // Start is called before the first frame update
     private int _score = 0;
-    private float _timeLimit = 10f;
+    private float _timeLimit = 60f;
     private GoalController _goalController;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timeText;
@@ -27,6 +27,12 @@ public class GameDirector : MonoBehaviour
     public GameObject ResultPanel;
     public GameObject UIPanel;
     public TextMeshProUGUI resultScore;
+
+    //å„Ç≈ï∂éöÇÕé©ìÆê∂ê¨Ç…Ç∑ÇÈ
+    public TextMeshProUGUI wedScore;
+    public TextMeshProUGUI wedNum;
+    public TextMeshProUGUI jewelryScore;
+    public TextMeshProUGUI jewelryNum;
 
     public PlayableDirector EndPlayableDirector;
     public PlayableDirector ResultPlayableDirector;
@@ -43,7 +49,7 @@ public class GameDirector : MonoBehaviour
             case GameState.Start:
                 break;
             case GameState.Play:
-                scoreText.text = _goalController.score.ToString() + "Y";
+                scoreText.text = _goalController.score.ToString();
                 _timeLimit -= Time.deltaTime;
                 timeText.text = ((int)_timeLimit).ToString();
                 if (_timeLimit <= 0)
@@ -58,7 +64,11 @@ public class GameDirector : MonoBehaviour
                 //SceneManager.LoadScene("ResultScene");
                 UIPanel.SetActive(false);
                 ResultPanel.SetActive(true);
-                resultScore.text = _goalController.score + "Y";
+                resultScore.text = _goalController.score.ToString();
+                wedNum.text = _goalController.itemNum[0].ToString();
+                wedScore.text = (_goalController.itemNum[0] * 1000000).ToString();
+                jewelryNum.text = _goalController.itemNum[1].ToString();
+                jewelryScore.text = (_goalController.itemNum[1] * 1000000).ToString();
                 ResultPlayableDirector.Play();
                 break;
             case GameState.Result:
