@@ -18,7 +18,7 @@ public class GameDirector : MonoBehaviour
     }
     // Start is called before the first frame update
     private int _score = 0;
-    private float _timeLimit = 60f;
+    private float _timeLimit = 100f;
     private GoalController _goalController;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timeText;
@@ -39,6 +39,7 @@ public class GameDirector : MonoBehaviour
     void Start()
     {
         _goalController = GameObject.Find("Goal").GetComponent<GoalController>();
+        timeText.text = ((int)_timeLimit).ToString();
     }
 
     // Update is called once per frame

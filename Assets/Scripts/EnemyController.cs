@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour, IDamageable
 {
     // Start is called before the first frame update
-    int hp = 1000;
+    int hp = 100;
     void Start()
     {
         
