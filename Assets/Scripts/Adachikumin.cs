@@ -86,10 +86,10 @@ public class Adachikumin : ChikuminBase,IJampable
             }
             else if (targetObject.tag == "atm")
             {
-                print("aaaaa");
-                targetObject.GetComponent<ATMController>().ReleaseMoney();
-                hitList.Remove(targetObject);
-                aiState = ChikuminAiState.WAIT;
+                //print("aaaaa");
+                //targetObject.GetComponent<ATMController>().ReleaseMoney();
+                //hitList.Remove(targetObject);
+                //aiState = ChikuminAiState.WAIT;
             }
         }
         

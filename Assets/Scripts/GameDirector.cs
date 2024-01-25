@@ -72,6 +72,14 @@ public class GameDirector : MonoBehaviour
                 ResultPlayableDirector.Play();
                 break;
             case GameState.Result:
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    SceneManager.LoadScene("SampleScene");
+                }
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    SceneManager.LoadScene("TitleScene");
+                }
                 break;
 
         }

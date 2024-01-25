@@ -87,10 +87,10 @@ public class Minatokumin : ChikuminBase, IJampable
             }
             else if (targetObject.tag == "atm")
             {
-                print("aaaaa");
-                targetObject.GetComponent<ATMController>().ReleaseMoney();
-                hitList.Remove(targetObject);
-                aiState = ChikuminAiState.WAIT;
+                //print("aaaaa");
+                //targetObject.GetComponent<ATMController>().ReleaseMoney();
+                //hitList.Remove(targetObject);
+                //aiState = ChikuminAiState.WAIT;
             }
         }
 
@@ -131,54 +131,65 @@ public class Minatokumin : ChikuminBase, IJampable
     }
     private void Carry()
     {
-        print("a");
-        if (carryObjectList.Count < 3||hitList.Count!=0)
+       
+        if (carryObjectList.Count < 5 && hitList.Count != 0)
         {
             carryObjectList.Add(targetObject.gameObject);
-            if (carryObjectList[0].GetComponent<Item>().maxCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+            int i = 0;
+
+            while (true)
             {
-                carryObjectList[0].GetComponent<ICarriable>().Carry(this.gameObject);
-
-                carryObjectList[0].GetComponent<Rigidbody>().isKinematic = true;
-                carryObjectList[0].GetComponent<Rigidbody>().useGravity = false;
-
-                carryObjectList[0].transform.parent = this.transform;
-                carryObjectList[0].transform.localPosition = new Vector3(0, 0, 1);
-                carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
-                
-                while (true)
+               
+                if (carryObjectList[i].GetComponent<Item>().maxCarryNum > carryObjectList[i].GetComponent<Item>().carryObjects.Count)
                 {
-                    targetObject = NearObject(hitList);
-                    hitList.Remove(targetObject);
-                    if (targetObject.tag == "item")
+                    if (carryObjectList[i].gameObject.tag == "item")
                     {
-                        targetObject.GetComponent<ICarriable>().Carry(this.gameObject);
+                        carryObjectList[i].GetComponent<ICarriable>().Carry(this.gameObject);
 
-                        targetObject.GetComponent<Rigidbody>().isKinematic = true;
-                        targetObject.GetComponent<Rigidbody>().useGravity = false;
+                        carryObjectList[i].GetComponent<Rigidbody>().isKinematic = true;
+                        carryObjectList[i].GetComponent<Rigidbody>().useGravity = false;
 
-                        targetObject.transform.parent = this.transform;
-                        targetObject.transform.localPosition = new Vector3(0, 0, 1);
-                        targetObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                        carryObjectList[i].transform.parent = this.transform;
+                        carryObjectList[i].transform.localPosition = new Vector3(0, i * 0.1f, 1);
+                        carryObjectList[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                        i++;
+                        carryObjectList.Remove(targetObject);
+                        if (hitList.Count != 0)
+                        {
+                            carryObjectList.Add(NearObject(hitList));
+                            hitList.Remove(NearObject(hitList));
+                            continue;
 
-                        carryObjectList.Add(targetObject);
+                        }
                     }
-                    if(hitList.Count == 0)
+                    else
                     {
-                        break;
+                        carryObjectList.Remove(targetObject);
+                        if (hitList.Count != 0)
+                        {
+                            carryObjectList.Add(NearObject(hitList));
+                            hitList.Remove(NearObject(hitList));
+                            continue;
+
+                        }
                     }
+
                 }
-                
-
+                if (i >= 0)
+                {
+                    break;
+                }
             }
-            else
-            {
-                carryObjectList[0] = null;
-                aiState = ChikuminAiState.WAIT;
-            }
-
-
+  
         }
+        else
+        {
+            //carryObjectList[0] = null;
+            //aiState = ChikuminAiState.WAIT;
+        }
+
+
+        
         //carryObject.transform.position = this.transform.position + (Vector3.forward*-0.5f);
 
         changeStatus();
