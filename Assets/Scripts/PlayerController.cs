@@ -169,6 +169,12 @@ public class PlayerController : MonoBehaviour
     {
         mouseState = MouseState.waitTiku;
         audioSource.PlayOneShot(WaitSE);
+        foreach(GameObject c in callTikuminList)
+        {
+            c.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.ALIGNMENT;
+            //callTikuminList.Remove(c);
+        }
+        callTikuminList.Clear();
     }
     private void OnCancel()
     {

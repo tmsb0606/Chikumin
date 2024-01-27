@@ -11,6 +11,7 @@ TagManager:
   - circle
   - goal
   - atm
+  - WaitArea
   layers:
   - Default
   - TransparentFX

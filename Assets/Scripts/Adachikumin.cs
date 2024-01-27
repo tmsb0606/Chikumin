@@ -20,6 +20,7 @@ public class Adachikumin : ChikuminBase,IJampable
 
     private AudioSource audioSource;
     public AudioClip throwSE;
+    public GameObject waitArea;
     //public List<GameObject> hitList = new List<GameObject>();
 
     void Start()
@@ -52,6 +53,9 @@ public class Adachikumin : ChikuminBase,IJampable
                 break;
             case ChikuminAiState.CARRY:
                 Carry();
+                break;
+            case ChikuminAiState.ALIGNMENT:
+                Alignment();
                 break;
 
         }
@@ -162,6 +166,11 @@ public class Adachikumin : ChikuminBase,IJampable
         agent.SetDestination(goalObject.transform.position);
         //Move();
     }
+
+    private void Alignment()
+    {
+        agent.SetDestination(waitArea.transform.position);
+    }
     private GameObject NearObject(List<GameObject> gameObjects)
     {
         GameObject nearObj = gameObjects[0];
@@ -184,6 +193,7 @@ public class Adachikumin : ChikuminBase,IJampable
     }
     public void OnCollisionEnter(UnityEngine.Collision other)
     {
+        print("aaaaa");
         this.GetComponent<Rigidbody>().isKinematic = true;
        
        if (other.gameObject.tag != "tiku"&& other.gameObject.tag != "circle")
@@ -210,6 +220,11 @@ public class Adachikumin : ChikuminBase,IJampable
         if (other.gameObject.tag == "Player")
         {
             aiState = ChikuminBase.ChikuminAiState.MOVE;
+        }
+
+        if(other.gameObject.tag == "WaitArea")
+        {
+            aiState = ChikuminAiState.WAIT;
         }
     }
     public void OnCollisionStay(UnityEngine.Collision other)

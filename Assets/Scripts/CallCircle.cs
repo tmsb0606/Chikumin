@@ -52,9 +52,10 @@ public class CallCircle : MonoBehaviour
         }else if(player.mouseState == PlayerController.MouseState.waitTiku)
         {
             //print(other.gameObject.name);
-            other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.IDLE;
+            //‘SƒLƒƒƒ‰Ž~‚ß‚é‚È‚ç‚¢‚ç‚È‚¢
+            //other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.IDLE;
 
-            player.callTikuminList.Remove(other.gameObject);
+            //player.callTikuminList.Remove(other.gameObject);
 
         }
     }
