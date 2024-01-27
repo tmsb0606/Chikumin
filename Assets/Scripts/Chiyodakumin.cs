@@ -246,6 +246,13 @@ public class Chiyodakumin : ChikuminBase, IJampable
         }
 
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "ChiyodaArea")
+        {
+            aiState = ChikuminAiState.WAIT;
+        }
+    }
     public IEnumerator Jump(Vector3 endPos, float flightTime, float speedRate, float gravity)
     {
         changeStatus();

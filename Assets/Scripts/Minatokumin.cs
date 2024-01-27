@@ -280,6 +280,13 @@ public class Minatokumin : ChikuminBase, IJampable
         }
 
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "MinatoArea")
+        {
+            aiState = ChikuminAiState.WAIT;
+        }
+    }
     public IEnumerator Jump(Vector3 endPos, float flightTime, float speedRate, float gravity)
     {
         changeStatus();

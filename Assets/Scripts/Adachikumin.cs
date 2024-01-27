@@ -227,6 +227,13 @@ public class Adachikumin : ChikuminBase,IJampable
             aiState = ChikuminAiState.WAIT;
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "AdachiArea")
+        {
+            aiState = ChikuminAiState.WAIT;
+        }
+    }
     public void OnCollisionStay(UnityEngine.Collision other)
     {
         //print(other.gameObject.tag);

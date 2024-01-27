@@ -12,6 +12,9 @@ TagManager:
   - goal
   - atm
   - WaitArea
+  - AdachiArea
+  - ChiyodaArea
+  - MinatoArea
   layers:
   - Default
   - TransparentFX
