@@ -18,7 +18,8 @@ public class ChikuminBase : MonoBehaviour
     NavMeshAgent agent;
     private GameObject targetPlayer;
     public List<GameObject> hitList = new List<GameObject>();
-    public List<GameObject> carryObjectList = new List<GameObject>(); 
+    public List<GameObject> carryObjectList = new List<GameObject>();
+    public GameObject waitArea;
 
     // Start is called before the first frame update
     void Start()

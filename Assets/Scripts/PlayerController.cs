@@ -55,6 +55,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _cameraObject;
      private CameraController _camera;
 
+    public GameObject adachiWaitAreaAgent;
+    public GameObject chiyodaWaitAreaAgent;
+    public GameObject minatoWaitAreaAgent;
+    public GameObject waitAreaPrefab;
+    private GameObject adachiWaitArea;
+    private GameObject chiyodaWaitArea;
+    private GameObject minatoWaitArea;
+
     void Start()
     {
         Cursor.visible = false;
@@ -164,14 +172,53 @@ public class PlayerController : MonoBehaviour
         print("call");
         audioSource.PlayOneShot(ComeOnSE);
         mouseState = MouseState.callTiku;
+
     }
     private void OnStay()
     {
         mouseState = MouseState.waitTiku;
         audioSource.PlayOneShot(WaitSE);
-        foreach(GameObject c in callTikuminList)
+        //if (waitArea != null)
+        // {
+        //   Destroy(waitArea);
+        //}
+        if (adachiWaitArea != null)
+        {
+            Destroy(adachiWaitArea);
+        }
+        if(minatoWaitArea != null)
+        {
+            Destroy(minatoWaitArea);
+        }
+        if(chiyodaWaitArea != null)
+        {
+            Destroy(chiyodaWaitArea);
+        }
+        adachiWaitArea = Instantiate(waitAreaPrefab);
+        adachiWaitArea.transform.position = adachiWaitAreaAgent.transform.position;
+        adachiWaitArea.gameObject.tag = "AdachiArea";
+
+        minatoWaitArea = Instantiate(waitAreaPrefab);
+        minatoWaitArea.transform.position = minatoWaitAreaAgent.transform.position;
+        minatoWaitArea.gameObject.tag = "MinatoArea";
+
+        chiyodaWaitArea = Instantiate(waitAreaPrefab);
+        chiyodaWaitArea.transform.position = chiyodaWaitAreaAgent.transform.position;
+        chiyodaWaitArea.gameObject.tag = "ChiyodaArea";
+        foreach (GameObject c in callTikuminList)
         {
             c.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.ALIGNMENT;
+            if (c.GetComponent<Adachikumin>())
+            {
+                c.GetComponent<ChikuminBase>().waitArea = adachiWaitArea;
+            }else if (c.GetComponent<Chiyodakumin>())
+            {
+                c.GetComponent<ChikuminBase>().waitArea = chiyodaWaitArea;
+            }
+            else
+            {
+                c.GetComponent<ChikuminBase>().waitArea = minatoWaitArea;
+            }
             //callTikuminList.Remove(c);
         }
         callTikuminList.Clear();

@@ -20,7 +20,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
 
     private AudioSource audioSource;
     public AudioClip throwSE;
-    public GameObject waitArea;
+  
     //public List<GameObject> hitList = new List<GameObject>();
 
     void Start()
@@ -168,7 +168,10 @@ public class Chiyodakumin : ChikuminBase, IJampable
     }
     private void Alignment()
     {
-        agent.SetDestination(waitArea.transform.position);
+        if (waitArea != null)
+        {
+            agent.SetDestination(waitArea.transform.position);
+        }
     }
     private GameObject NearObject(List<GameObject> gameObjects)
     {
