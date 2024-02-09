@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class GameDirector : MonoBehaviour
 {
@@ -36,6 +37,11 @@ public class GameDirector : MonoBehaviour
 
     public PlayableDirector EndPlayableDirector;
     public PlayableDirector ResultPlayableDirector;
+
+    /// <summary>
+    /// ポーズ用のスクリプトを入れる。
+    /// </summary>
+    [SerializeField]public UnityEvent pauseEvent = new UnityEvent();
     void Start()
     {
         _goalController = GameObject.Find("Goal").GetComponent<GoalController>();
@@ -56,6 +62,11 @@ public class GameDirector : MonoBehaviour
                 if (_timeLimit <= 0)
                 {
                     gameState = GameState.End;
+                }
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Pause();
+                    gameState = GameState.Pause;
                 }
                 break;
             case GameState.End:
@@ -82,6 +93,13 @@ public class GameDirector : MonoBehaviour
                     SceneManager.LoadScene("TitleScene");
                 }
                 break;
+            case GameState.Pause:
+                
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    gameState = GameState.Play;
+                }
+                break;
 
         }
 
@@ -92,6 +110,13 @@ public class GameDirector : MonoBehaviour
     public void ChangeState(int state)
     {
          gameState = EasyParse.Enumelate(state, GameState.Start);
+    }
+
+    public void Pause()
+    {
+        pauseEvent.Invoke();
+
+
     }
 
 
