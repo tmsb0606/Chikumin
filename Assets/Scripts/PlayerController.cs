@@ -63,6 +63,8 @@ public class PlayerController : MonoBehaviour
     private GameObject chiyodaWaitArea;
     private GameObject minatoWaitArea;
 
+    private GameDirector _gameDirector;
+
     void Start()
     {
         Cursor.visible = false;
@@ -71,10 +73,15 @@ public class PlayerController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
         _camera = _cameraObject.GetComponent<CameraController>();
+        _gameDirector = GameObject.Find("GameDirector").GetComponent<GameDirector>();
     }
 
     void FixedUpdate()
     {
+        if(_gameDirector.gameState != GameDirector.GameState.Play)
+        {
+            return;
+        }
         //print(mouseState);
         //print(hitTikuminList.Count);
         drawCursor();

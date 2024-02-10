@@ -77,10 +77,11 @@ public class GameDirector : MonoBehaviour
                 UIPanel.SetActive(false);
                 ResultPanel.SetActive(true);
                 resultScore.text = _goalController.score.ToString();
-                wedNum.text = _goalController.itemNum[0].ToString();
-                wedScore.text = (_goalController.itemNum[0] * 1000000).ToString();
-                jewelryNum.text = _goalController.itemNum[1].ToString();
-                jewelryScore.text = (_goalController.itemNum[1] * 1000000).ToString();
+                //リザルトパネルは後で書き換えるらしい。
+                //wedNum.text = _goalController.itemNum[0].ToString();
+                //wedScore.text = (_goalController.itemNum[0] * 1000000).ToString();
+                //jewelryNum.text = _goalController.itemNum[1].ToString();
+                //jewelryScore.text = (_goalController.itemNum[1] * 1000000).ToString();
                 ResultPlayableDirector.Play();
                 break;
             case GameState.Result:
