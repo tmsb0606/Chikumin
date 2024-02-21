@@ -19,7 +19,7 @@ public class GameDirector : MonoBehaviour
     }
     // Start is called before the first frame update
     private int _score = 0;
-    private float _timeLimit = 100f;
+    private float _timeLimit = 5f;
     private GoalController _goalController;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timeText;
