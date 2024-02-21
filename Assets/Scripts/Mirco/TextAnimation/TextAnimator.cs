@@ -87,6 +87,10 @@ public class TextAnimator : MonoBehaviour
         //アニメーションの始まる場所を取得
         float startPoint = ((1 - charAnimationDuration) / (sLength - 1)) * cPosition;
 
+        if (sLength == 1)
+        {
+            startPoint = ((1 - charAnimationDuration) / (sLength )) * cPosition;
+        }
         //アニメーションの終了点の取得
         float endPoint = startPoint + charAnimationDuration;
 
