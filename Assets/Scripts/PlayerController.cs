@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
         waitTiku,
         callTiku,
         throwTiku,
+        rushTiku,
 
     }
     private Rigidbody rb;
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource audioSource;
     public AudioClip ComeOnSE;
     public AudioClip WaitSE;
+    public AudioClip GoSE;
 
     //[SerializeField] private GameObject _camera;
 
@@ -257,6 +259,17 @@ public class PlayerController : MonoBehaviour
         //_camera.GetComponent<CinemachineCameraOffset>().m_Offset = new Vector3(x, _camera.transform.position.y, z);
         //_camera.transform.position = new Vector3(x, _camera.transform.position.y, z);
         _camera.Rotaion();
+    }
+
+    private void OnRush()
+    {
+        audioSource.PlayOneShot(GoSE);
+        mouseState = MouseState.rushTiku;
+        foreach (GameObject c in callTikuminList)
+        {
+            c.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.ONRUSH;
+
+        }
     }
 
     private GameObject NearObject(List<GameObject> gameObjects)

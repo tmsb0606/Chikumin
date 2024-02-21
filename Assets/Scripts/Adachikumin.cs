@@ -10,6 +10,8 @@ public class Adachikumin : ChikuminBase,IJampable
     private GameObject targetPlayer;
     private GameObject targetObject;
     private GameObject goalObject;
+
+    public GameObject cursorObject; //カーソルを入れる。
     
     public CharacterStatus status;
     private bool isHit = false;
@@ -56,6 +58,9 @@ public class Adachikumin : ChikuminBase,IJampable
                 break;
             case ChikuminAiState.ALIGNMENT:
                 Alignment();
+                break;
+            case ChikuminAiState.ONRUSH:
+                OnRush();
                 break;
 
         }
@@ -112,7 +117,7 @@ public class Adachikumin : ChikuminBase,IJampable
         }
         else
         {
-            agent.speed = 0;
+            //agent.speed = 0;
         }
     }
     private void Attack()
@@ -174,6 +179,39 @@ public class Adachikumin : ChikuminBase,IJampable
             agent.SetDestination(waitArea.transform.position);
         }
     }
+
+    private void OnRush()
+    {
+        cursorObject =  GameObject.Find("piku(Clone)");
+        agent.SetDestination(cursorObject.transform.position);
+
+        //この下に状況判断を書く　waitと同じなので状況判断のメソッドにまとめる。
+        if (hitList.Count != 0)
+        {
+            targetObject = NearObject(hitList);
+            //print(targetObject);
+            if (targetObject.tag == "enemy")
+            {
+
+
+                hitList.Remove(targetObject);
+                aiState = ChikuminAiState.ATTACK;
+            }
+            else if (targetObject.tag == "item")
+            {
+                hitList.Remove(targetObject);
+                aiState = ChikuminAiState.CARRY;
+            }
+            else if (targetObject.tag == "atm")
+            {
+                //print("aaaaa");
+                //targetObject.GetComponent<ATMController>().ReleaseMoney();
+                //hitList.Remove(targetObject);
+                //aiState = ChikuminAiState.WAIT;
+            }
+        }
+
+    }
     private GameObject NearObject(List<GameObject> gameObjects)
     {
         GameObject nearObj = gameObjects[0];
@@ -196,7 +234,6 @@ public class Adachikumin : ChikuminBase,IJampable
     }
     public void OnCollisionEnter(UnityEngine.Collision other)
     {
-        print("aaaaa");
         this.GetComponent<Rigidbody>().isKinematic = true;
        
        if (other.gameObject.tag != "tiku"&& other.gameObject.tag != "circle")

@@ -13,6 +13,7 @@ public class ChikuminBase : MonoBehaviour
         IDLE,           //待機
         CARRY,          //アイテムを運ぶ
         ALIGNMENT,      //待機するために整列する
+        ONRUSH,         //突撃する
     }
     public ChikuminAiState aiState = ChikuminAiState.MOVE;
     NavMeshAgent agent;

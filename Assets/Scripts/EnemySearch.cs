@@ -26,4 +26,12 @@ public class EnemySearch : MonoBehaviour
         print("test");
 
     }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            transform.root.gameObject.GetComponent<EnemyController>().targetObject = null;
+            transform.root.gameObject.GetComponent<EnemyController>().aiState = EnemyController.EnemyAiState.RandomMove;
+        }
+    }
 }

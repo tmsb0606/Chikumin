@@ -19,6 +19,9 @@ public class EnemyController : MonoBehaviour, IDamageable
     public EnemyAiState aiState = EnemyAiState.RandomMove;
 
     public GameObject targetObject;
+
+    private float time =0f;
+    public float limitTime = 5f;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -43,7 +46,13 @@ public class EnemyController : MonoBehaviour, IDamageable
     }
     public void RandomMove()
     {
+        time += Time.deltaTime;
+        if(time >= limitTime)
+        {
+            time = 0;
+            agent.SetDestination(new Vector3(Random.RandomRange(-100,100),0, Random.RandomRange(-100, 100)));
 
+        }
     }
     public void Chase()
     {
