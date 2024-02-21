@@ -42,6 +42,7 @@ public class TextAnimator : MonoBehaviour
 
     private float timeElapsed;
 
+    //これがアニメーションを実行する関数
     IEnumerator RunAnimation(float waitForSeconds)
     {
         yield return new WaitForSeconds(waitForSeconds);
@@ -69,7 +70,7 @@ public class TextAnimator : MonoBehaviour
     }
 
 
-    //これがアニメーションを実行する関数
+   
     public void EvaluateRichText(float t)
     {
         animatedText.text = "";
@@ -86,6 +87,12 @@ public class TextAnimator : MonoBehaviour
         
         //アニメーションの始まる場所を取得
         float startPoint = ((1 - charAnimationDuration) / (sLength - 1)) * cPosition;
+
+        //文字が1つの時はこっち
+        if (sLength == 1)
+        {
+            startPoint = ((1 - charAnimationDuration) / sLength) * cPosition;
+        }
 
         //アニメーションの終了点の取得
         float endPoint = startPoint + charAnimationDuration;
