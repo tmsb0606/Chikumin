@@ -19,7 +19,7 @@ public class GameDirector : MonoBehaviour
     }
     // Start is called before the first frame update
     private int _score = 0;
-    private float _timeLimit = 5f;
+    private float _timeLimit = 20f;
     private GoalController _goalController;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timeText;
@@ -42,10 +42,18 @@ public class GameDirector : MonoBehaviour
     /// ポーズ用のスクリプトを入れる。
     /// </summary>
     [SerializeField]public UnityEvent pauseEvent = new UnityEvent();
+
+    [SerializeField] public  TextAnimator textAnime;
+    [SerializeField] public UnityEvent scoreEvent = new UnityEvent();
     void Start()
     {
         _goalController = GameObject.Find("Goal").GetComponent<GoalController>();
         timeText.text = ((int)_timeLimit).ToString();
+        //scoreEvent += EvaluateRichText();
+        scoreEvent.AddListener(()=> textAnime.setMessage(_goalController.score.ToString()));
+        //scoreEvent.AddListener(() => StartCoroutine(textAnime.RunAnimation(0f)));
+        //scoreEvent.AddListener(() => textAnime.EvaluateRichText()));
+
     }
 
     // Update is called once per frame
@@ -56,7 +64,9 @@ public class GameDirector : MonoBehaviour
             case GameState.Start:
                 break;
             case GameState.Play:
-                scoreText.text = _goalController.score.ToString();
+                //scoreText.text = _goalController.score.ToString();
+                scoreEvent.Invoke();
+                //StartCoroutine(textAnime.RunAnimation(1f));
                 _timeLimit -= Time.deltaTime;
                 timeText.text = ((int)_timeLimit).ToString();
                 if (_timeLimit <= 0)

@@ -36,17 +36,18 @@ public class TextAnimator : MonoBehaviour
 
 
 
+
     [SerializeField] [Range(0.0001f, 1)] private float charAnimationDuration;
 
     [SerializeField] [Range(0, 1)] private float editorTValue;
 
     private float timeElapsed;
 
-    IEnumerator RunAnimation(float waitForSeconds)
+    public IEnumerator RunAnimation(float waitForSeconds)
     {
         yield return new WaitForSeconds(waitForSeconds);
-
         float t = 0;
+        timeElapsed = 0f;
         while(t <= 1f)
         {
             EvaluateRichText(t);
@@ -69,7 +70,6 @@ public class TextAnimator : MonoBehaviour
     }
 
 
-    //これがアニメーションを実行する関数
     public void EvaluateRichText(float t)
     {
         animatedText.text = "";
@@ -103,11 +103,22 @@ public class TextAnimator : MonoBehaviour
         string rotateStart = $"<rotate={rotationCurve.Evaluate(subT) * rotationScale}%>";
         string rotateEnd = "</rotate>";
 
-        string colorStart = $"<color=#{ColorUtility.ToHtmlStringRGBA(color.Evaluate(subT))}>";
-        string colorEnd = "</color>";
+        //string colorStart = $"<color=#{ColorUtility.ToHtmlStringRGBA(color.Evaluate(subT))}>";
+        //string colorEnd = "</color>";
 
-        return sizeStart +vOffsetStart + rotateStart + colorStart + c + colorEnd + rotateEnd + vOffsetEnd + sizeEnd;
+        return sizeStart +vOffsetStart + rotateStart + c + rotateEnd + vOffsetEnd + sizeEnd;
     }
+
+    public void setMessage(string str)
+    {
+        if(message != str)
+        {
+            message = str;
+
+            StartCoroutine(RunAnimation(0));
+        }
+    }
+    
 }
 
 //拡張機能：既存のクラスに機能を追加できる
