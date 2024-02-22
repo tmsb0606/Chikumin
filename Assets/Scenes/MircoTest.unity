@@ -3314,7 +3314,7 @@ GameObject:
   - component: {fileID: 1494060906}
   - component: {fileID: 1494060905}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Retry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3337,8 +3337,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 121, y: -0}
-  m_SizeDelta: {x: 420.2543, y: 50}
+  m_AnchoredPosition: {x: -96.346, y: -9.6798}
+  m_SizeDelta: {x: 192.6923, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1494060905
 MonoBehaviour:
@@ -3395,7 +3395,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 1
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3423,7 +3423,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -109.51184, y: 0, z: 287.58582, w: 0}
+  m_margin: {x: 0.38464355, y: 0, z: 0.5930176, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4462,7 +4462,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1830663951}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -5171,7 +5171,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <size=200%><voffset=0px><rotate=0%>1</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>2</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>3</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>4</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>5</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>6</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>7</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>8</rotate></voffset></size><size=199.9917%><voffset=0px><rotate=0%>9</rotate></voffset></size>
+  m_text: <size=200%><voffset=0px><rotate=0%>1</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>2</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>3</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>4</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>5</rotate></voffset></size><size=199.9949%><voffset=0px><rotate=0%>6</rotate></voffset></size><size=199.9782%><voffset=0px><rotate=0%>7</rotate></voffset></size><size=199.9813%><voffset=0px><rotate=0%>8</rotate></voffset></size><size=200.0053%><voffset=0px><rotate=0%>9</rotate></voffset></size>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
