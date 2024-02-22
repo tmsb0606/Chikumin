@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using System;
+using System.Linq;
 
 public class GameDirector : MonoBehaviour
 {
@@ -29,7 +32,12 @@ public class GameDirector : MonoBehaviour
     public GameObject UIPanel;
     public TextMeshProUGUI resultScore;
 
-    //Œã‚Å•¶š‚Í©“®¶¬‚É‚·‚é
+    public GameObject ResultContent;
+    public GameObject ResultItemLine;
+
+    public ItemDataBase itemDataBase;
+
+    //ï¿½ï¿½Å•ï¿½ï¿½ï¿½ï¿½Íï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½
     public TextMeshProUGUI wedScore;
     public TextMeshProUGUI wedNum;
     public TextMeshProUGUI jewelryScore;
@@ -39,7 +47,7 @@ public class GameDirector : MonoBehaviour
     public PlayableDirector ResultPlayableDirector;
 
     /// <summary>
-    /// ƒ|[ƒY—p‚ÌƒXƒNƒŠƒvƒg‚ğ“ü‚ê‚éB
+    /// ï¿½|ï¿½[ï¿½Yï¿½pï¿½ÌƒXï¿½Nï¿½ï¿½ï¿½vï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
     /// </summary>
     [SerializeField]public UnityEvent pauseEvent = new UnityEvent();
 
@@ -53,6 +61,7 @@ public class GameDirector : MonoBehaviour
         scoreEvent.AddListener(()=> textAnime.setMessage(_goalController.score.ToString()));
         //scoreEvent.AddListener(() => StartCoroutine(textAnime.RunAnimation(0f)));
         //scoreEvent.AddListener(() => textAnime.EvaluateRichText()));
+        
 
     }
 
@@ -86,8 +95,10 @@ public class GameDirector : MonoBehaviour
                 //SceneManager.LoadScene("ResultScene");
                 UIPanel.SetActive(false);
                 ResultPanel.SetActive(true);
+                
+                
                 resultScore.text = _goalController.score.ToString();
-                //ƒŠƒUƒ‹ƒgƒpƒlƒ‹‚ÍŒã‚Å‘‚«Š·‚¦‚é‚ç‚µ‚¢B
+                //ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½gï¿½pï¿½lï¿½ï¿½ï¿½ÍŒï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç‚µï¿½ï¿½ï¿½B
                 //wedNum.text = _goalController.itemNum[0].ToString();
                 //wedScore.text = (_goalController.itemNum[0] * 1000000).ToString();
                 //jewelryNum.text = _goalController.itemNum[1].ToString();
@@ -127,6 +138,29 @@ public class GameDirector : MonoBehaviour
     {
         pauseEvent.Invoke();
 
+
+    }
+    /// <summary>
+    /// ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½gï¿½pï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½ï¿½BResultPlayableDirectorï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½ï¿½
+    /// </summary>
+    public void CreateResultPanel()
+    {
+
+        foreach (ItemData item in itemDataBase.itemList)
+        {
+            
+
+            print(item.itemType);
+            if (_goalController.itemDic[item.itemType] != 0)
+            {
+                GameObject obj = Instantiate(ResultItemLine, ResultContent.transform);
+                obj.transform.Find("ItemNumText").GetComponent<TextMeshProUGUI>().text = _goalController.itemDic[item.itemType].ToString();
+                obj.transform.Find("ItemMoneyText").GetComponent<TextMeshProUGUI>().text = (_goalController.itemDic[item.itemType] * item.money).ToString();
+                obj.transform.Find("ItemImage").GetComponent<Image>().sprite = item.itemImage;
+
+            }
+
+        }
 
     }
 
