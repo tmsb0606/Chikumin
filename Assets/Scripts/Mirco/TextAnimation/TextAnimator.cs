@@ -66,7 +66,7 @@ public class TextAnimator : MonoBehaviour
 
     private void Update()
     {
-        EvaluateRichText(editorTValue);
+        //EvaluateRichText(editorTValue);
     }
 
 
@@ -78,6 +78,9 @@ public class TextAnimator : MonoBehaviour
         {
             animatedText.text += EvaluateCharRichText(message[i], message.Length, i, t);
         }
+
+      
+
     }
 
     
@@ -87,10 +90,12 @@ public class TextAnimator : MonoBehaviour
         //アニメーションの始まる場所を取得
         float startPoint = ((1 - charAnimationDuration) / (sLength - 1)) * cPosition;
 
+        //もし文字が1文字の時
         if (sLength == 1)
         {
             startPoint = ((1 - charAnimationDuration) / (sLength )) * cPosition;
         }
+
         //アニメーションの終了点の取得
         float endPoint = startPoint + charAnimationDuration;
 
