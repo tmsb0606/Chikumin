@@ -113,7 +113,7 @@ public class Minatokumin : ChikuminBase, IJampable
         }
         else
         {
-            agent.speed = 0;
+           // agent.speed = 0;
         }
     }
     private void Attack()
@@ -228,69 +228,7 @@ public class Minatokumin : ChikuminBase, IJampable
     {
         agent.speed = status.moveSpeed;
     }
-    public void OnCollisionEnter(UnityEngine.Collision other)
-    {
-        this.GetComponent<Rigidbody>().isKinematic = true;
-
-        if (other.gameObject.tag != "tiku" && other.gameObject.tag != "circle")
-        {
-            //hitList.Add(other.gameObject);
-            isHit = true;
-
-        }
-
-        if (other.gameObject.tag == "goal")
-        {
-            //print("goal");
-            //carryObject.transform.parent = null;
-            //carryObject.SetActive(false);
-            //carryObject = null;
-
-
-        }
-
-        if (other.gameObject.tag == "enemy")
-        {
-            isHit = true;
-        }
-        if (other.gameObject.tag == "Player")
-        {
-            //aiState = ChikuminBase.ChikuminAiState.MOVE;
-        }
-    }
-    public void OnCollisionStay(UnityEngine.Collision other)
-    {
-        //print(other.gameObject.tag);
-        if (other.gameObject.tag == "ground")
-        {
-            // isGround = true;
-        }
-    }
-    public void OnCollisionExit(UnityEngine.Collision other)
-    {
-        //this.GetComponent<Rigidbody>().isKinematic = true;
-        if (other.gameObject.tag != "tiku" && other.gameObject.tag != "circle")
-        {
-            //hitList.Remove(other.gameObject);
-            isHit = true;
-        }
-        if (other.gameObject.tag == "ground")
-        {
-            // isGround = false;
-        }
-        if (other.gameObject.tag == "enemy" || other.gameObject.tag == "item" || other.gameObject.tag == "atm")
-        {
-            isHit = false;
-        }
-
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "MinatoArea")
-        {
-            aiState = ChikuminAiState.WAIT;
-        }
-    }
+  
     public IEnumerator Jump(Vector3 endPos, float flightTime, float speedRate, float gravity)
     {
         changeStatus();

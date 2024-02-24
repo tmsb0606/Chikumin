@@ -46,6 +46,8 @@ public class GameDirector : MonoBehaviour
     public PlayableDirector EndPlayableDirector;
     public PlayableDirector ResultPlayableDirector;
 
+    public SceneDirector sceneDirector;
+
     /// <summary>
     /// �|�[�Y�p�̃X�N���v�g������B
     /// </summary>
@@ -108,11 +110,13 @@ public class GameDirector : MonoBehaviour
             case GameState.Result:
                 if (Input.GetKeyDown(KeyCode.R))
                 {
-                    SceneManager.LoadScene("SampleScene");
+                    //SceneManager.LoadScene("SampleScene");
+                    sceneDirector.ChangeScene("SampleScene");
                 }
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
-                    SceneManager.LoadScene("TitleScene");
+                    //SceneManager.LoadScene("TitleScene");
+                    sceneDirector.ChangeScene("TitleScene");
                 }
                 break;
             case GameState.Pause:

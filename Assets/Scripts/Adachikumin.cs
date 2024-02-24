@@ -14,7 +14,7 @@ public class Adachikumin : ChikuminBase,IJampable
     public GameObject cursorObject; //カーソルを入れる。
     
     public CharacterStatus status;
-    private bool isHit = false;
+    //private bool isHit = false;
     private bool isItem = false;
     private bool isGround = false;
 
@@ -124,6 +124,10 @@ public class Adachikumin : ChikuminBase,IJampable
     {
         //print("attack");
         //changeStatus();
+        if (!targetObject.gameObject.active)
+        {
+            aiState = ChikuminAiState.WAIT;
+        }
         if (isHit)
         {
             agent.speed = 0;
@@ -133,6 +137,7 @@ public class Adachikumin : ChikuminBase,IJampable
         {
             changeStatus();
             agent.SetDestination(targetObject.transform.position);
+            print("AttackMove");
         }
         
         
@@ -232,73 +237,18 @@ public class Adachikumin : ChikuminBase,IJampable
     {
         agent.speed = status.moveSpeed;
     }
-    public void OnCollisionEnter(UnityEngine.Collision other)
-    {
-        this.GetComponent<Rigidbody>().isKinematic = true;
-       
-       if (other.gameObject.tag != "tiku"&& other.gameObject.tag != "circle")
-        {
-            //hitList.Add(other.gameObject);
-            isHit = true;
-            
-        }
 
-        if (other.gameObject.tag == "goal")
-        {
-            //print("goal");
-            //carryObject.transform.parent = null;
-            //carryObject.SetActive(false);
-            //carryObject = null;
-            
-
-        }
-
-        if (other.gameObject.tag == "enemy")
-        {
-            isHit = true;
-        }
-        if (other.gameObject.tag == "Player")
-        {
-            aiState = ChikuminBase.ChikuminAiState.MOVE;
-        }
-
-        if(other.gameObject.tag == "WaitArea")
-        {
-            aiState = ChikuminAiState.WAIT;
-        }
-    }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "AdachiArea")
-        {
-            aiState = ChikuminAiState.WAIT;
-        }
+
     }
-    public void OnCollisionStay(UnityEngine.Collision other)
+
+    private void OnTriggerExit(Collider other)
     {
-        //print(other.gameObject.tag);
-        if (other.gameObject.tag == "ground")
-        {
-           // isGround = true;
-        }
-    }
-    public void OnCollisionExit(UnityEngine.Collision other)
-    {
-        //this.GetComponent<Rigidbody>().isKinematic = true;
-        if (other.gameObject.tag != "tiku" && other.gameObject.tag != "circle")
-        {
-            //hitList.Remove(other.gameObject);
-            isHit = true;
-        }
-        if (other.gameObject.tag == "ground")
-        {
-           // isGround = false;
-        }
-        if (other.gameObject.tag == "enemy"|| other.gameObject.tag == "item"|| other.gameObject.tag == "atm")
+        if (other.gameObject.tag == "enemy")
         {
             isHit = false;
         }
-
     }
     public IEnumerator Jump(Vector3 endPos, float flightTime, float speedRate, float gravity)
     {

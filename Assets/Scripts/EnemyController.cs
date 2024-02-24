@@ -15,10 +15,10 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     }
     NavMeshAgent agent;
-    int hp = 100;
+    public int hp = 100;
     public EnemyAiState aiState = EnemyAiState.RandomMove;
 
-    public GameObject targetObject;
+    public List<GameObject> targetObjects = new List<GameObject>();
 
     private float time =0f;
     public float limitTime = 5f;
@@ -33,6 +33,14 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (hp < 0)
         {
             Death();
+        }
+        if(targetObjects.Count > 0)
+        {
+            aiState = EnemyAiState.Chase;
+        }
+        else
+        {
+            aiState = EnemyAiState.RandomMove;
         }
         switch (aiState)
         {
@@ -56,7 +64,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     }
     public void Chase()
     {
-        agent.SetDestination(targetObject.transform.position);
+        agent.SetDestination(targetObjects[0].transform.position);
     }
 
     public void Damage(int value)

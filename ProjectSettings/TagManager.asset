@@ -15,6 +15,7 @@ TagManager:
   - AdachiArea
   - ChiyodaArea
   - MinatoArea
+  - search
   layers:
   - Default
   - TransparentFX

@@ -21,6 +21,7 @@ public class ChikuminBase : MonoBehaviour
     public List<GameObject> hitList = new List<GameObject>();
     public List<GameObject> carryObjectList = new List<GameObject>();
     public GameObject waitArea;
+   public bool isHit = false;
 
     // Start is called before the first frame update
     void Start()
