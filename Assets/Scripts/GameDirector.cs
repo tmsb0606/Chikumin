@@ -124,6 +124,7 @@ public class GameDirector : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     gameState = GameState.Play;
+                    Time.timeScale = 1;
                 }
                 break;
 
@@ -141,6 +142,9 @@ public class GameDirector : MonoBehaviour
     public void Pause()
     {
         pauseEvent.Invoke();
+
+        Time.timeScale = 0;
+
 
 
     }

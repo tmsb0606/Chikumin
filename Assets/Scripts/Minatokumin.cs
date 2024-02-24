@@ -7,7 +7,6 @@ public class Minatokumin : ChikuminBase, IJampable
 {
     //public ChikuminAiState aiState = ChikuminAiState.MOVE;
     NavMeshAgent agent;
-    private GameObject targetPlayer;
     private GameObject targetObject;
     private GameObject goalObject;
 
