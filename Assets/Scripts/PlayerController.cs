@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
                 int x = (int)((Step(j)-0.5f)*2);
                 int z = (int)((Step(i) - 0.5f) * 2);
                 print("x:"+x+"y:"+z);
-                Vector3 pos = this.transform.position + new Vector3(x*j, -1, z*i);
+                Vector3 pos = this.transform.position + new Vector3(x*j, 0, z*i);
                 if(!Physics.CheckSphere(pos, 4, layer)&& Physics.CheckSphere(pos, 4, 1 << 12))
                 {
                     /*GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
