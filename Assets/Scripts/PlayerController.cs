@@ -248,21 +248,26 @@ public class PlayerController : MonoBehaviour
             bool flag = false;
             for(int j = 0; j < limit; j+=1)
             {
-                int x = (int)((Step(j)-0.5f)*2);
-                int z = (int)((Step(i) - 0.5f) * 2);
+                int x = (int)((Step(j)-0.5f)*2)*j;
+                int z = (int)((Step(i) - 0.5f) * 2)*i;
+
+                float angle = (-this.transform.localEulerAngles.y) * Mathf.Deg2Rad;
+                //print(Mathf.Sin( angle));
+                //print(angle);
+                float rx = -Mathf.Sin(angle) * z + Mathf.Cos(angle) * x;
+                float ry = Mathf.Sin(angle) * x + Mathf.Cos(angle) * z;
                 print("x:"+x+"y:"+z);
 
-                Quaternion _hRota = Quaternion.Euler(0, this.transform.localEulerAngles.y, 0);
-                Vector3 pos = this.transform.position + new Vector3(x*j, 0, z*i);
+                Vector3 pos = this.transform.position + new Vector3(rx, 0, ry);
                 
                 //Vector3 vec = pos + transform.rotation*transform.forward;
                 if(!Physics.CheckSphere(pos, 4, layer)&& Physics.CheckSphere(pos, 4, 1 << 12))
                 {
 /*                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     sphere.transform.position = pos;
-                    sphere.transform.localScale = new Vector3(r * 2, 5, r * 2);
-                    sphere.transform.rotation = _hRota;
-                    sphere.transform.position +=pos + sphere.transform.rotation * Vector3.forward * 3f;*/
+                    sphere.transform.localScale = new Vector3(r * 2, 5, r * 2);*/
+/*                    sphere.transform.rotation = _hRota;
+                    sphere.transform.position += pos + sphere.transform.rotation * Vector3.forward * 3f;*/
                     cnt++;
                     flag = true;
                     //j += r;
