@@ -169,7 +169,16 @@ public class Chiyodakumin : ChikuminBase, IJampable
     {
         if (waitArea != null)
         {
-            agent.SetDestination(waitArea.transform.position);
+            //agent.SetDestination(waitPos);
+        }
+        
+        if(Vector3.Distance(waitPos, this.transform.position) > 1)
+        {
+            agent.SetDestination(waitPos);
+        }
+        else
+        {
+            aiState = ChikuminAiState.WAIT;
         }
     }
     private GameObject NearObject(List<GameObject> gameObjects)

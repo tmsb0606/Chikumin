@@ -180,7 +180,15 @@ public class Adachikumin : ChikuminBase,IJampable
     {
         if (waitArea != null)
         {
-            agent.SetDestination(waitArea.transform.position);
+            //agent.SetDestination(waitArea.transform.position);
+        }
+        if (Vector3.Distance(waitPos, this.transform.position) > 1)
+        {
+            agent.SetDestination(waitPos);
+        }
+        else
+        {
+            aiState = ChikuminAiState.WAIT;
         }
     }
 

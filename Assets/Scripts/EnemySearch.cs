@@ -27,7 +27,6 @@ public class EnemySearch : MonoBehaviour
             transform.root.gameObject.GetComponent<EnemyController>().targetObjects.Add(other.gameObject);
             
         }
-        print("test");
 
     }
     private void OnTriggerExit(Collider other)

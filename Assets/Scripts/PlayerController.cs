@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.InputSystem;
+using System;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
@@ -185,7 +186,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnStay()
     {
-        mouseState = MouseState.waitTiku;
+       /* mouseState = MouseState.waitTiku;
         audioSource.PlayOneShot(WaitSE);
         //if (waitArea != null)
         // {
@@ -229,8 +230,79 @@ public class PlayerController : MonoBehaviour
                 c.GetComponent<ChikuminBase>().waitArea = minatoWaitArea;
             }
             //callTikuminList.Remove(c);
+        }*/
+        
+
+        //Ç±Ç±Ç©ÇÁâ∫Ç…êVÇµÇ¢êÆóÒÇèëÇ≠
+        LayerMask layer= ~(1 << 12);
+        int cnt = 0; //îzíuÇ≈Ç´ÇΩâ~ÇÃêî
+        int limit = 40;
+        int r = 2;
+
+
+        //print(Physics.CheckSphere(pos, 4, layer));
+        List<Vector3> callPosList = new List<Vector3>(9);
+        
+        for(int i = 0; i < limit; i+=1)
+        {
+            bool flag = false;
+            for(int j = 0; j < limit; j+=1)
+            {
+                int x = (int)((Step(j)-0.5f)*2);
+                int z = (int)((Step(i) - 0.5f) * 2);
+                print("x:"+x+"y:"+z);
+                Vector3 pos = this.transform.position + new Vector3(x*j, -1, z*i);
+                if(!Physics.CheckSphere(pos, 4, layer)&& Physics.CheckSphere(pos, 4, 1 << 12))
+                {
+                    /*GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    sphere.transform.position = pos;
+                    sphere.transform.localScale = new Vector3(r*2, 5, r*2);*/
+                    cnt++;
+                    flag = true;
+                    //j += r;
+                    callPosList.Add(pos);
+
+                    if (cnt > 2)
+                    {
+                        break;
+                    }
+                    
+                }
+                
+
+            }
+            if (flag)
+            {
+                //i += r;
+            }
+            
+            if (cnt > 2)
+            {
+                break;
+            }
         }
-        callTikuminList.Clear();
+
+        foreach (GameObject c in callTikuminList)
+        {
+            c.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.ALIGNMENT;
+            if (c.GetComponent<Adachikumin>())
+            {
+                c.GetComponent<ChikuminBase>().waitPos = callPosList[0];
+            }
+            else if (c.GetComponent<Chiyodakumin>())
+            {
+                c.GetComponent<ChikuminBase>().waitPos = callPosList[1];
+            }
+            else
+            {
+                c.GetComponent<ChikuminBase>().waitPos = callPosList[2];
+            }
+
+        }
+
+
+
+            callTikuminList.Clear();
     }
     private void OnCancel()
     {
@@ -319,6 +391,11 @@ public class PlayerController : MonoBehaviour
             return null;
         }
         return nearObj;
+    }
+
+    public int Step(int x)
+    {
+        return Convert.ToInt32(x % 2 == 0);
     }
 
 
