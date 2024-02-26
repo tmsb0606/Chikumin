@@ -234,7 +234,7 @@ public class PlayerController : MonoBehaviour
         
 
         //‚±‚±‚©‚ç‰º‚ÉV‚µ‚¢®—ñ‚ğ‘‚­
-        LayerMask layer= ~(1 << 12);
+        LayerMask layer= ~(1 << 12 | 1 << 13 | 1 <<14 | 1 << 6);
         int cnt = 0; //”z’u‚Å‚«‚½‰~‚Ì”
         int limit = 40;
         int r = 2;
@@ -251,12 +251,18 @@ public class PlayerController : MonoBehaviour
                 int x = (int)((Step(j)-0.5f)*2);
                 int z = (int)((Step(i) - 0.5f) * 2);
                 print("x:"+x+"y:"+z);
+
+                Quaternion _hRota = Quaternion.Euler(0, this.transform.localEulerAngles.y, 0);
                 Vector3 pos = this.transform.position + new Vector3(x*j, 0, z*i);
+                
+                //Vector3 vec = pos + transform.rotation*transform.forward;
                 if(!Physics.CheckSphere(pos, 4, layer)&& Physics.CheckSphere(pos, 4, 1 << 12))
                 {
-                    /*GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+/*                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     sphere.transform.position = pos;
-                    sphere.transform.localScale = new Vector3(r*2, 5, r*2);*/
+                    sphere.transform.localScale = new Vector3(r * 2, 5, r * 2);
+                    sphere.transform.rotation = _hRota;
+                    sphere.transform.position +=pos + sphere.transform.rotation * Vector3.forward * 3f;*/
                     cnt++;
                     flag = true;
                     //j += r;
@@ -301,8 +307,9 @@ public class PlayerController : MonoBehaviour
         }
 
 
-
-            callTikuminList.Clear();
+        mouseState = MouseState.waitTiku;
+        audioSource.PlayOneShot(WaitSE);
+        callTikuminList.Clear();
     }
     private void OnCancel()
     {
