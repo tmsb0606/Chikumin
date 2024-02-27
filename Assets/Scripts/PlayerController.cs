@@ -367,6 +367,7 @@ public class PlayerController : MonoBehaviour
             c.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.ONRUSH;
 
         }
+        callTikuminList.Clear();
     }
 
     private GameObject NearObject(List<GameObject> gameObjects)

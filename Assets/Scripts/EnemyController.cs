@@ -64,7 +64,11 @@ public class EnemyController : MonoBehaviour, IDamageable
     }
     public void Chase()
     {
-        agent.SetDestination(targetObjects[0].transform.position);
+        if (agent.pathStatus != NavMeshPathStatus.PathInvalid)
+        {
+            agent.SetDestination(targetObjects[0].transform.position);
+        }
+        
     }
 
     public void Damage(int value)

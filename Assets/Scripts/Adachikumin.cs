@@ -7,7 +7,7 @@ public class Adachikumin : ChikuminBase,IJampable
 {
     //public ChikuminAiState aiState = ChikuminAiState.MOVE;
     NavMeshAgent agent;
-    private GameObject targetObject;
+    public GameObject targetObject;
     private GameObject goalObject;
 
     public GameObject cursorObject; //カーソルを入れる。
@@ -15,7 +15,7 @@ public class Adachikumin : ChikuminBase,IJampable
     public CharacterStatus status;
     //private bool isHit = false;
     private bool isItem = false;
-    private bool isGround = false;
+    private bool isGround = true;
 
     public float moveDis = 1.0f;
 
@@ -72,12 +72,13 @@ public class Adachikumin : ChikuminBase,IJampable
         //print(isGround);
         if (!isGround)
         {
-            
+            print("!ground");
             return;
         }
         //今後の動作判定
         if(hitList.Count != 0)
         {
+            print("wait : list > 0");
             targetObject = NearObject(hitList);
             //print(targetObject);
             if (targetObject.tag == "enemy")

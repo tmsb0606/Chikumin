@@ -8,6 +8,8 @@ public class Item : MonoBehaviour, ICarriable
     {
         Wad,
         Jewelry,
+        Rock,
+        Branch,
 
     }
     // Start is called before the first frame update
