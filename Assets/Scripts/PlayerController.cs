@@ -97,6 +97,8 @@ public class PlayerController : MonoBehaviour
         float angle = (-_cameraObject.transform.localEulerAngles.y)* Mathf.Deg2Rad;
         //print(Mathf.Sin( angle));
         //print(angle);
+
+        //ベクトルを回転
         float x = -Mathf.Sin(angle)*movementY +Mathf.Cos(angle)*movementX;
         float y = Mathf.Sin(angle) * movementX + Mathf.Cos(angle) * movementY;
         Vector3 movement = new Vector3(x, 0.0f, y);
@@ -234,10 +236,11 @@ public class PlayerController : MonoBehaviour
         
 
         //ここから下に新しい整列を書く
-        LayerMask layer= ~(1 << 12 | 1 << 13 | 1 <<14 | 1 << 6);
+        LayerMask layer= ~(1 << 12 | 1 << 13 | 1 <<14 | 1 << 6 | 1<<15 | 1<<16);
         int cnt = 0; //配置できた円の数
         int limit = 40;
         int r = 2;
+        int Yoffset = 5;
 
 
         //print(Physics.CheckSphere(pos, 4, layer));
@@ -248,26 +251,36 @@ public class PlayerController : MonoBehaviour
             bool flag = false;
             for(int j = 0; j < limit; j+=1)
             {
+                //原点を中心に順番に座標を取得する
                 int x = (int)((Step(j)-0.5f)*2)*j;
-                int z = (int)((Step(i) - 0.5f) * 2)*i;
+                int z = (int)((Step(i) - 0.5f) * 2)*(i+Yoffset);
+                Vector3 vec = new Vector3(x, 0, z) ;
+            
+
 
                 float angle = (-this.transform.localEulerAngles.y) * Mathf.Deg2Rad;
                 //print(Mathf.Sin( angle));
                 //print(angle);
-                float rx = -Mathf.Sin(angle) * z + Mathf.Cos(angle) * x;
-                float ry = Mathf.Sin(angle) * x + Mathf.Cos(angle) * z;
-                print("x:"+x+"y:"+z);
 
-                Vector3 pos = this.transform.position + new Vector3(rx, 0, ry);
-                
+                //原点を中心に取得した座標をプレイヤーの向いている向きに回転
+                float rx = -Mathf.Sin(angle) * vec.z + Mathf.Cos(angle) * vec.x;
+                float rz = Mathf.Sin(angle) * vec.x + Mathf.Cos(angle) * vec.z;
+                print("x:"+rx+"y:"+rz);
+                print("正面" + transform.forward);
+
+                //回転した座標とプレイヤーの座標を加算することでプレイヤー付近の座標を順番に取得する
+                Vector3 pos = this.transform.position + new Vector3(rx, 0, rz);
+
+/*                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cube.transform.position = pos;
+                cube.transform.localScale = new Vector3(r * 2, 5, r * 2);*/
+
                 //Vector3 vec = pos + transform.rotation*transform.forward;
-                if(!Physics.CheckSphere(pos, 4, layer)&& Physics.CheckSphere(pos, 4, 1 << 12))
+                if (!Physics.CheckSphere(pos, 4, layer)&& Physics.CheckSphere(pos, 4, 1 << 12))
                 {
 /*                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     sphere.transform.position = pos;
                     sphere.transform.localScale = new Vector3(r * 2, 5, r * 2);*/
-/*                    sphere.transform.rotation = _hRota;
-                    sphere.transform.position += pos + sphere.transform.rotation * Vector3.forward * 3f;*/
                     cnt++;
                     flag = true;
                     //j += r;
