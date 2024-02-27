@@ -48,7 +48,8 @@ public class GoalController : MonoBehaviour
     {
         if (other.gameObject.tag == "item")
         {
-            other.gameObject.GetComponent<Item>().carryObjects[0].GetComponent<ChikuminBase>().carryObjectList.Clear();
+            
+/*            other.gameObject.GetComponent<Item>().carryObjects[0].GetComponent<ChikuminBase>().carryObjectList.Clear();
             //itemNum[(int)other.gameObject.GetComponent<Item>().itemType] += 1;
             itemDic[other.gameObject.GetComponent<Item>().itemType] += 1;
             print(other.gameObject.GetComponent<Item>().itemType + ":" + itemDic[other.gameObject.GetComponent<Item>().itemType]);
@@ -57,7 +58,29 @@ public class GoalController : MonoBehaviour
             IEnumerable<ItemData> item = ItemDataBase.itemList.Where(e => e != null).Where(e => e.itemType == other.gameObject.GetComponent<Item>().itemType);
             print("itemtype:"+item.First().itemType);
             score += item.First().money;
-            audioSource.PlayOneShot(CoinSE);
+            audioSource.PlayOneShot(CoinSE);*/
+        }
+
+        if (other.gameObject.tag == "tiku")
+        {
+            
+            if (other.gameObject.GetComponent<ChikuminBase>())
+            {
+                foreach (GameObject obj in other.gameObject.GetComponent<ChikuminBase>().carryObjectList)
+                {
+                    print("goalobj"+obj);
+                    itemDic[obj.gameObject.GetComponent<Item>().itemType] += 1;
+                    print(obj.gameObject.GetComponent<Item>().itemType + ":" + itemDic[obj.gameObject.GetComponent<Item>().itemType]);
+                    obj.gameObject.transform.parent = null;
+                    obj.gameObject.SetActive(false);
+                    IEnumerable<ItemData> item = ItemDataBase.itemList.Where(e => e != null).Where(e => e.itemType == obj.gameObject.GetComponent<Item>().itemType);
+                    print("itemtype:" + item.First().itemType);
+                    score += item.First().money;
+                    audioSource.PlayOneShot(CoinSE);
+                }
+
+                other.GetComponent<ChikuminBase>().carryObjectList.Clear();
+            }
         }
     }
 }

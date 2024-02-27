@@ -135,7 +135,7 @@ public class Minatokumin : ChikuminBase, IJampable
     private void Carry()
     {
        
-        if (carryObjectList.Count < 5 && hitList.Count != 0)
+/*        if (carryObjectList.Count < 5 && hitList.Count != 0)
         {
             carryObjectList.Add(targetObject.gameObject);
             int i = 0;
@@ -184,13 +184,48 @@ public class Minatokumin : ChikuminBase, IJampable
                 }
             }
   
-        }
-        else
+        }*/
+
+        if(carryObjectList.Count == 0)
         {
-            //carryObjectList[0] = null;
-            //aiState = ChikuminAiState.WAIT;
+            carryObjectList.Add(targetObject.gameObject);
+            carryObjectList[0].GetComponent<ICarriable>().Carry(this.gameObject);
+
+            carryObjectList[0].GetComponent<Rigidbody>().isKinematic = true;
+            carryObjectList[0].GetComponent<Rigidbody>().useGravity = false;
+
+            carryObjectList[0].transform.parent = this.transform;
+            carryObjectList[0].transform.localPosition = new Vector3(0, 0, 1);
+            carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
 
+        if(carryObjectList.Count <5 && hitList.Count != 0)
+        {
+
+            print("carry");
+            targetObject = NearObject(hitList);
+            //“ñ‚Â–ÚˆÈ~‚ÌƒAƒCƒeƒ€‚ÍŽD‘©‚Ì‚ÝBŽD‘©ˆÈŠO‚Í•¡”ŒÂŽ‚Ä‚È‚¢B
+            if(targetObject.gameObject.tag == "item")
+            {
+                if (targetObject.GetComponent<Item>().maxCarryNum > targetObject.GetComponent<Item>().carryObjects.Count)
+                {
+                    int i = carryObjectList.Count;
+
+                    carryObjectList.Add(targetObject.gameObject);
+                    carryObjectList[i].GetComponent<ICarriable>().Carry(this.gameObject);
+
+                    carryObjectList[i].GetComponent<Rigidbody>().isKinematic = true;
+                    carryObjectList[i].GetComponent<Rigidbody>().useGravity = false;
+
+                    carryObjectList[i].transform.parent = this.transform;
+                    carryObjectList[i].transform.localPosition = new Vector3(0, i * 0.1f, 1);
+                    carryObjectList[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                }
+
+            }
+            hitList.Remove(targetObject);
+            
+        }
 
         
         //carryObject.transform.position = this.transform.position + (Vector3.forward*-0.5f);
