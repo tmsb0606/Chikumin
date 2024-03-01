@@ -48,6 +48,10 @@ public class GameDirector : MonoBehaviour
 
     public SceneDirector sceneDirector;
 
+    public CharacterStatus adachikumin;
+    public CharacterStatus chiyodakumin;
+    public CharacterStatus minatokumin;
+
     /// <summary>
     /// �|�[�Y�p�̃X�N���v�g������B
     /// </summary>
@@ -63,6 +67,9 @@ public class GameDirector : MonoBehaviour
         scoreEvent.AddListener(()=> textAnime.setMessage(_goalController.score.ToString()));
         //scoreEvent.AddListener(() => StartCoroutine(textAnime.RunAnimation(0f)));
         //scoreEvent.AddListener(() => textAnime.EvaluateRichText()));
+        adachikumin.level = 1;
+        chiyodakumin.level = 1;
+        minatokumin.level = 1;
         
 
     }
@@ -88,6 +95,10 @@ public class GameDirector : MonoBehaviour
                 {
                     Pause();
                     gameState = GameState.Pause;
+                }
+                if (Input.GetKeyDown("1"))
+                {
+                    LevelUP(adachikumin);
                 }
                 break;
             case GameState.End:
@@ -137,6 +148,11 @@ public class GameDirector : MonoBehaviour
     public void ChangeState(int state)
     {
          gameState = EasyParse.Enumelate(state, GameState.Start);
+    }
+
+    public void LevelUP(CharacterStatus status)
+    {
+        status.level += 1;
     }
 
     public void Pause()

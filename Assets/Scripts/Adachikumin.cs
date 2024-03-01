@@ -16,6 +16,7 @@ public class Adachikumin : ChikuminBase,IJampable
     //private bool isHit = false;
     private bool isItem = false;
     private bool isGround = true;
+    private bool isStop = false;
 
     public float moveDis = 1.0f;
 
@@ -248,7 +249,13 @@ public class Adachikumin : ChikuminBase,IJampable
 
     private void OnTriggerEnter(Collider other)
     {
-
+        print("atta");
+        if (other.gameObject.tag != "ground" && other.gameObject.tag != "Player"&& other.gameObject.tag !="search" && other.gameObject.tag != "tiku" && other.gameObject.tag != "Untagged")
+        {
+            print(other.gameObject.tag);
+            isStop = true;
+            print("stop");
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -257,11 +264,19 @@ public class Adachikumin : ChikuminBase,IJampable
         {
             isHit = false;
         }
+
+        if (other.gameObject.tag != "ground" && other.gameObject.tag != "Player" && other.gameObject.tag != "search" && other.gameObject.tag != "tiku" && other.gameObject.tag != "Untagged")
+        {
+            isStop = false;
+        }
     }
+
+
     public IEnumerator Jump(Vector3 endPos, float flightTime, float speedRate, float gravity)
     {
         changeStatus();
         audioSource.PlayOneShot(throwSE);
+        agent.enabled = false;
         isGround = false;
         var startPos = transform.position; // 初期位置
         var diffY = (endPos - startPos).y; // 始点と終点のy成分の差分
@@ -270,14 +285,28 @@ public class Adachikumin : ChikuminBase,IJampable
         // 放物運動
         for (var t = 0f; t < flightTime; t += (Time.deltaTime * speedRate))
         {
+            print(t);
+
             var p = Vector3.Lerp(startPos, endPos, t / flightTime);   //水平方向の座標を求める (x,z座標)
+            if (isStop)
+            {
+                endPos = this.transform.position;
+                p.x = this.transform.position.x;
+                p.z = this.transform.position.z;
+
+
+            }
+
             p.y = startPos.y + vn * t + 0.5f * gravity * t * t; // 鉛直方向の座標 y
+            
             transform.position = p;
+
             yield return null; //1フレーム経過
         }
         // 終点座標へ補正
         isGround = true;
         transform.position = endPos;
-        
+        agent.enabled = true;
+
     }
 }
