@@ -90,7 +90,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
             else if (targetObject.tag == "atm")
             {
                 print("aaaaa");
-                targetObject.GetComponent<ATMController>().ReleaseMoney();
+                targetObject.GetComponent<ATMController>().ReleaseMoney(status.level);
                 hitList.Remove(targetObject);
                 aiState = ChikuminAiState.WAIT;
             }
