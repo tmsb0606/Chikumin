@@ -100,6 +100,14 @@ public class GameDirector : MonoBehaviour
                 {
                     LevelUP(adachikumin);
                 }
+                if (Input.GetKeyDown("2"))
+                {
+                    LevelUP(chiyodakumin);
+                }
+                if (Input.GetKeyDown("3"))
+                {
+                    LevelUP(minatokumin);
+                }
                 break;
             case GameState.End:
                 EndPlayableDirector.Play();

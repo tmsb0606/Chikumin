@@ -132,7 +132,7 @@ public class Adachikumin : ChikuminBase,IJampable
         if (isHit)
         {
             agent.speed = 0;
-            targetObject.gameObject.GetComponent<IDamageable>().Damage(10);
+            targetObject.gameObject.GetComponent<IDamageable>().Damage(10*status.level);
         }
         else
         {

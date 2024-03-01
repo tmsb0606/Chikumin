@@ -199,7 +199,7 @@ public class Minatokumin : ChikuminBase, IJampable
             carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
 
-        if(carryObjectList.Count <5 && hitList.Count != 0)
+        if(carryObjectList.Count <4+status.level && hitList.Count != 0)
         {
 
             print("carry");

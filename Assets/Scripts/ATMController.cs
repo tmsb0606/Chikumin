@@ -34,4 +34,19 @@ public class ATMController : MonoBehaviour
         }
     }
 
+    public void ReleaseMoney(int level)
+    {
+        int limit = Random.Range(minNum+level, maxNum+level);
+        for (int i = 0; i < limit; i++)
+        {
+            print("ƒŠƒŠ[ƒX");
+            GameObject money = Instantiate(moneyPrefab);
+            money.transform.position = this.transform.position;
+            Vector3 vec = new Vector3(100, 100, 100);
+            money.GetComponent<Rigidbody>().AddForce(vec);
+            //this.gameObject.SetActive(false);
+            this.gameObject.tag = "Untagged";
+        }
+    }
+
 }
