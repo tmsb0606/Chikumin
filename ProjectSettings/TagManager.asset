@@ -16,6 +16,7 @@ TagManager:
   - ChiyodaArea
   - MinatoArea
   - search
+  - wall
   layers:
   - Default
   - TransparentFX

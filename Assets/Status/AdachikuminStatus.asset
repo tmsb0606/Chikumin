@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: AdachikuminStatus
   m_EditorClassIdentifier: 
   moveSpeed: 6
+  level: 1
