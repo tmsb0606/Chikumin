@@ -66,6 +66,10 @@ public class GoalController : MonoBehaviour
             
             if (other.gameObject.GetComponent<ChikuminBase>())
             {
+                if(other.gameObject.GetComponent<ChikuminBase>().carryObjectList.Count != 0)
+                {
+                    other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.WAIT;
+                }
                 foreach (GameObject obj in other.gameObject.GetComponent<ChikuminBase>().carryObjectList)
                 {
                     print("goalobj"+obj);
@@ -80,6 +84,7 @@ public class GoalController : MonoBehaviour
                 }
 
                 other.GetComponent<ChikuminBase>().carryObjectList.Clear();
+                
             }
         }
     }

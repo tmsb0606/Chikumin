@@ -13,6 +13,8 @@ public class Adachikumin : ChikuminBase,IJampable
     public GameObject cursorObject; //カーソルを入れる。
     
     public CharacterStatus status;
+
+
     //private bool isHit = false;
     private bool isItem = false;
     private bool isGround = true;
@@ -69,6 +71,7 @@ public class Adachikumin : ChikuminBase,IJampable
 
     private void Wait()
     {
+        prevState = ChikuminAiState.WAIT;
         agent.speed = 0;
         //print(isGround);
         if (!isGround)
@@ -162,7 +165,7 @@ public class Adachikumin : ChikuminBase,IJampable
              else
              {
                  //carryObjectList[0] = null;
-                 aiState = ChikuminAiState.WAIT;
+                 aiState = prevState;
                 carryObjectList.Clear();
              }
             
@@ -196,6 +199,7 @@ public class Adachikumin : ChikuminBase,IJampable
 
     private void OnRush()
     {
+        prevState = ChikuminAiState.ONRUSH;
         cursorObject =  GameObject.Find("piku(Clone)");
         agent.SetDestination(cursorObject.transform.position);
 
@@ -249,12 +253,9 @@ public class Adachikumin : ChikuminBase,IJampable
 
     private void OnTriggerEnter(Collider other)
     {
-        print("atta");
         if (other.gameObject.tag != "ground" && other.gameObject.tag != "Player"&& other.gameObject.tag !="search" && other.gameObject.tag != "tiku" && other.gameObject.tag != "Untagged")
         {
-            print(other.gameObject.tag);
             isStop = true;
-            print("stop");
         }
     }
 
