@@ -256,6 +256,7 @@ public class Adachikumin : ChikuminBase,IJampable
         if (other.gameObject.tag != "ground" && other.gameObject.tag != "Player"&& other.gameObject.tag !="search" && other.gameObject.tag != "tiku" && other.gameObject.tag != "Untagged")
         {
             isStop = true;
+            print("当たった");
         }
     }
 
@@ -291,6 +292,7 @@ public class Adachikumin : ChikuminBase,IJampable
             var p = Vector3.Lerp(startPos, endPos, t / flightTime);   //水平方向の座標を求める (x,z座標)
             if (isStop)
             {
+                print("ストップだよ");
                 endPos = this.transform.position;
                 p.x = this.transform.position.x;
                 p.z = this.transform.position.z;

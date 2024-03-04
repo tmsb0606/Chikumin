@@ -20,7 +20,7 @@ public class CallCircle : MonoBehaviour
     }
     public void OnTriggerStay(Collider other)
     {
-        print(LayerMask.LayerToName(other.gameObject.layer));
+        //print(LayerMask.LayerToName(other.gameObject.layer));
         if (!other.gameObject.GetComponent<ChikuminBase>())
         {
             return;
