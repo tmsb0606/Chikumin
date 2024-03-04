@@ -278,9 +278,9 @@ public class PlayerController : MonoBehaviour
                 //Vector3 vec = pos + transform.rotation*transform.forward;
                 if (!Physics.CheckSphere(pos, 4, layer)&& Physics.CheckSphere(pos, 4, 1 << 12))
                 {
-/*                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     sphere.transform.position = pos;
-                    sphere.transform.localScale = new Vector3(r * 2, 5, r * 2);*/
+                    sphere.transform.localScale = new Vector3(r * 2, 5, r * 2);
                     cnt++;
                     flag = true;
                     //j += r;
@@ -422,6 +422,11 @@ public class PlayerController : MonoBehaviour
     public int Step(int x)
     {
         return Convert.ToInt32(x % 2 == 0);
+    }
+
+    public void nCollisionEnter(Collision collision)
+    {
+        print(collision.gameObject.layer);
     }
 
 

@@ -15,6 +15,9 @@ public class Chiyodakumin : ChikuminBase, IJampable
     private bool isItem = false;
     private bool isGround = false;
 
+
+    public GameObject cursorObject; //カーソルを入れる。
+
     public float moveDis = 1.0f;
 
     private AudioSource audioSource;
@@ -56,6 +59,9 @@ public class Chiyodakumin : ChikuminBase, IJampable
             case ChikuminAiState.ALIGNMENT:
                 Alignment();
                 break;
+            case ChikuminAiState.ONRUSH:
+                OnRush();
+                break;
 
         }
 
@@ -63,6 +69,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
 
     private void Wait()
     {
+        prevState = ChikuminAiState.WAIT;
         agent.speed = 0;
         //print(isGround);
         if (!isGround)
@@ -150,7 +157,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
             else
             {
                 //carryObjectList[0] = null;
-                aiState = ChikuminAiState.WAIT;
+                aiState = prevState;
                 carryObjectList.Clear();
             }
 
@@ -181,6 +188,46 @@ public class Chiyodakumin : ChikuminBase, IJampable
             aiState = ChikuminAiState.WAIT;
         }
     }
+
+
+    private void OnRush()
+    {
+        prevState = ChikuminAiState.ONRUSH;
+        
+        
+        cursorObject = GameObject.Find("piku(Clone)");
+        agent.SetDestination(cursorObject.transform.position);
+
+        //この下に状況判断を書く　waitと同じなので状況判断のメソッドにまとめる。
+        if (hitList.Count != 0)
+        {
+            targetObject = NearObject(hitList);
+            //print(targetObject);
+            if (targetObject.tag == "enemy")
+            {
+
+
+                hitList.Remove(targetObject);
+                aiState = ChikuminAiState.ATTACK;
+            }
+            else if (targetObject.tag == "item")
+            {
+                hitList.Remove(targetObject);
+                aiState = ChikuminAiState.CARRY;
+            }
+            else if (targetObject.tag == "atm")
+            {
+                //print("aaaaa");
+                //targetObject.GetComponent<ATMController>().ReleaseMoney();
+                //hitList.Remove(targetObject);
+                //aiState = ChikuminAiState.WAIT;
+            }
+        }
+
+    }
+
+
+
     private GameObject NearObject(List<GameObject> gameObjects)
     {
         GameObject nearObj = gameObjects[0];

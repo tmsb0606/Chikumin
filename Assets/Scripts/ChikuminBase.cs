@@ -16,6 +16,8 @@ public class ChikuminBase : MonoBehaviour
         ONRUSH,         //“ËŒ‚‚·‚é
     }
     public ChikuminAiState aiState = ChikuminAiState.MOVE;
+
+    public ChikuminAiState prevState = ChikuminAiState.MOVE;
     NavMeshAgent agent;
     public GameObject targetPlayer;
     public List<GameObject> hitList = new List<GameObject>();
