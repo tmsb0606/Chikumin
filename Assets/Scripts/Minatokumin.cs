@@ -192,11 +192,14 @@ public class Minatokumin : ChikuminBase, IJampable
            // aiState = prevState;
         }
 
-        
+
         //carryObject.transform.position = this.transform.position + (Vector3.forward*-0.5f);
 
-        changeStatus();
-        agent.SetDestination(goalObject.transform.position);
+        if (carryObjectList[0].GetComponent<Item>().minCarryNum <= carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+        {
+            changeStatus();
+            agent.SetDestination(goalObject.transform.position);
+        }
         //Move();
     }
     private void Alignment()
