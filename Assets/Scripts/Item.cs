@@ -10,6 +10,7 @@ public class Item : MonoBehaviour, ICarriable
         Jewelry,
         Rock,
         Branch,
+        Car
 
     }
     // Start is called before the first frame update

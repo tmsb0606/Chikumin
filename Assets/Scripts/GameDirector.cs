@@ -140,7 +140,7 @@ public class GameDirector : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.R))
                 {
                     //SceneManager.LoadScene("SampleScene");
-                    sceneDirector.ChangeScene("SampleScene");
+                    sceneDirector.ChangeScene("GameScene");
                 }
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {

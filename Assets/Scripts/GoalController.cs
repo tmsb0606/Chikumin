@@ -76,6 +76,10 @@ public class GoalController : MonoBehaviour
                     itemDic[obj.gameObject.GetComponent<Item>().itemType] += 1;
                     print(obj.gameObject.GetComponent<Item>().itemType + ":" + itemDic[obj.gameObject.GetComponent<Item>().itemType]);
                     obj.gameObject.transform.parent = null;
+                    foreach(GameObject tiku in obj.gameObject.GetComponent<Item>().carryObjects)
+                    {
+                        tiku.gameObject.GetComponent<ChikuminBase>().carryObjectList = new List<GameObject>();
+                    }
                     obj.gameObject.SetActive(false);
                     IEnumerable<ItemData> item = ItemDataBase.itemList.Where(e => e != null).Where(e => e.itemType == obj.gameObject.GetComponent<Item>().itemType);
                     print("itemtype:" + item.First().itemType);
