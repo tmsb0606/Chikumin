@@ -19,6 +19,7 @@ public class GameDirector : MonoBehaviour
         End,
         ResultProduction,
         Result,
+        Load,
     }
     // Start is called before the first frame update
     private int _score = 0;
@@ -27,10 +28,13 @@ public class GameDirector : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timeText;
     public GameState gameState = GameState.Start;
+    public GameObject startTimeLine;
 
     public GameObject ResultPanel;
     public GameObject UIPanel;
     public TextMeshProUGUI resultScore;
+
+    public GameObject PausePanel;
 
     public GameObject ResultContent;
     public GameObject ResultItemLine;
@@ -79,7 +83,10 @@ public class GameDirector : MonoBehaviour
     {
         switch (gameState)
         {
+            case GameState.Load:
+                break;
             case GameState.Start:
+                startTimeLine.SetActive(true);
                 break;
             case GameState.Play:
                 //scoreText.text = _goalController.score.ToString();
@@ -144,6 +151,7 @@ public class GameDirector : MonoBehaviour
                 {
                     gameState = GameState.Play;
                     Time.timeScale = 1;
+                    PausePanel.SetActive(false);
                 }
                 break;
 
@@ -168,6 +176,7 @@ public class GameDirector : MonoBehaviour
         pauseEvent.Invoke();
 
         Time.timeScale = 0;
+        PausePanel.SetActive(true);
 
 
 
