@@ -140,59 +140,10 @@ public class Minatokumin : ChikuminBase, IJampable
     }
     private void Carry()
     {
-       
-/*        if (carryObjectList.Count < 5 && hitList.Count != 0)
-        {
-            carryObjectList.Add(targetObject.gameObject);
-            int i = 0;
 
-            while (true)
-            {
-               
-                if (carryObjectList[i].GetComponent<Item>().maxCarryNum > carryObjectList[i].GetComponent<Item>().carryObjects.Count)
-                {
-                    if (carryObjectList[i].gameObject.tag == "item")
-                    {
-                        carryObjectList[i].GetComponent<ICarriable>().Carry(this.gameObject);
 
-                        carryObjectList[i].GetComponent<Rigidbody>().isKinematic = true;
-                        carryObjectList[i].GetComponent<Rigidbody>().useGravity = false;
 
-                        carryObjectList[i].transform.parent = this.transform;
-                        carryObjectList[i].transform.localPosition = new Vector3(0, i * 0.1f, 1);
-                        carryObjectList[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
-                        i++;
-                        carryObjectList.Remove(targetObject);
-                        if (hitList.Count != 0)
-                        {
-                            carryObjectList.Add(NearObject(hitList));
-                            hitList.Remove(NearObject(hitList));
-                            continue;
-
-                        }
-                    }
-                    else
-                    {
-                        carryObjectList.Remove(targetObject);
-                        if (hitList.Count != 0)
-                        {
-                            carryObjectList.Add(NearObject(hitList));
-                            hitList.Remove(NearObject(hitList));
-                            continue;
-
-                        }
-                    }
-
-                }
-                if (i >= 0)
-                {
-                    break;
-                }
-            }
-  
-        }*/
-
-        if(carryObjectList.Count == 0)
+            if (carryObjectList.Count == 0)
         {
             carryObjectList.Add(targetObject.gameObject);
             carryObjectList[0].GetComponent<ICarriable>().Carry(this.gameObject);
@@ -215,17 +166,20 @@ public class Minatokumin : ChikuminBase, IJampable
             {
                 if (targetObject.GetComponent<Item>().maxCarryNum > targetObject.GetComponent<Item>().carryObjects.Count)
                 {
-                    int i = carryObjectList.Count;
+                    if (targetObject.GetComponent<Item>().itemType != Item.Type.Car)
+                    {
+                        int i = carryObjectList.Count;
 
-                    carryObjectList.Add(targetObject.gameObject);
-                    carryObjectList[i].GetComponent<ICarriable>().Carry(this.gameObject);
+                        carryObjectList.Add(targetObject.gameObject);
+                        carryObjectList[i].GetComponent<ICarriable>().Carry(this.gameObject);
 
-                    carryObjectList[i].GetComponent<Rigidbody>().isKinematic = true;
-                    carryObjectList[i].GetComponent<Rigidbody>().useGravity = false;
+                        carryObjectList[i].GetComponent<Rigidbody>().isKinematic = true;
+                        carryObjectList[i].GetComponent<Rigidbody>().useGravity = false;
 
-                    carryObjectList[i].transform.parent = this.transform;
-                    carryObjectList[i].transform.localPosition = new Vector3(0, i * 0.1f, 1);
-                    carryObjectList[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                        carryObjectList[i].transform.parent = this.transform;
+                        carryObjectList[i].transform.localPosition = new Vector3(0, i * 0.1f, 1);
+                        carryObjectList[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                    }
                 }
 
             }
