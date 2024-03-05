@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Scripting;
+using UnityEngine.Playables;
 
 using System.Threading.Tasks;
 
@@ -170,8 +171,9 @@ public class TerrainController : MonoBehaviour
         {
             
             terrain.terrainData.treeInstances = trees.ToArray();
-            director.gameState = GameDirector.GameState.Start;
-            LoadUI.SetActive(false);
+           
+            //LoadUI.SetActive(false);
+            LoadUI.GetComponent<PlayableDirector>().Play();
         }
     }
 
@@ -216,6 +218,13 @@ public class TerrainController : MonoBehaviour
         }
 
         await UniTask.SwitchToMainThread();
+    }
+
+
+    public void EndLoad()
+    {
+        LoadUI.SetActive(false);
+        director.gameState = GameDirector.GameState.Start;
     }
 
 }

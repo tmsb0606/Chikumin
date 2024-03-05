@@ -56,6 +56,9 @@ public class GameDirector : MonoBehaviour
     public CharacterStatus chiyodakumin;
     public CharacterStatus minatokumin;
 
+    public AudioSource audioSource;
+    public AudioClip LevelUPSE;
+
     /// <summary>
     /// �|�[�Y�p�̃X�N���v�g������B
     /// </summary>
@@ -168,7 +171,24 @@ public class GameDirector : MonoBehaviour
 
     public void LevelUP(CharacterStatus status)
     {
-        status.level += 1;
+        int money = status.level * 1000000;
+        if(_goalController.score > money)
+        {
+            print("levelUP");
+            _goalController.score -= money;
+            status.level += 1;
+            audioSource.PlayOneShot(LevelUPSE);
+        }
+        
+    }
+
+    //条件なしですべてのキャラのレベルを上げる。
+    public void AllCharacterLevelUP()
+    {
+        adachikumin.level += 1;
+        minatokumin.level += 1;
+        chiyodakumin.level += 1;
+        audioSource.PlayOneShot(LevelUPSE);
     }
 
     public void Pause()
