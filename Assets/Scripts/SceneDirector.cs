@@ -13,6 +13,8 @@ public class SceneDirector : MonoBehaviour
 
     [SerializeField] private GameObject _loadingUI;
     [SerializeField] private Slider _slider;
+
+    public GameObject FadeObj;
     public void ChangeScene(string name)
     {
         //ââèoÇì¸ÇÍÇÈÅB
@@ -39,5 +41,29 @@ public class SceneDirector : MonoBehaviour
         _slider.value = 1;
 
         async.allowSceneActivation = true;
+    }
+
+    public void FadeChangeScene(string name)
+    {
+        //GameObject canvas = GameObject.Find("Canvas");
+        Instantiate(FadeObj);
+        StartCoroutine(ChangeScene());
+
+    }
+
+    IEnumerator ChangeScene()
+    {
+        yield return new WaitForSeconds(1f);
+        AsyncOperation async = SceneManager.LoadSceneAsync("GameScene");
+        async.allowSceneActivation = false;
+        while (async.progress < 0.9f)
+        {
+            print(async.progress);
+            yield return null;
+        }
+
+        async.allowSceneActivation = true;
+
+
     }
 }
