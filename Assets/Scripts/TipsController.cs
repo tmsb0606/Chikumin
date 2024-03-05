@@ -14,7 +14,7 @@ public class TipsController : MonoBehaviour
     {
         
         tips = this.GetComponent<TipsReader>();
-        int num = Random.Range(0, tips.csvDatas[0].Length);
+        int num = Random.Range(0, tips.csvDatas[0][0].Length);
         nametext.text = tips.csvDatas[num][1];
         tipstext.text = tips.csvDatas[num][2];
     }

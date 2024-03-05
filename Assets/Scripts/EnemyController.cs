@@ -22,9 +22,12 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     private float time =0f;
     public float limitTime = 5f;
+
+    private GameDirector gameDirector;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        gameDirector = GameObject.Find("GameDirector").GetComponent<GameDirector>();
     }
 
     // Update is called once per frame
@@ -74,13 +77,16 @@ public class EnemyController : MonoBehaviour, IDamageable
     public void Damage(int value)
     {
         // ここに具体的なダメージ処理
-        hp -= 1;
+        hp -= value;
     }
 
     public void Death()
     {
         // ここに具体的な死亡処理
         this.gameObject.SetActive(false);
+        gameDirector.AllCharacterLevelUP();
+
+
     }
     public void OnTriggerEnter(Collider other)
     {
