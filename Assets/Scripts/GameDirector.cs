@@ -23,7 +23,7 @@ public class GameDirector : MonoBehaviour
     }
     // Start is called before the first frame update
     private int _score = 0;
-    private float _timeLimit = 180f;
+    private float _timeLimit = 18f;
     private GoalController _goalController;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timeText;
@@ -140,12 +140,12 @@ public class GameDirector : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.R))
                 {
                     //SceneManager.LoadScene("SampleScene");
-                    sceneDirector.ChangeScene("GameScene");
+                    sceneDirector.FadeChangeScene("GameScene");
                 }
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     //SceneManager.LoadScene("TitleScene");
-                    sceneDirector.ChangeScene("TitleScene");
+                    sceneDirector.FadeChangeScene("TitleScene");
                 }
                 break;
             case GameState.Pause:
