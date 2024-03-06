@@ -172,7 +172,7 @@ public class GameDirector : MonoBehaviour
     public void LevelUP(CharacterStatus status)
     {
         int money = status.level * 1000000;
-        if(_goalController.score > money)
+        if(_goalController.score >= money)
         {
             print("levelUP");
             _goalController.score -= money;
