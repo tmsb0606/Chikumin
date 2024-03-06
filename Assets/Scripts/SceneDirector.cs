@@ -47,14 +47,14 @@ public class SceneDirector : MonoBehaviour
     {
         //GameObject canvas = GameObject.Find("Canvas");
         Instantiate(FadeObj);
-        StartCoroutine(ChangeScene());
+        StartCoroutine(EmuChangeScene(name));
 
     }
 
-    IEnumerator ChangeScene()
+    IEnumerator EmuChangeScene(string name)
     {
         yield return new WaitForSeconds(1f);
-        AsyncOperation async = SceneManager.LoadSceneAsync("GameScene");
+        AsyncOperation async = SceneManager.LoadSceneAsync(name);
         async.allowSceneActivation = false;
         while (async.progress < 0.9f)
         {
