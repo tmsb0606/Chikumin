@@ -184,6 +184,10 @@ public class Adachikumin : ChikuminBase,IJampable
             changeStatus();
             agent.SetDestination(goalObject.transform.position);
         }
+        else if(carryObjectList[0].GetComponent<Item>().minCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+        {
+            agent.speed = 0;
+        }
 
         //Move();
     }
