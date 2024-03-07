@@ -27,6 +27,11 @@ public class ChikuminBody : MonoBehaviour
         {
             transform.root.gameObject.GetComponent<ChikuminBase>().isHit = true;
         }
+
+        if (other.gameObject.tag == "item")
+        {
+            transform.root.gameObject.GetComponent<ChikuminBase>().isItem = true;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
