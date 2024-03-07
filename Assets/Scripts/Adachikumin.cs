@@ -16,7 +16,7 @@ public class Adachikumin : ChikuminBase,IJampable
 
 
     //private bool isHit = false;
-    private bool isItem = false;
+    
     private bool isGround = true;
     private bool isStop = false;
 
@@ -148,28 +148,46 @@ public class Adachikumin : ChikuminBase,IJampable
     }
     private void Carry()
     {
-        if(carryObjectList.Count == 0)
+
+        if (carryObjectList.Count == 0)
         {
-             carryObjectList.Add( targetObject.gameObject);
-             if(carryObjectList[0].GetComponent<Item>().maxCarryNum> carryObjectList[0].GetComponent<Item>().carryObjects.Count)
-             {
-                 carryObjectList[0].GetComponent<ICarriable>().Carry(this.gameObject);
+            if (targetObject.GetComponent<Item>().maxCarryNum == targetObject.GetComponent<Item>().carryObjects.Count)
+            {
+                aiState = ChikuminAiState.WAIT;
 
-                 carryObjectList[0].GetComponent<Rigidbody>().isKinematic = true;
-                 carryObjectList[0].GetComponent<Rigidbody>().useGravity = false;
+            }
+            if (isItem == false)
+            {
+                changeStatus();
+                agent.SetDestination(targetObject.transform.position);
+                return;
+            }
+            isItem = false;
+            carryObjectList.Add(targetObject.gameObject);
+            if (carryObjectList[0].GetComponent<Item>().maxCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+            {
 
-                 carryObjectList[0].transform.parent = this.transform;
-                 carryObjectList[0].transform.localPosition = new Vector3(0, 0, 1);
-                 carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
-             }
-             else
-             {
-                 //carryObjectList[0] = null;
-                 aiState = prevState;
+                carryObjectList[0].GetComponent<ICarriable>().Carry(this.gameObject);
+
+                carryObjectList[0].GetComponent<Rigidbody>().isKinematic = true;
+                carryObjectList[0].GetComponent<Rigidbody>().useGravity = false;
+
+                if (carryObjectList[0].GetComponent<Item>().carryObjects.Count == 1)
+                {
+                    carryObjectList[0].transform.parent = this.transform;
+                    carryObjectList[0].transform.localPosition = new Vector3(0, 0, 1);
+                    carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                }
+
+            }
+            else
+            {
+                //carryObjectList[0] = null;
+                aiState = prevState;
                 carryObjectList.Clear();
-             }
-            
-             //時間があったらアイテムの方向に移動して拾うモーションが欲しい。
+            }
+
+            //時間があったらアイテムの方向に移動して拾うモーションが欲しい。
             //changeStatus();
             //agent.SetDestination(targetObject.transform.position);
 
@@ -269,6 +287,8 @@ public class Adachikumin : ChikuminBase,IJampable
             isStop = true;
             print("当たった");
         }
+
+
     }
 
     private void OnTriggerExit(Collider other)
