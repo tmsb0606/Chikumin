@@ -145,6 +145,10 @@ public class Chiyodakumin : ChikuminBase, IJampable
                 aiState = ChikuminAiState.WAIT;
 
             }
+            if (targetObject.GetComponent<Item>().itemType == Item.Type.Jewelry)
+            {
+                isItem = true;
+            }
             if (isItem == false)
             {
                 changeStatus();
