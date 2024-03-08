@@ -20,7 +20,9 @@ public class Chiyodakumin : ChikuminBase, IJampable
 
     private AudioSource audioSource;
     public AudioClip throwSE;
-  
+
+    Animator animator;
+
     //public List<GameObject> hitList = new List<GameObject>();
 
     void Start()
@@ -30,6 +32,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
         agent = GetComponent<NavMeshAgent>();
         changeStatus();
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
+        animator = this.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -62,6 +65,9 @@ public class Chiyodakumin : ChikuminBase, IJampable
                 break;
 
         }
+        animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
+        animator.SetBool("Have", carryObjectList.Count > 0);
+        animator.SetBool("Attack", isHit);
 
     }
 
@@ -123,10 +129,16 @@ public class Chiyodakumin : ChikuminBase, IJampable
     {
         //print("attack");
         //changeStatus();
+        if (!targetObject.gameObject.active)
+        {
+            isHit = false;
+            aiState = ChikuminAiState.WAIT;
+        }
         if (isHit)
         {
+
             agent.speed = 0;
-            targetObject.gameObject.GetComponent<IDamageable>().Damage(1);
+            //targetObject.gameObject.GetComponent<IDamageable>().Damage(1);
         }
         else
         {
@@ -135,6 +147,10 @@ public class Chiyodakumin : ChikuminBase, IJampable
         }
 
 
+    }
+    public void AttackDamage()
+    {
+        targetObject.gameObject.GetComponent<IDamageable>().Damage(10 * status.level);
     }
     private void Carry()
     {
@@ -165,8 +181,9 @@ public class Chiyodakumin : ChikuminBase, IJampable
                 carryObjectList[0].GetComponent<Rigidbody>().useGravity = false;
 
                 carryObjectList[0].transform.parent = this.transform;
-                carryObjectList[0].transform.localPosition = new Vector3(0, 0, 1);
+                carryObjectList[0].transform.localPosition = new Vector3(0, 1, 1);
                 carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                agent.velocity = Vector3.zero;
             }
             else
             {
