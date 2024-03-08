@@ -156,6 +156,10 @@ public class Adachikumin : ChikuminBase,IJampable
                 aiState = ChikuminAiState.WAIT;
 
             }
+            if (targetObject.GetComponent<Item>().itemType == Item.Type.Jewelry)
+            {
+                isItem = true;
+            }
             if (isItem == false)
             {
                 changeStatus();
@@ -174,6 +178,8 @@ public class Adachikumin : ChikuminBase,IJampable
 
                 if (carryObjectList[0].GetComponent<Item>().carryObjects.Count == 1)
                 {
+                    agent.velocity = Vector3.zero;
+                    //agent.Stop();
                     carryObjectList[0].transform.parent = this.transform;
                     carryObjectList[0].transform.localPosition = new Vector3(0, 0, 1);
                     carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);

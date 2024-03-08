@@ -148,22 +148,31 @@ public class Minatokumin : ChikuminBase, IJampable
                 aiState = ChikuminAiState.WAIT;
 
             }
+
+            if(targetObject.GetComponent<Item>().itemType == Item.Type.Jewelry)
+            {
+                isItem = true;
+            }
             if (isItem == false)
             {
                 changeStatus();
                 agent.SetDestination(targetObject.transform.position);
                 return;
             }
-            isItem = false;
-            carryObjectList.Add(targetObject.gameObject);
-            carryObjectList[0].GetComponent<ICarriable>().Carry(this.gameObject);
+            if (targetObject.GetComponent<Item>().maxCarryNum > targetObject.GetComponent<Item>().carryObjects.Count)
+            {
+                isItem = false;
+                carryObjectList.Add(targetObject.gameObject);
+                carryObjectList[0].GetComponent<ICarriable>().Carry(this.gameObject);
 
-            carryObjectList[0].GetComponent<Rigidbody>().isKinematic = true;
-            carryObjectList[0].GetComponent<Rigidbody>().useGravity = false;
+                carryObjectList[0].GetComponent<Rigidbody>().isKinematic = true;
+                carryObjectList[0].GetComponent<Rigidbody>().useGravity = false;
 
-            carryObjectList[0].transform.parent = this.transform;
-            carryObjectList[0].transform.localPosition = new Vector3(0, 0, 1);
-            carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                carryObjectList[0].transform.parent = this.transform;
+                carryObjectList[0].transform.localPosition = new Vector3(0, 0, 1);
+                carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                agent.velocity = Vector3.zero;
+            }
         }
 
         if(carryObjectList.Count <4+status.level && hitList.Count != 0)
@@ -178,10 +187,9 @@ public class Minatokumin : ChikuminBase, IJampable
                 {
                     if (targetObject.GetComponent<Item>().itemType != Item.Type.Car)
                     {
-                        if (targetObject.GetComponent<Item>().maxCarryNum == targetObject.GetComponent<Item>().carryObjects.Count)
+                        if (targetObject.GetComponent<Item>().itemType == Item.Type.Jewelry)
                         {
-                            aiState = ChikuminAiState.WAIT;
-
+                            isItem = true;
                         }
                         if (isItem == false)
                         {
@@ -201,6 +209,7 @@ public class Minatokumin : ChikuminBase, IJampable
                         carryObjectList[i].transform.parent = this.transform;
                         carryObjectList[i].transform.localPosition = new Vector3(0, i * 0.1f, 1);
                         carryObjectList[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                        agent.velocity = Vector3.zero;
                     }
                 }
 
@@ -212,6 +221,11 @@ public class Minatokumin : ChikuminBase, IJampable
         if(hitList.Count ==0 &&  carryObjectList.Count == 0)
         {
            // aiState = prevState;
+        }
+
+        if (carryObjectList.Count == 0)
+        {
+            return;
         }
 
 

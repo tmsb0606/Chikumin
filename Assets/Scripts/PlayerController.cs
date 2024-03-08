@@ -101,14 +101,14 @@ public class PlayerController : MonoBehaviour
         //ベクトルを回転
         float x = -Mathf.Sin(angle)*movementY +Mathf.Cos(angle)*movementX;
         float y = Mathf.Sin(angle) * movementX + Mathf.Cos(angle) * movementY;
-        Vector3 movement = new Vector3(x, 0.0f, y);
+        Vector3 movement = new Vector3(x, 0.0f, y) *speed;
         //print(movementX + " : " + movementY);
          //movement =movement.normalized;
 
         // rigidbodyのAddForceを使用してプレイヤーを動かす。
 
         //Vector3 vec = movement * _camera.transform.localEulerAngles.y;
-        rb.AddForce(movement * speed);
+        rb.AddForce(movement-rb.velocity);
 
         Vector3 differenceDis = new Vector3(transform.position.x, 0, transform.position.z) - new Vector3(latestPos.x, 0, latestPos.z);
         latestPos = transform.position;
