@@ -11,8 +11,6 @@ public class Chiyodakumin : ChikuminBase, IJampable
     private GameObject goalObject;
 
     public CharacterStatus status;
-    private bool isHit = false;
-    private bool isItem = false;
     private bool isGround = false;
 
 
@@ -142,6 +140,18 @@ public class Chiyodakumin : ChikuminBase, IJampable
     {
         if (carryObjectList.Count == 0)
         {
+            if (targetObject.GetComponent<Item>().maxCarryNum == targetObject.GetComponent<Item>().carryObjects.Count)
+            {
+                aiState = ChikuminAiState.WAIT;
+
+            }
+            if (isItem == false)
+            {
+                changeStatus();
+                agent.SetDestination(targetObject.transform.position);
+                return;
+            }
+            isItem = false;
             carryObjectList.Add(targetObject.gameObject);
             if (carryObjectList[0].GetComponent<Item>().maxCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
             {
@@ -168,11 +178,20 @@ public class Chiyodakumin : ChikuminBase, IJampable
         }
         //carryObject.transform.position = this.transform.position + (Vector3.forward*-0.5f);
 
+        if (carryObjectList.Count == 0)
+        {
+            return;
+        }
         if (carryObjectList[0].GetComponent<Item>().minCarryNum <= carryObjectList[0].GetComponent<Item>().carryObjects.Count)
         {
             changeStatus();
             agent.SetDestination(goalObject.transform.position);
         }
+        else if (carryObjectList[0].GetComponent<Item>().minCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+        {
+            agent.speed = 0;
+        }
+
         //Move();
     }
     private void Alignment()

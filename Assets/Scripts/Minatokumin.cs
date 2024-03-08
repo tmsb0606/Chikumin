@@ -11,8 +11,6 @@ public class Minatokumin : ChikuminBase, IJampable
     private GameObject goalObject;
 
     public CharacterStatus status;
-    private bool isHit = false;
-    private bool isItem = false;
     private bool isGround = false;
 
     public GameObject cursorObject; //カーソルを入れる。
@@ -143,8 +141,20 @@ public class Minatokumin : ChikuminBase, IJampable
 
 
 
-            if (carryObjectList.Count == 0)
+        if (carryObjectList.Count == 0)
         {
+            if (targetObject.GetComponent<Item>().maxCarryNum == targetObject.GetComponent<Item>().carryObjects.Count)
+            {
+                aiState = ChikuminAiState.WAIT;
+
+            }
+            if (isItem == false)
+            {
+                changeStatus();
+                agent.SetDestination(targetObject.transform.position);
+                return;
+            }
+            isItem = false;
             carryObjectList.Add(targetObject.gameObject);
             carryObjectList[0].GetComponent<ICarriable>().Carry(this.gameObject);
 
@@ -168,6 +178,18 @@ public class Minatokumin : ChikuminBase, IJampable
                 {
                     if (targetObject.GetComponent<Item>().itemType != Item.Type.Car)
                     {
+                        if (targetObject.GetComponent<Item>().maxCarryNum == targetObject.GetComponent<Item>().carryObjects.Count)
+                        {
+                            aiState = ChikuminAiState.WAIT;
+
+                        }
+                        if (isItem == false)
+                        {
+                            changeStatus();
+                            agent.SetDestination(targetObject.transform.position);
+                            return;
+                        }
+                        isItem = false;
                         int i = carryObjectList.Count;
 
                         carryObjectList.Add(targetObject.gameObject);
@@ -199,6 +221,10 @@ public class Minatokumin : ChikuminBase, IJampable
         {
             changeStatus();
             agent.SetDestination(goalObject.transform.position);
+        }
+        else if (carryObjectList[0].GetComponent<Item>().minCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+        {
+            agent.speed = 0;
         }
         //Move();
     }
