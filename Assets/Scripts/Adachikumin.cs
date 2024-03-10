@@ -7,6 +7,7 @@ public class Adachikumin : ChikuminBase,IJampable
 {
     //public ChikuminAiState aiState = ChikuminAiState.MOVE;
     NavMeshAgent agent;
+
     public GameObject targetObject;
     private GameObject goalObject;
 
@@ -156,6 +157,10 @@ public class Adachikumin : ChikuminBase,IJampable
     }
     public void AttackDamage()
     {
+        if (!targetObject.activeSelf)
+        {
+            return;
+        }
         targetObject.gameObject.GetComponent<IDamageable>().Damage(10 * status.level);
     }
     private void Carry()

@@ -90,8 +90,10 @@ public class GameDirector : MonoBehaviour
                 break;
             case GameState.Start:
                 startTimeLine.SetActive(true);
+                
                 break;
             case GameState.Play:
+                Cursor.visible = false;
                 //scoreText.text = _goalController.score.ToString();
                 scoreEvent.Invoke();
                 //StartCoroutine(textAnime.RunAnimation(1f));
@@ -137,6 +139,7 @@ public class GameDirector : MonoBehaviour
                 ResultPlayableDirector.Play();
                 break;
             case GameState.Result:
+                Cursor.visible = true;
                 if (Input.GetKeyDown(KeyCode.R))
                 {
                     //SceneManager.LoadScene("SampleScene");
@@ -149,7 +152,7 @@ public class GameDirector : MonoBehaviour
                 }
                 break;
             case GameState.Pause:
-                
+                Cursor.visible = true;
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     gameState = GameState.Play;

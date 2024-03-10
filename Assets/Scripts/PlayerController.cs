@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = false;
+        
         mouseState = MouseState.nothing;
         mainCamera = Camera.main;
         rb = gameObject.GetComponent<Rigidbody>();

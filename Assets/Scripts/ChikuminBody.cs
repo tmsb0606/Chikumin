@@ -33,6 +33,14 @@ public class ChikuminBody : MonoBehaviour
             transform.root.gameObject.GetComponent<ChikuminBase>().isItem = true;
         }
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "item" && !transform.root.gameObject.GetComponent<ChikuminBase>().carryObjectList.Contains(other.gameObject))
+        {
+            transform.root.gameObject.GetComponent<ChikuminBase>().isItem = true;
+        }
+    }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "enemy")
