@@ -151,7 +151,11 @@ public class Minatokumin : ChikuminBase, IJampable
     }
     public void AttackDamage()
     {
-        targetObject.gameObject.GetComponent<IDamageable>().Damage(10 * status.level);
+        if (!targetObject.activeSelf)
+        {
+            return;
+        }
+        targetObject.gameObject.GetComponent<IDamageable>().Damage(status.level);
     }
     private void Carry()
     {
