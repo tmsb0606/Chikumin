@@ -38,6 +38,9 @@ public class Adachikumin : ChikuminBase,IJampable
         changeStatus();
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
         animator = this.GetComponent<Animator>();
+
+/*        agent.updatePosition = false;
+        agent.updateRotation = false;*/
     }
 
     // Update is called once per frame
@@ -74,6 +77,9 @@ public class Adachikumin : ChikuminBase,IJampable
         animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
         animator.SetBool("Have", carryObjectList.Count > 0);
         animator.SetBool("Attack", isHit);
+
+
+
 
     }
 
@@ -126,10 +132,29 @@ public class Adachikumin : ChikuminBase,IJampable
         {
             changeStatus();
             agent.SetDestination(targetPlayer.transform.position);
+/*
+            // 次の位置への方向を求める
+            var dir = agent.nextPosition - transform.position;
+
+            // 方向と現在の前方との角度を計算（スムーズに回転するように係数を掛ける）
+            float smooth = Mathf.Min(1.0f, Time.deltaTime / 0.15f);
+            var angle = Mathf.Acos(Vector3.Dot(transform.forward, dir.normalized)) * Mathf.Rad2Deg * smooth;
+
+            // 回転軸を計算
+            var axis = Vector3.Cross(transform.forward, dir);
+
+            // 回転の更新
+            var rot = Quaternion.AngleAxis(angle, axis);
+            transform.forward = rot * transform.forward;
+
+            // 位置の更新
+            transform.position = agent.nextPosition;*/
+
         }
         else
         {
             //agent.speed = 0;
+            agent.velocity = Vector3.zero;
         }
     }
     private void Attack()
@@ -332,6 +357,8 @@ public class Adachikumin : ChikuminBase,IJampable
     {
         changeStatus();
         audioSource.PlayOneShot(throwSE);
+      /*  agent.updatePosition = true;
+        agent.updateRotation = true;*/
         agent.enabled = false;
         isGround = false;
         var startPos = transform.position; // 初期位置
@@ -364,6 +391,8 @@ public class Adachikumin : ChikuminBase,IJampable
         isGround = true;
         transform.position = endPos;
         agent.enabled = true;
-
+/*        agent.updatePosition = false;
+        agent.updateRotation = false;
+*/
     }
 }

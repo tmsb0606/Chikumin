@@ -26,11 +26,11 @@ public class LevelUPUIController : MonoBehaviour
         if ((status.level*0.2) * 1000000 <= goalController.score)
         {
             print("レベルアップ可能");
-            LevelUPImage.color = Color.Lerp(new Color32(255,0,0,255),new Color32(255,0,0,0), Mathf.PingPong(Time.time / 1.0f, 1.0f));
+            LevelUPImage.color = Color.Lerp(new Color32(255,255,255,0),new Color32(255,255,255,255), Mathf.PingPong(Time.time / 1.0f, 1.0f));
         }
         else
         {
-            LevelUPImage.color = new Color32(255, 255, 255, 255);
+            LevelUPImage.color = new Color32(255, 255, 255, 0);
         }
     }
 }
