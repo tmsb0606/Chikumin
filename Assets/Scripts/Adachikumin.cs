@@ -28,6 +28,8 @@ public class Adachikumin : ChikuminBase,IJampable
 
     Animator animator;
 
+    Rigidbody rb;
+
     //public List<GameObject> hitList = new List<GameObject>();
 
     void Start()
@@ -39,8 +41,9 @@ public class Adachikumin : ChikuminBase,IJampable
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
         animator = this.GetComponent<Animator>();
 
-/*        agent.updatePosition = false;
-        agent.updateRotation = false;*/
+        agent.updatePosition = false;
+        agent.updateRotation = false;
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -85,6 +88,8 @@ public class Adachikumin : ChikuminBase,IJampable
 
     private void Wait()
     {
+        agent.updatePosition = true;
+        agent.updateRotation = true;
         prevState = ChikuminAiState.WAIT;
         agent.speed = 0;
         //print(isGround);
@@ -132,29 +137,17 @@ public class Adachikumin : ChikuminBase,IJampable
         {
             changeStatus();
             agent.SetDestination(targetPlayer.transform.position);
-/*
-            // 次の位置への方向を求める
-            var dir = agent.nextPosition - transform.position;
+            OnManualMove();
 
-            // 方向と現在の前方との角度を計算（スムーズに回転するように係数を掛ける）
-            float smooth = Mathf.Min(1.0f, Time.deltaTime / 0.15f);
-            var angle = Mathf.Acos(Vector3.Dot(transform.forward, dir.normalized)) * Mathf.Rad2Deg * smooth;
 
-            // 回転軸を計算
-            var axis = Vector3.Cross(transform.forward, dir);
-
-            // 回転の更新
-            var rot = Quaternion.AngleAxis(angle, axis);
-            transform.forward = rot * transform.forward;
-
-            // 位置の更新
-            transform.position = agent.nextPosition;*/
 
         }
         else
         {
             //agent.speed = 0;
             agent.velocity = Vector3.zero;
+            agent.updatePosition = true;
+            agent.updateRotation = true;
         }
     }
     private void Attack()
@@ -169,12 +162,15 @@ public class Adachikumin : ChikuminBase,IJampable
         if (isHit)
         {
             agent.speed = 0;
-            
+            agent.updatePosition = true;
+            agent.updateRotation = true;
+
         }
         else
         {
             changeStatus();
             agent.SetDestination(targetObject.transform.position);
+            OnManualMove();
             print("AttackMove");
         }
         
@@ -206,6 +202,7 @@ public class Adachikumin : ChikuminBase,IJampable
             {
                 changeStatus();
                 agent.SetDestination(targetObject.transform.position);
+                OnManualMove();
                 return;
             }
             isItem = false;
@@ -249,6 +246,7 @@ public class Adachikumin : ChikuminBase,IJampable
         {
             changeStatus();
             agent.SetDestination(goalObject.transform.position);
+            OnManualMove();
         }
         else if(carryObjectList[0].GetComponent<Item>().minCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
         {
@@ -267,10 +265,13 @@ public class Adachikumin : ChikuminBase,IJampable
         if (Vector3.Distance(waitPos, this.transform.position) > 1)
         {
             agent.SetDestination(waitPos);
+            OnManualMove();
         }
         else
         {
             aiState = ChikuminAiState.WAIT;
+            agent.updatePosition = true;
+            agent.updateRotation = true;
         }
     }
 
@@ -279,6 +280,7 @@ public class Adachikumin : ChikuminBase,IJampable
         prevState = ChikuminAiState.ONRUSH;
         cursorObject =  GameObject.Find("piku(Clone)");
         agent.SetDestination(cursorObject.transform.position);
+        OnManualMove();
 
         //この下に状況判断を書く　waitと同じなので状況判断のメソッドにまとめる。
         if (hitList.Count != 0)
@@ -305,6 +307,58 @@ public class Adachikumin : ChikuminBase,IJampable
                 //aiState = ChikuminAiState.WAIT;
             }
         }
+
+    }
+
+    private void OnManualMove()
+    {
+        if (isGround)
+        {
+            agent.updatePosition = false;
+            agent.updateRotation = false;
+        }
+
+        // 次の位置への方向を求める
+        var dir = agent.nextPosition - transform.position;
+
+        // 方向と現在の前方との角度を計算（スムーズに回転するように係数を掛ける）
+        float smooth = Mathf.Min(1.0f, Time.deltaTime / 0.15f);
+        var angle = Mathf.Acos(Vector3.Dot(transform.forward, dir.normalized)) * Mathf.Rad2Deg * smooth;
+
+        // 回転軸を計算
+        var axis = Vector3.Cross(transform.forward, dir);
+
+        // 回転の更新
+        var rot = Quaternion.AngleAxis(angle, axis);
+        transform.forward = rot * transform.forward;
+
+        // 位置の更新
+        transform.position = agent.nextPosition;
+
+
+
+
+        /*        // 次に目指すべき位置を取得
+                var nextPoint = agent.steeringTarget;
+                Vector3 targetDir = nextPoint - transform.position;
+
+                // その方向に向けて旋回する(360度/秒)
+                Quaternion targetRotation = Quaternion.LookRotation(targetDir);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 360f * Time.deltaTime);
+
+                // 自分の向きと次の位置の角度差が30度以上の場合、その場で旋回
+                float angle = Vector3.Angle(targetDir, transform.forward);
+                if (angle < 30f)
+                {
+                    transform.position += transform.forward * 5.0f * Time.deltaTime;
+                    // もしもの場合の補正
+                    //if (Vector3.Distance(nextPoint, transform.position) < 0.5f)　transform.position = nextPoint;
+                }
+
+                // targetに向かって移動します。
+                agent.SetDestination(targetPlayer.transform.position);
+                agent.nextPosition = transform.position;*/
+
 
     }
     private GameObject NearObject(List<GameObject> gameObjects)
@@ -357,10 +411,9 @@ public class Adachikumin : ChikuminBase,IJampable
     {
         changeStatus();
         audioSource.PlayOneShot(throwSE);
-      /*  agent.updatePosition = true;
-        agent.updateRotation = true;*/
         agent.enabled = false;
         isGround = false;
+        
         var startPos = transform.position; // 初期位置
         var diffY = (endPos - startPos).y; // 始点と終点のy成分の差分
         var vn = (diffY - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vn
@@ -391,8 +444,8 @@ public class Adachikumin : ChikuminBase,IJampable
         isGround = true;
         transform.position = endPos;
         agent.enabled = true;
-/*        agent.updatePosition = false;
-        agent.updateRotation = false;
-*/
+        agent.updatePosition = true;
+        agent.updateRotation = true;
+
     }
 }
