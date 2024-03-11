@@ -23,7 +23,7 @@ public class GameDirector : MonoBehaviour
     }
     // Start is called before the first frame update
     private int _score = 0;
-    private float _timeLimit = 180f;
+    private float _timeLimit = 18f;
     private GoalController _goalController;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timeText;
@@ -196,10 +196,19 @@ public class GameDirector : MonoBehaviour
 
     public void Pause()
     {
-        pauseEvent.Invoke();
+        if(Time.timeScale > 0)
+        {
+            pauseEvent.Invoke();
 
-        Time.timeScale = 0;
-        PausePanel.SetActive(true);
+            Time.timeScale = 0;
+            PausePanel.SetActive(true);
+        }
+        else
+        {
+            gameState = GameState.Play;
+            Time.timeScale = 1;
+            PausePanel.SetActive(false);
+        }
 
 
 

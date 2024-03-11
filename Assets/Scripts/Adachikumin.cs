@@ -41,8 +41,8 @@ public class Adachikumin : ChikuminBase,IJampable
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
         animator = this.GetComponent<Animator>();
 
-        agent.updatePosition = false;
-        agent.updateRotation = false;
+/*        agent.updatePosition = false;
+        agent.updateRotation = false;*/
         rb = GetComponent<Rigidbody>();
     }
 
@@ -88,8 +88,8 @@ public class Adachikumin : ChikuminBase,IJampable
 
     private void Wait()
     {
-        agent.updatePosition = true;
-        agent.updateRotation = true;
+/*        agent.updatePosition = true;
+        agent.updateRotation = true;*/
         prevState = ChikuminAiState.WAIT;
         agent.speed = 0;
         //print(isGround);
@@ -137,7 +137,7 @@ public class Adachikumin : ChikuminBase,IJampable
         {
             changeStatus();
             agent.SetDestination(targetPlayer.transform.position);
-            OnManualMove();
+            //OnManualMove();
 
 
 
@@ -146,8 +146,8 @@ public class Adachikumin : ChikuminBase,IJampable
         {
             //agent.speed = 0;
             agent.velocity = Vector3.zero;
-            agent.updatePosition = true;
-            agent.updateRotation = true;
+/*            agent.updatePosition = true;
+            agent.updateRotation = true;*/
         }
     }
     private void Attack()
@@ -162,15 +162,15 @@ public class Adachikumin : ChikuminBase,IJampable
         if (isHit)
         {
             agent.speed = 0;
-            agent.updatePosition = true;
-            agent.updateRotation = true;
+/*            agent.updatePosition = true;
+            agent.updateRotation = true;*/
 
         }
         else
         {
             changeStatus();
             agent.SetDestination(targetObject.transform.position);
-            OnManualMove();
+            //OnManualMove();
             print("AttackMove");
         }
         
@@ -202,7 +202,7 @@ public class Adachikumin : ChikuminBase,IJampable
             {
                 changeStatus();
                 agent.SetDestination(targetObject.transform.position);
-                OnManualMove();
+                //OnManualMove();
                 return;
             }
             isItem = false;
@@ -246,7 +246,7 @@ public class Adachikumin : ChikuminBase,IJampable
         {
             changeStatus();
             agent.SetDestination(goalObject.transform.position);
-            OnManualMove();
+            //OnManualMove();
         }
         else if(carryObjectList[0].GetComponent<Item>().minCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
         {
@@ -265,13 +265,13 @@ public class Adachikumin : ChikuminBase,IJampable
         if (Vector3.Distance(waitPos, this.transform.position) > 1)
         {
             agent.SetDestination(waitPos);
-            OnManualMove();
+            //OnManualMove();
         }
         else
         {
             aiState = ChikuminAiState.WAIT;
-            agent.updatePosition = true;
-            agent.updateRotation = true;
+/*            agent.updatePosition = true;
+            agent.updateRotation = true;*/
         }
     }
 
@@ -280,7 +280,7 @@ public class Adachikumin : ChikuminBase,IJampable
         prevState = ChikuminAiState.ONRUSH;
         cursorObject =  GameObject.Find("piku(Clone)");
         agent.SetDestination(cursorObject.transform.position);
-        OnManualMove();
+        //OnManualMove();
 
         //この下に状況判断を書く　waitと同じなので状況判断のメソッドにまとめる。
         if (hitList.Count != 0)
@@ -444,8 +444,8 @@ public class Adachikumin : ChikuminBase,IJampable
         isGround = true;
         transform.position = endPos;
         agent.enabled = true;
-        agent.updatePosition = true;
-        agent.updateRotation = true;
+/*        agent.updatePosition = true;
+        agent.updateRotation = true;*/
 
     }
 }

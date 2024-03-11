@@ -46,6 +46,7 @@ public class SceneDirector : MonoBehaviour
     public void FadeChangeScene(string name)
     {
         //GameObject canvas = GameObject.Find("Canvas");
+        Time.timeScale = 1;
         Instantiate(FadeObj);
         StartCoroutine(EmuChangeScene(name));
 
