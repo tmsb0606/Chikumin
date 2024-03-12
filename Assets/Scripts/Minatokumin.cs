@@ -67,7 +67,7 @@ public class Minatokumin : ChikuminBase, IJampable
 
         animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
         animator.SetBool("Have", carryObjectList.Count > 0);
-        animator.SetBool("Attack", isHit);
+        
         
 
     }
@@ -133,6 +133,7 @@ public class Minatokumin : ChikuminBase, IJampable
     {
         //print("attack");
         //changeStatus();
+        agent.stoppingDistance = 0f;
         if (!targetObject.gameObject.active)
         {
             isHit = false;
@@ -141,6 +142,7 @@ public class Minatokumin : ChikuminBase, IJampable
         if (isHit)
         {
             agent.speed = 0;
+            animator.SetBool("Attack", isHit);
             //targetObject.gameObject.GetComponent<IDamageable>().Damage(1);
         }
         else

@@ -185,8 +185,21 @@ public class PlayerController : MonoBehaviour
         print("call");
         audioSource.PlayOneShot(ComeOnSE);
         mouseState = MouseState.callTiku;
-        pointCircle.transform.localScale = new Vector3(3, 3, 3); 
+        if (pointCircle != null)
+        {
+            pointCircle.transform.localScale = new Vector3(3, 3, 3);
+        }
+        
 
+    }
+
+    private void OnReleaseMouse()
+    {
+        print("release");
+        if (pointCircle != null)
+        {
+            pointCircle.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        }
     }
     private void OnStay()
     {

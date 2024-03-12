@@ -79,7 +79,6 @@ public class Adachikumin : ChikuminBase,IJampable
 
         animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
         animator.SetBool("Have", carryObjectList.Count > 0);
-        animator.SetBool("Attack", isHit);
 
 /*        changeStatus();
         agent.SetDestination(targetPlayer.transform.position);*/
@@ -161,6 +160,7 @@ public class Adachikumin : ChikuminBase,IJampable
     {
         //print("attack");
         //changeStatus();
+        agent.stoppingDistance = 0f;
         if (!targetObject.gameObject.active)
         {
             isHit = false;
@@ -169,8 +169,9 @@ public class Adachikumin : ChikuminBase,IJampable
         if (isHit)
         {
             agent.speed = 0;
-/*            agent.updatePosition = true;
-            agent.updateRotation = true;*/
+            animator.SetBool("Attack", isHit);
+            /*            agent.updatePosition = true;
+                        agent.updateRotation = true;*/
 
         }
         else

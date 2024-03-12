@@ -67,7 +67,6 @@ public class Chiyodakumin : ChikuminBase, IJampable
         }
         animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
         animator.SetBool("Have", carryObjectList.Count > 0);
-        animator.SetBool("Attack", isHit);
 
     }
 
@@ -138,7 +137,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
         }
         if (isHit)
         {
-
+            animator.SetBool("Attack", isHit);
             agent.speed = 0;
             //targetObject.gameObject.GetComponent<IDamageable>().Damage(1);
         }
@@ -152,6 +151,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
     }
     public void AttackDamage()
     {
+        agent.stoppingDistance = 0f;
         if (!targetObject.activeSelf)
         {
             return;

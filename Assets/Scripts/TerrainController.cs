@@ -67,7 +67,7 @@ public class TerrainController : MonoBehaviour
     {
         if (director.gameState == GameDirector.GameState.Load)
         {
-            for (int j = 0; j < 100; j++)
+            for (int j = 0; j < 30; j++)
             {
                 CreateMap();
             }
@@ -141,7 +141,7 @@ public class TerrainController : MonoBehaviour
     private void CreateMap()
     {
         i++;
-        if (i < terrain.terrainData.treeInstanceCount)
+        if (i < treeterrain.terrainData.treeInstanceCount)
         {
 
 
@@ -153,18 +153,18 @@ public class TerrainController : MonoBehaviour
             //capsule.layer = 1<<17;
             capsule.transform.position = Vector3.Scale(treeInstance.position, terrain.terrainData.size) + Terrain.activeTerrain.transform.position;
             capsule.transform.parent = terrain.transform;
-            capsule.transform.localScale = new Vector3(0.5f, treeInstance.heightScale, 0.5f);
+            capsule.transform.localScale = new Vector3(treeInstance.widthScale, treeInstance.heightScale, treeInstance.widthScale);
             capsule.transform.rotation = Quaternion.Euler(0, treeInstance.rotation * Mathf.Rad2Deg, 0);
 
-            terrain.terrainData.treeInstances[i] = new TreeInstance();
-            trees[i] = new TreeInstance();
+            //terrain.terrainData.treeInstances[i] = new TreeInstance();
+            //trees[i] = new TreeInstance();
 
             if (i % 1000 == 0)
             {
                 GarbageCollector.CollectIncremental(nanoseconds: 0UL);
             }
 
-            Image.fillAmount = (float)i / terrain.terrainData.treeInstanceCount;
+            Image.fillAmount = (float)i / treeterrain.terrainData.treeInstanceCount;
 
         }
         else
