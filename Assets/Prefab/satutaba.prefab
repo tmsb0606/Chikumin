@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a920bd772a3f9054bae1acad324edd0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: 0
   carryObjects: []
   minCarryNum: 1
   maxCarryNum: 1

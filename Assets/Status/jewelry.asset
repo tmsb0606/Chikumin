@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemImage: {fileID: 21300000, guid: 98d92e5ed408c5744ba96a7965033bfc, type: 3}
   itemType: 1
-  money: 100000
+  money: 700000

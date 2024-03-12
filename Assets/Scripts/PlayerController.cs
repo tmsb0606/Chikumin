@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.InputSystem;
+using System;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
@@ -69,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = false;
+        
         mouseState = MouseState.nothing;
         mainCamera = Camera.main;
         rb = gameObject.GetComponent<Rigidbody>();
@@ -96,16 +97,18 @@ public class PlayerController : MonoBehaviour
         float angle = (-_cameraObject.transform.localEulerAngles.y)* Mathf.Deg2Rad;
         //print(Mathf.Sin( angle));
         //print(angle);
+
+        //ベクトルを回転
         float x = -Mathf.Sin(angle)*movementY +Mathf.Cos(angle)*movementX;
         float y = Mathf.Sin(angle) * movementX + Mathf.Cos(angle) * movementY;
-        Vector3 movement = new Vector3(x, 0.0f, y);
+        Vector3 movement = new Vector3(x, 0.0f, y) *speed;
         //print(movementX + " : " + movementY);
          //movement =movement.normalized;
 
         // rigidbodyのAddForceを使用してプレイヤーを動かす。
 
         //Vector3 vec = movement * _camera.transform.localEulerAngles.y;
-        rb.AddForce(movement * speed);
+        rb.AddForce(movement-rb.velocity);
 
         Vector3 differenceDis = new Vector3(transform.position.x, 0, transform.position.z) - new Vector3(latestPos.x, 0, latestPos.z);
         latestPos = transform.position;
@@ -185,7 +188,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnStay()
     {
-        mouseState = MouseState.waitTiku;
+       /* mouseState = MouseState.waitTiku;
         audioSource.PlayOneShot(WaitSE);
         //if (waitArea != null)
         // {
@@ -229,7 +232,101 @@ public class PlayerController : MonoBehaviour
                 c.GetComponent<ChikuminBase>().waitArea = minatoWaitArea;
             }
             //callTikuminList.Remove(c);
+        }*/
+        
+
+        //ここから下に新しい整列を書く
+        LayerMask layer= ~(1 << 12 | 1 << 13 | 1 <<14 | 1 << 6 | 1<<15 | 1<<16);
+        int cnt = 0; //配置できた円の数
+        int limit = 40;
+        int r = 2;
+        int Yoffset = 5;
+
+
+        //print(Physics.CheckSphere(pos, 4, layer));
+        List<Vector3> callPosList = new List<Vector3>(9);
+        
+        for(int i = 0; i < limit; i+=1)
+        {
+            bool flag = false;
+            for(int j = 0; j < limit; j+=1)
+            {
+                //原点を中心に順番に座標を取得する
+                int x = (int)((Step(j)-0.5f)*2)*j;
+                int z = (int)((Step(i) - 0.5f) * 2)*(i+Yoffset);
+                Vector3 vec = new Vector3(x, 0, z) ;
+            
+
+
+                float angle = (-this.transform.localEulerAngles.y) * Mathf.Deg2Rad;
+                //print(Mathf.Sin( angle));
+                //print(angle);
+
+                //原点を中心に取得した座標をプレイヤーの向いている向きに回転
+                float rx = -Mathf.Sin(angle) * vec.z + Mathf.Cos(angle) * vec.x;
+                float rz = Mathf.Sin(angle) * vec.x + Mathf.Cos(angle) * vec.z;
+                print("x:"+rx+"y:"+rz);
+                print("正面" + transform.forward);
+
+                //回転した座標とプレイヤーの座標を加算することでプレイヤー付近の座標を順番に取得する
+                Vector3 pos = this.transform.position + new Vector3(rx, 0, rz);
+
+/*                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cube.transform.position = pos;
+                cube.transform.localScale = new Vector3(r * 2, 5, r * 2);*/
+
+                //Vector3 vec = pos + transform.rotation*transform.forward;
+                if (!Physics.CheckSphere(pos, 4, layer)&& Physics.CheckSphere(pos, 4, 1 << 12))
+                {
+/*                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    sphere.transform.position = pos;
+                    sphere.transform.localScale = new Vector3(r * 2, 5, r * 2);*/
+                    cnt++;
+                    flag = true;
+                    //j += r;
+                    callPosList.Add(pos);
+
+                    if (cnt > 2)
+                    {
+                        break;
+                    }
+                    
+                }
+                
+
+            }
+            if (flag)
+            {
+                //i += r;
+            }
+            
+            if (cnt > 2)
+            {
+                break;
+            }
         }
+
+        foreach (GameObject c in callTikuminList)
+        {
+            c.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.ALIGNMENT;
+            if (c.GetComponent<Adachikumin>())
+            {
+                c.GetComponent<ChikuminBase>().waitPos = callPosList[0];
+            }
+            else if (c.GetComponent<Chiyodakumin>())
+            {
+                c.GetComponent<ChikuminBase>().waitPos = callPosList[1];
+            }
+            else
+            {
+                c.GetComponent<ChikuminBase>().waitPos = callPosList[2];
+            }
+
+        }
+
+
+        mouseState = MouseState.waitTiku;
+        audioSource.PlayOneShot(WaitSE);
         callTikuminList.Clear();
     }
     private void OnCancel()
@@ -270,6 +367,7 @@ public class PlayerController : MonoBehaviour
             c.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.ONRUSH;
 
         }
+        callTikuminList.Clear();
     }
 
     private GameObject NearObject(List<GameObject> gameObjects)
@@ -319,6 +417,16 @@ public class PlayerController : MonoBehaviour
             return null;
         }
         return nearObj;
+    }
+
+    public int Step(int x)
+    {
+        return Convert.ToInt32(x % 2 == 0);
+    }
+
+    public void nCollisionEnter(Collision collision)
+    {
+        print(collision.gameObject.layer);
     }
 
 

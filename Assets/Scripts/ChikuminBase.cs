@@ -16,11 +16,17 @@ public class ChikuminBase : MonoBehaviour
         ONRUSH,         //“ËŒ‚‚·‚é
     }
     public ChikuminAiState aiState = ChikuminAiState.MOVE;
+
+    public ChikuminAiState prevState = ChikuminAiState.MOVE;
     NavMeshAgent agent;
-    private GameObject targetPlayer;
+    public GameObject targetPlayer;
     public List<GameObject> hitList = new List<GameObject>();
     public List<GameObject> carryObjectList = new List<GameObject>();
     public GameObject waitArea;
+    public Vector3 waitPos;
+    public bool isHit = false;
+
+    public bool isItem = false;
 
     // Start is called before the first frame update
     void Start()

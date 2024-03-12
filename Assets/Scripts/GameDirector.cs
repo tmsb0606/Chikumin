@@ -19,18 +19,22 @@ public class GameDirector : MonoBehaviour
         End,
         ResultProduction,
         Result,
+        Load,
     }
     // Start is called before the first frame update
     private int _score = 0;
-    private float _timeLimit = 20f;
+    private float _timeLimit = 18f;
     private GoalController _goalController;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timeText;
     public GameState gameState = GameState.Start;
+    public GameObject startTimeLine;
 
     public GameObject ResultPanel;
     public GameObject UIPanel;
     public TextMeshProUGUI resultScore;
+
+    public GameObject PausePanel;
 
     public GameObject ResultContent;
     public GameObject ResultItemLine;
@@ -45,6 +49,15 @@ public class GameDirector : MonoBehaviour
 
     public PlayableDirector EndPlayableDirector;
     public PlayableDirector ResultPlayableDirector;
+
+    public SceneDirector sceneDirector;
+
+    public CharacterStatus adachikumin;
+    public CharacterStatus chiyodakumin;
+    public CharacterStatus minatokumin;
+
+    public AudioSource audioSource;
+    public AudioClip LevelUPSE;
 
     /// <summary>
     /// �|�[�Y�p�̃X�N���v�g������B
@@ -61,6 +74,9 @@ public class GameDirector : MonoBehaviour
         scoreEvent.AddListener(()=> textAnime.setMessage(_goalController.score.ToString()));
         //scoreEvent.AddListener(() => StartCoroutine(textAnime.RunAnimation(0f)));
         //scoreEvent.AddListener(() => textAnime.EvaluateRichText()));
+        adachikumin.level = 1;
+        chiyodakumin.level = 1;
+        minatokumin.level = 1;
         
 
     }
@@ -70,9 +86,14 @@ public class GameDirector : MonoBehaviour
     {
         switch (gameState)
         {
+            case GameState.Load:
+                break;
             case GameState.Start:
+                startTimeLine.SetActive(true);
+                
                 break;
             case GameState.Play:
+                Cursor.visible = false;
                 //scoreText.text = _goalController.score.ToString();
                 scoreEvent.Invoke();
                 //StartCoroutine(textAnime.RunAnimation(1f));
@@ -86,6 +107,18 @@ public class GameDirector : MonoBehaviour
                 {
                     Pause();
                     gameState = GameState.Pause;
+                }
+                if (Input.GetKeyDown("1"))
+                {
+                    LevelUP(adachikumin);
+                }
+                if (Input.GetKeyDown("2"))
+                {
+                    LevelUP(chiyodakumin);
+                }
+                if (Input.GetKeyDown("3"))
+                {
+                    LevelUP(minatokumin);
                 }
                 break;
             case GameState.End:
@@ -106,20 +139,25 @@ public class GameDirector : MonoBehaviour
                 ResultPlayableDirector.Play();
                 break;
             case GameState.Result:
+                Cursor.visible = true;
                 if (Input.GetKeyDown(KeyCode.R))
                 {
-                    SceneManager.LoadScene("SampleScene");
+                    //SceneManager.LoadScene("SampleScene");
+                    sceneDirector.FadeChangeScene("GameScene");
                 }
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
-                    SceneManager.LoadScene("TitleScene");
+                    //SceneManager.LoadScene("TitleScene");
+                    sceneDirector.FadeChangeScene("TitleScene");
                 }
                 break;
             case GameState.Pause:
-                
+                Cursor.visible = true;
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     gameState = GameState.Play;
+                    Time.timeScale = 1;
+                    PausePanel.SetActive(false);
                 }
                 break;
 
@@ -134,9 +172,44 @@ public class GameDirector : MonoBehaviour
          gameState = EasyParse.Enumelate(state, GameState.Start);
     }
 
+    public void LevelUP(CharacterStatus status)
+    {
+        int money = (int)((status.level * 0.2f) * 1000000);
+        if(_goalController.score >= money)
+        {
+            print("levelUP");
+            _goalController.score -= money;
+            status.level += 1;
+            audioSource.PlayOneShot(LevelUPSE);
+        }
+        
+    }
+
+    //条件なしですべてのキャラのレベルを上げる。
+    public void AllCharacterLevelUP()
+    {
+        adachikumin.level += 1;
+        minatokumin.level += 1;
+        chiyodakumin.level += 1;
+        audioSource.PlayOneShot(LevelUPSE);
+    }
+
     public void Pause()
     {
-        pauseEvent.Invoke();
+        if(Time.timeScale > 0)
+        {
+            pauseEvent.Invoke();
+
+            Time.timeScale = 0;
+            PausePanel.SetActive(true);
+        }
+        else
+        {
+            gameState = GameState.Play;
+            Time.timeScale = 1;
+            PausePanel.SetActive(false);
+        }
+
 
 
     }

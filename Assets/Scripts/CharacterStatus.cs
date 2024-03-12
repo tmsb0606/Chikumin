@@ -6,4 +6,5 @@ using UnityEngine;
 public class CharacterStatus : ScriptableObject
 {
     public float moveSpeed = 0;
+    public int level = 1;
 }

@@ -45,7 +45,8 @@ public class CameraController : MonoBehaviour
     }
     public void Rotaion()
     {
-        prevYRota = _hRota;
+        //要らないと思うから消した。後で考える。
+        //prevYRota = _hRota;
         //print(prevYRota);
         _hRota = Quaternion.Euler(0, _lookObject.transform.localEulerAngles.y, 0);
         

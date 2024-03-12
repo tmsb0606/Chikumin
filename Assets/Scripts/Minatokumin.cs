@@ -7,20 +7,21 @@ public class Minatokumin : ChikuminBase, IJampable
 {
     //public ChikuminAiState aiState = ChikuminAiState.MOVE;
     NavMeshAgent agent;
-    private GameObject targetPlayer;
     private GameObject targetObject;
     private GameObject goalObject;
 
     public CharacterStatus status;
-    private bool isHit = false;
-    private bool isItem = false;
     private bool isGround = false;
+
+    public GameObject cursorObject; //カーソルを入れる。
 
     public float moveDis = 1.0f;
 
     private AudioSource audioSource;
     public AudioClip throwSE;
-    
+
+    Animator animator;
+
     //public List<GameObject> hitList = new List<GameObject>();
 
     void Start()
@@ -30,6 +31,7 @@ public class Minatokumin : ChikuminBase, IJampable
         agent = GetComponent<NavMeshAgent>();
         changeStatus();
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
+        animator = this.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -57,13 +59,22 @@ public class Minatokumin : ChikuminBase, IJampable
             case ChikuminAiState.ALIGNMENT:
                 Alignment();
                 break;
+            case ChikuminAiState.ONRUSH:
+                OnRush();
+                break;
 
         }
+
+        animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
+        animator.SetBool("Have", carryObjectList.Count > 0);
+        animator.SetBool("Attack", isHit);
+        
 
     }
 
     private void Wait()
     {
+        prevState = ChikuminAiState.WAIT;
         
         agent.speed = 0;
         //print(isGround);
@@ -113,17 +124,22 @@ public class Minatokumin : ChikuminBase, IJampable
         }
         else
         {
-            agent.speed = 0;
+           // agent.speed = 0;
         }
     }
     private void Attack()
     {
         //print("attack");
         //changeStatus();
+        if (!targetObject.gameObject.active)
+        {
+            isHit = false;
+            aiState = ChikuminAiState.WAIT;
+        }
         if (isHit)
         {
             agent.speed = 0;
-            targetObject.gameObject.GetComponent<IDamageable>().Damage(1);
+            //targetObject.gameObject.GetComponent<IDamageable>().Damage(1);
         }
         else
         {
@@ -133,81 +149,173 @@ public class Minatokumin : ChikuminBase, IJampable
 
 
     }
+    public void AttackDamage()
+    {
+        if (!targetObject.activeSelf)
+        {
+            return;
+        }
+        targetObject.gameObject.GetComponent<IDamageable>().Damage(status.level);
+    }
     private void Carry()
     {
-       
-        if (carryObjectList.Count < 5 && hitList.Count != 0)
-        {
-            carryObjectList.Add(targetObject.gameObject);
-            int i = 0;
 
-            while (true)
+
+
+        if (carryObjectList.Count == 0)
+        {
+            if (targetObject.GetComponent<Item>().maxCarryNum == targetObject.GetComponent<Item>().carryObjects.Count)
             {
-               
-                if (carryObjectList[i].GetComponent<Item>().maxCarryNum > carryObjectList[i].GetComponent<Item>().carryObjects.Count)
+                aiState = ChikuminAiState.WAIT;
+
+            }
+
+            if(targetObject.GetComponent<Item>().itemType == Item.Type.Jewelry)
+            {
+                isItem = true;
+            }
+            if (isItem == false)
+            {
+                changeStatus();
+                agent.SetDestination(targetObject.transform.position);
+                return;
+            }
+            if (targetObject.GetComponent<Item>().maxCarryNum > targetObject.GetComponent<Item>().carryObjects.Count)
+            {
+                isItem = false;
+                carryObjectList.Add(targetObject.gameObject);
+                carryObjectList[0].GetComponent<ICarriable>().Carry(this.gameObject);
+
+                carryObjectList[0].GetComponent<Rigidbody>().isKinematic = true;
+                carryObjectList[0].GetComponent<Rigidbody>().useGravity = false;
+
+                carryObjectList[0].transform.parent = this.transform;
+                carryObjectList[0].transform.localPosition = new Vector3(0, 1, 1);
+                carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                agent.velocity = Vector3.zero;
+            }
+        }
+
+        if(carryObjectList.Count <4+status.level && hitList.Count != 0)
+        {
+
+            print("carry");
+            targetObject = NearObject(hitList);
+            //二つ目以降のアイテムは札束のみ。札束以外は複数個持てない。
+            if(targetObject.gameObject.tag == "item")
+            {
+                if (targetObject.GetComponent<Item>().maxCarryNum > targetObject.GetComponent<Item>().carryObjects.Count)
                 {
-                    if (carryObjectList[i].gameObject.tag == "item")
+                    if (targetObject.GetComponent<Item>().itemType != Item.Type.Car)
                     {
+                        if (targetObject.GetComponent<Item>().itemType == Item.Type.Jewelry)
+                        {
+                            isItem = true;
+                        }
+                        if (isItem == false)
+                        {
+                            changeStatus();
+                            agent.SetDestination(targetObject.transform.position);
+                            return;
+                        }
+                        isItem = false;
+                        int i = carryObjectList.Count;
+
+                        carryObjectList.Add(targetObject.gameObject);
                         carryObjectList[i].GetComponent<ICarriable>().Carry(this.gameObject);
 
                         carryObjectList[i].GetComponent<Rigidbody>().isKinematic = true;
                         carryObjectList[i].GetComponent<Rigidbody>().useGravity = false;
 
                         carryObjectList[i].transform.parent = this.transform;
-                        carryObjectList[i].transform.localPosition = new Vector3(0, i * 0.1f, 1);
+                        carryObjectList[i].transform.localPosition = new Vector3(0, 1+i * 0.1f, 1);
                         carryObjectList[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
-                        i++;
-                        carryObjectList.Remove(targetObject);
-                        if (hitList.Count != 0)
-                        {
-                            carryObjectList.Add(NearObject(hitList));
-                            hitList.Remove(NearObject(hitList));
-                            continue;
-
-                        }
+                        agent.velocity = Vector3.zero;
                     }
-                    else
-                    {
-                        carryObjectList.Remove(targetObject);
-                        if (hitList.Count != 0)
-                        {
-                            carryObjectList.Add(NearObject(hitList));
-                            hitList.Remove(NearObject(hitList));
-                            continue;
-
-                        }
-                    }
-
                 }
-                if (i >= 0)
-                {
-                    break;
-                }
+
             }
-  
+            hitList.Remove(targetObject);
+
         }
-        else
+
+        if(hitList.Count ==0 &&  carryObjectList.Count == 0)
         {
-            //carryObjectList[0] = null;
-            //aiState = ChikuminAiState.WAIT;
+           // aiState = prevState;
+        }
+
+        if (carryObjectList.Count == 0)
+        {
+            return;
         }
 
 
-        
         //carryObject.transform.position = this.transform.position + (Vector3.forward*-0.5f);
 
-        changeStatus();
-        agent.SetDestination(goalObject.transform.position);
+        if (carryObjectList[0].GetComponent<Item>().minCarryNum <= carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+        {
+            changeStatus();
+            agent.SetDestination(goalObject.transform.position);
+        }
+        else if (carryObjectList[0].GetComponent<Item>().minCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+        {
+            agent.speed = 0;
+        }
         //Move();
     }
     private void Alignment()
     {
         if (waitArea != null)
         {
-            agent.SetDestination(waitArea.transform.position);
+           // agent.SetDestination(waitPos);
         }
-        
+        if (Vector3.Distance(waitPos, this.transform.position) >1)
+        {
+            agent.SetDestination(waitPos);
+        }
+        else
+        {
+            aiState = ChikuminAiState.WAIT;
+        }
+
     }
+
+    private void OnRush()
+    {
+
+
+        cursorObject = GameObject.Find("piku(Clone)");
+        agent.SetDestination(cursorObject.transform.position);
+
+        //この下に状況判断を書く　waitと同じなので状況判断のメソッドにまとめる。
+        if (hitList.Count != 0)
+        {
+            targetObject = NearObject(hitList);
+            //print(targetObject);
+            if (targetObject.tag == "enemy")
+            {
+
+
+                hitList.Remove(targetObject);
+                aiState = ChikuminAiState.ATTACK;
+            }
+            else if (targetObject.tag == "item")
+            {
+                hitList.Remove(targetObject);
+                aiState = ChikuminAiState.CARRY;
+            }
+            else if (targetObject.tag == "atm")
+            {
+                //print("aaaaa");
+                //targetObject.GetComponent<ATMController>().ReleaseMoney();
+                //hitList.Remove(targetObject);
+                //aiState = ChikuminAiState.WAIT;
+            }
+        }
+
+    }
+
+
     private GameObject NearObject(List<GameObject> gameObjects)
     {
         GameObject nearObj = gameObjects[0];
@@ -228,69 +336,7 @@ public class Minatokumin : ChikuminBase, IJampable
     {
         agent.speed = status.moveSpeed;
     }
-    public void OnCollisionEnter(UnityEngine.Collision other)
-    {
-        this.GetComponent<Rigidbody>().isKinematic = true;
-
-        if (other.gameObject.tag != "tiku" && other.gameObject.tag != "circle")
-        {
-            //hitList.Add(other.gameObject);
-            isHit = true;
-
-        }
-
-        if (other.gameObject.tag == "goal")
-        {
-            //print("goal");
-            //carryObject.transform.parent = null;
-            //carryObject.SetActive(false);
-            //carryObject = null;
-
-
-        }
-
-        if (other.gameObject.tag == "enemy")
-        {
-            isHit = true;
-        }
-        if (other.gameObject.tag == "Player")
-        {
-            //aiState = ChikuminBase.ChikuminAiState.MOVE;
-        }
-    }
-    public void OnCollisionStay(UnityEngine.Collision other)
-    {
-        //print(other.gameObject.tag);
-        if (other.gameObject.tag == "ground")
-        {
-            // isGround = true;
-        }
-    }
-    public void OnCollisionExit(UnityEngine.Collision other)
-    {
-        //this.GetComponent<Rigidbody>().isKinematic = true;
-        if (other.gameObject.tag != "tiku" && other.gameObject.tag != "circle")
-        {
-            //hitList.Remove(other.gameObject);
-            isHit = true;
-        }
-        if (other.gameObject.tag == "ground")
-        {
-            // isGround = false;
-        }
-        if (other.gameObject.tag == "enemy" || other.gameObject.tag == "item" || other.gameObject.tag == "atm")
-        {
-            isHit = false;
-        }
-
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "MinatoArea")
-        {
-            aiState = ChikuminAiState.WAIT;
-        }
-    }
+  
     public IEnumerator Jump(Vector3 endPos, float flightTime, float speedRate, float gravity)
     {
         changeStatus();

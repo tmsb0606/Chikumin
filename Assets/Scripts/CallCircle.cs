@@ -20,6 +20,7 @@ public class CallCircle : MonoBehaviour
     }
     public void OnTriggerStay(Collider other)
     {
+        //print(LayerMask.LayerToName(other.gameObject.layer));
         if (!other.gameObject.GetComponent<ChikuminBase>())
         {
             return;
@@ -30,9 +31,11 @@ public class CallCircle : MonoBehaviour
 
             //print(other.gameObject.name);
             other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.MOVE;
+            other.gameObject.GetComponent<ChikuminBase>().isItem = false;
             if (other.gameObject.GetComponent<ChikuminBase>().carryObjectList.Count > 0)
             {
-
+                other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0].GetComponent<Rigidbody>().isKinematic = false;
+                other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0].GetComponent<Rigidbody>().useGravity = true;
                 other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0].GetComponent<Item>().carryObjects.Remove(other.gameObject);
                 other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0].transform.parent = null;
                 //other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0] = null;
