@@ -18,20 +18,23 @@ public class EnemySearch : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //print("search”ÍˆÍ");
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player"||other.gameObject.tag == "tiku")
         {
-            transform.root.gameObject.GetComponent<EnemyController>().targetObject = other.gameObject;
-            transform.root.gameObject.GetComponent<EnemyController>().aiState = EnemyController.EnemyAiState.Chase;
+            if (transform.root.gameObject.GetComponent<EnemyController>().targetObjects.Contains(other.gameObject))
+            {
+                return;
+            }
+            transform.root.gameObject.GetComponent<EnemyController>().targetObjects.Add(other.gameObject);
+            
         }
-        print("test");
 
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player"||other.gameObject.tag=="tiku")
         {
-            transform.root.gameObject.GetComponent<EnemyController>().targetObject = null;
-            transform.root.gameObject.GetComponent<EnemyController>().aiState = EnemyController.EnemyAiState.RandomMove;
+            transform.root.gameObject.GetComponent<EnemyController>().targetObjects.Remove(other.gameObject);
+            
         }
     }
 }

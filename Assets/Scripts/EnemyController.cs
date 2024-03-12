@@ -15,16 +15,19 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     }
     NavMeshAgent agent;
-    int hp = 100;
+    public int hp = 100;
     public EnemyAiState aiState = EnemyAiState.RandomMove;
 
-    public GameObject targetObject;
+    public List<GameObject> targetObjects = new List<GameObject>();
 
     private float time =0f;
     public float limitTime = 5f;
+
+    private GameDirector gameDirector;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        gameDirector = GameObject.Find("GameDirector").GetComponent<GameDirector>();
     }
 
     // Update is called once per frame
@@ -33,6 +36,14 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (hp < 0)
         {
             Death();
+        }
+        if(targetObjects.Count > 0)
+        {
+            aiState = EnemyAiState.Chase;
+        }
+        else
+        {
+            aiState = EnemyAiState.RandomMove;
         }
         switch (aiState)
         {
@@ -56,19 +67,26 @@ public class EnemyController : MonoBehaviour, IDamageable
     }
     public void Chase()
     {
-        agent.SetDestination(targetObject.transform.position);
+        if (agent.pathStatus != NavMeshPathStatus.PathInvalid)
+        {
+            agent.SetDestination(targetObjects[0].transform.position);
+        }
+        
     }
 
     public void Damage(int value)
     {
         // ここに具体的なダメージ処理
-        hp -= 1;
+        hp -= value;
     }
 
     public void Death()
     {
         // ここに具体的な死亡処理
         this.gameObject.SetActive(false);
+        gameDirector.AllCharacterLevelUP();
+
+
     }
     public void OnTriggerEnter(Collider other)
     {
