@@ -16,7 +16,8 @@ public class CallCircle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //transform.rotation = new Quaternion(0, Camera.main.transform.rotation.y, 0,this.transform.rotation.w);
+        transform.rotation = Quaternion.Euler(90, Camera.main.transform.localEulerAngles.y, 0);
     }
     public void OnTriggerStay(Collider other)
     {

@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
     {
         if(_gameDirector.gameState != GameDirector.GameState.Play)
         {
+            
             return;
         }
         //print(mouseState);
@@ -184,6 +185,7 @@ public class PlayerController : MonoBehaviour
         print("call");
         audioSource.PlayOneShot(ComeOnSE);
         mouseState = MouseState.callTiku;
+        pointCircle.transform.localScale = new Vector3(3, 3, 3); 
 
     }
     private void OnStay()
@@ -336,6 +338,10 @@ public class PlayerController : MonoBehaviour
     }
     private void OnThrow()
     {
+        if(_gameDirector.gameState != GameDirector.GameState.Play)
+        {
+            return;
+        }
         GameObject obj = NearObject(callTikuminList);
         if(obj == null)
         {
