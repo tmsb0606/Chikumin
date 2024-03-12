@@ -30,7 +30,7 @@ public class ChikuminBody : MonoBehaviour
 
         if (other.gameObject.tag == "item"&& !transform.root.gameObject.GetComponent<ChikuminBase>().carryObjectList.Contains(other.gameObject))
         {
-            transform.root.gameObject.GetComponent<ChikuminBase>().isItem = true;
+            //transform.root.gameObject.GetComponent<ChikuminBase>().isItem = true;
         }
     }
 

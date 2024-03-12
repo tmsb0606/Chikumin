@@ -104,7 +104,7 @@ public class TerrainController : MonoBehaviour
 
     private async UniTask LoadMap()
     {
-        print("load");
+        
         treeterrain.gameObject.SetActive(false);
         await UniTask.SwitchToThreadPool();
         List<TreeInstance> trees = new List<TreeInstance>(terrain.terrainData.treeInstances);
@@ -113,7 +113,7 @@ public class TerrainController : MonoBehaviour
 
 
             TreeInstance treeInstance = treeterrain.terrainData.treeInstances[i];
-            print(i);
+            
 
 
             GameObject capsule = Instantiate(treeobj);
@@ -146,7 +146,7 @@ public class TerrainController : MonoBehaviour
 
 
             TreeInstance treeInstance = treeterrain.terrainData.treeInstances[i];
-            print(i);
+            
 
 
             GameObject capsule = Instantiate(treeobj);
@@ -186,7 +186,7 @@ public class TerrainController : MonoBehaviour
 
 
             TreeInstance treeInstance = treeterrain.terrainData.treeInstances[i];
-            print(i);
+            
 
 
             GameObject capsule = Instantiate(treeobj);

@@ -81,6 +81,9 @@ public class Adachikumin : ChikuminBase,IJampable
         animator.SetBool("Have", carryObjectList.Count > 0);
         animator.SetBool("Attack", isHit);
 
+/*        changeStatus();
+        agent.SetDestination(targetPlayer.transform.position);*/
+
 
 
 
@@ -133,22 +136,26 @@ public class Adachikumin : ChikuminBase,IJampable
     }
     private void Move()
     {
-        if (Vector3.Distance(targetPlayer.transform.position, this.transform.position) > moveDis)
-        {
-            changeStatus();
-            agent.SetDestination(targetPlayer.transform.position);
-            //OnManualMove();
+        changeStatus();
+        agent.stoppingDistance = 1.8f;
+        print(gameObject.name+"ステータス更新");
+        
+        agent.SetDestination(targetPlayer.transform.position);
+        print(gameObject.name + "移動");
+        /*        if (Vector3.Distance(targetPlayer.transform.position, this.transform.position) > moveDis)
+                {
+                    changeStatus();
+                    agent.SetDestination(targetPlayer.transform.position);
+                    //OnManualMove();
 
 
 
-        }
-        else
-        {
-            //agent.speed = 0;
-            agent.velocity = Vector3.zero;
-/*            agent.updatePosition = true;
-            agent.updateRotation = true;*/
-        }
+                }
+                else
+                {
+                    agent.velocity = Vector3.zero;
+
+                }*/
     }
     private void Attack()
     {
@@ -186,7 +193,7 @@ public class Adachikumin : ChikuminBase,IJampable
     }
     private void Carry()
     {
-
+        agent.stoppingDistance = 0f;
         if (carryObjectList.Count == 0)
         {
             if (targetObject.GetComponent<Item>().maxCarryNum == targetObject.GetComponent<Item>().carryObjects.Count)
@@ -387,7 +394,6 @@ public class Adachikumin : ChikuminBase,IJampable
         if (other.gameObject.tag != "ground" && other.gameObject.tag != "Player"&& other.gameObject.tag !="search" && other.gameObject.tag != "tiku" && other.gameObject.tag != "Untagged")
         {
             isStop = true;
-            print("当たった");
         }
 
 
