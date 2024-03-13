@@ -68,6 +68,13 @@ public class PlayerController : MonoBehaviour
 
     private GameDirector _gameDirector;
 
+    private bool isCall = false;
+    private float scalingTime = 0;
+    private float scalingSpeed = 5f;
+    private Vector3 scalingStart = new Vector3(1.5f,1.5f,1.5f);
+    private Vector3 scalingEnd = new Vector3(3,3,3);
+    private Vector3 scalingPrev = new Vector3(1.5f, 1.5f, 1.5f);
+
     void Start()
     {
         
@@ -119,6 +126,18 @@ public class PlayerController : MonoBehaviour
             Quaternion rot = Quaternion.LookRotation(differenceDis);
             rot = Quaternion.Slerp(rb.transform.rotation, rot, 0.2f);
             this.transform.rotation = rot;
+        }
+
+        if (isCall)
+        {
+            scalingTime += Time.deltaTime * scalingSpeed;
+            pointCircle.transform.localScale = Vector3.Lerp(scalingPrev,scalingEnd,scalingTime);
+
+        }
+        else
+        {
+            scalingTime += Time.deltaTime * scalingSpeed;
+            pointCircle.transform.localScale = Vector3.Lerp(scalingPrev,scalingStart, scalingTime);
         }
         
 
@@ -182,12 +201,14 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCall()
     {
+        scalingPrev = pointCircle.transform.localScale;
+        scalingTime = 0;
         print("call");
         audioSource.PlayOneShot(ComeOnSE);
         mouseState = MouseState.callTiku;
+        isCall = true;
         if (pointCircle != null)
         {
-            pointCircle.transform.localScale = new Vector3(3, 3, 3);
         }
         
 
@@ -195,10 +216,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnReleaseMouse()
     {
+        scalingPrev = pointCircle.transform.localScale;
+        scalingTime = 0;
+        isCall = false;
         print("release");
         if (pointCircle != null)
         {
-            pointCircle.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+
         }
     }
     private void OnStay()

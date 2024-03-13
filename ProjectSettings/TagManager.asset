@@ -17,6 +17,7 @@ TagManager:
   - MinatoArea
   - search
   - wall
+  - goalEnd
   layers:
   - Default
   - TransparentFX
