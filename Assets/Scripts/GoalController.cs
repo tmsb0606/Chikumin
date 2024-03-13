@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 public class GoalController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GoalController : MonoBehaviour
     private AudioSource audioSource;
     public AudioClip CoinSE;
     public ItemDataBase ItemDataBase;
+
+    private List<GameObject> goalItemList = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -61,10 +64,13 @@ public class GoalController : MonoBehaviour
             audioSource.PlayOneShot(CoinSE);*/
         }
 
+        
+
         if (other.gameObject.tag == "tiku")
         {
-            
-            if (other.gameObject.GetComponent<ChikuminBase>())
+            ItemCalculation(other);
+
+/*            if (other.gameObject.GetComponent<ChikuminBase>())
             {
                 if(other.gameObject.GetComponent<ChikuminBase>().carryObjectList.Count != 0)
                 {
@@ -73,6 +79,7 @@ public class GoalController : MonoBehaviour
                 foreach (GameObject obj in other.gameObject.GetComponent<ChikuminBase>().carryObjectList)
                 {
                     print("goalobj"+obj);
+                    obj.gameObject.GetComponent<Item>().Absorbed();
                     itemDic[obj.gameObject.GetComponent<Item>().itemType] += 1;
                     print(obj.gameObject.GetComponent<Item>().itemType + ":" + itemDic[obj.gameObject.GetComponent<Item>().itemType]);
                     obj.gameObject.transform.parent = null;
@@ -80,7 +87,7 @@ public class GoalController : MonoBehaviour
                     {
                         tiku.gameObject.GetComponent<ChikuminBase>().carryObjectList = new List<GameObject>();
                     }
-                    obj.gameObject.SetActive(false);
+                    //obj.gameObject.SetActive(false);
                     IEnumerable<ItemData> item = ItemDataBase.itemList.Where(e => e != null).Where(e => e.itemType == obj.gameObject.GetComponent<Item>().itemType);
                     print("itemtype:" + item.First().itemType);
                     score += item.First().money;
@@ -89,7 +96,59 @@ public class GoalController : MonoBehaviour
 
                 other.GetComponent<ChikuminBase>().carryObjectList.Clear();
                 
-            }
+            }*/
         }
     }
+
+    async void ItemCalculation(Collider other)
+    {
+        print("オブジェクト"+other.gameObject.name);
+        if (!other.gameObject.GetComponent<ChikuminBase>())
+        {
+            return;
+        }
+        if (other.gameObject.GetComponent<ChikuminBase>().carryObjectList.Count != 0)
+        {
+            other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.WAIT;
+        }
+        List<GameObject> objlist = new List<GameObject>();
+        foreach (GameObject obj in other.gameObject.GetComponent<ChikuminBase>().carryObjectList)
+        {
+            if (!goalItemList.Contains(obj))
+            {
+                goalItemList.Add(obj);
+                objlist.Add(obj);
+                obj.transform.parent = null;
+            }
+        }
+            other.GetComponent<ChikuminBase>().carryObjectList.Clear();
+
+        
+        foreach (GameObject obj in objlist)
+        {
+            var isGoal = await obj.gameObject.GetComponent<Item>().Animation();
+            //await UniTask.Delay(1000);
+
+            itemDic[obj.gameObject.GetComponent<Item>().itemType] += 1;
+            print(obj.gameObject.GetComponent<Item>().itemType + ":" + itemDic[obj.gameObject.GetComponent<Item>().itemType]);
+            obj.gameObject.transform.parent = null;
+            foreach (GameObject tiku in obj.gameObject.GetComponent<Item>().carryObjects)
+            {
+                tiku.gameObject.GetComponent<ChikuminBase>().carryObjectList = new List<GameObject>();
+            }
+            obj.gameObject.SetActive(false);
+            IEnumerable<ItemData> item = ItemDataBase.itemList.Where(e => e != null).Where(e => e.itemType == obj.gameObject.GetComponent<Item>().itemType);
+            print("itemtype:" + item.First().itemType);
+            score += item.First().money;
+            audioSource.PlayOneShot(CoinSE);
+
+        }
+
+
+
+
+
+    }
+
+
 }

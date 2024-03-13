@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 public class Item : MonoBehaviour, ICarriable
 {
@@ -21,6 +22,8 @@ public class Item : MonoBehaviour, ICarriable
     public int maxCarryNum = 1;
     GameObject canvas;
     TextMeshProUGUI text;
+
+    private bool isGoal = false;
 
 
     void Start()
@@ -51,5 +54,57 @@ public class Item : MonoBehaviour, ICarriable
     public void Carry(GameObject gameObject)
     {
         carryObjects.Add(gameObject);
+    }
+
+/*    public void Absorbed()
+    {
+        print("Absorbed");
+        StartCoroutine(Animation(2f));
+        
+    }
+
+     public IEnumerator Animation(float limitTime)
+    {
+        float time = 0;
+        while (time < limitTime)
+        {
+            time += Time.deltaTime;
+            this.transform.position += new Vector3(0,0.1f,0);
+            yield return null;
+        }
+    }*/
+
+    public async UniTask<bool> Animation()
+    {
+        float scalingRate = 0f;
+        while (true)
+        {
+            this.transform.position += new Vector3(0, 0.1f, 0);
+            if (transform.localScale.x >= 0)
+            {
+                transform.localScale -= new Vector3(scalingRate, scalingRate, scalingRate);
+                scalingRate += 0.005f;
+
+            }
+            else
+            {
+                break;
+            }
+            await UniTask.Delay(1);
+            if (isGoal)
+            {
+                break;
+            }
+        }
+        return true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        print("enter");
+        if (collision.gameObject.tag == "goalEnd")
+        {
+            isGoal = true; ;
+        }
     }
 }
