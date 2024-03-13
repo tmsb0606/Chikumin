@@ -95,6 +95,7 @@ public class Adachikumin : ChikuminBase,IJampable
         prevState = ChikuminAiState.WAIT;
         agent.speed = 0;
         //print(isGround);
+        animator.SetBool("Attack", false);
         if (!isGround)
         {
             print("!ground");

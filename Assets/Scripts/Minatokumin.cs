@@ -77,6 +77,7 @@ public class Minatokumin : ChikuminBase, IJampable
         prevState = ChikuminAiState.WAIT;
         
         agent.speed = 0;
+        animator.SetBool("Attack", false);
         //print(isGround);
         if (!isGround)
         {

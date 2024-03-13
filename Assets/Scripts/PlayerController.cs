@@ -62,10 +62,6 @@ public class PlayerController : MonoBehaviour
     public GameObject chiyodaWaitAreaAgent;
     public GameObject minatoWaitAreaAgent;
     public GameObject waitAreaPrefab;
-    private GameObject adachiWaitArea;
-    private GameObject chiyodaWaitArea;
-    private GameObject minatoWaitArea;
-
     private GameDirector _gameDirector;
 
     private bool isCall = false;
@@ -74,6 +70,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 scalingStart = new Vector3(1.5f,1.5f,1.5f);
     private Vector3 scalingEnd = new Vector3(3,3,3);
     private Vector3 scalingPrev = new Vector3(1.5f, 1.5f, 1.5f);
+
 
     void Start()
     {
@@ -139,7 +136,7 @@ public class PlayerController : MonoBehaviour
             scalingTime += Time.deltaTime * scalingSpeed;
             pointCircle.transform.localScale = Vector3.Lerp(scalingPrev,scalingStart, scalingTime);
         }
-        
+
 
     }
 
