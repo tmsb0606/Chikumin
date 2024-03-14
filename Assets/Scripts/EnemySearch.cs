@@ -15,7 +15,7 @@ public class EnemySearch : MonoBehaviour
     {
         
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         //print("search”ÍˆÍ");
         if (other.gameObject.tag == "Player"||other.gameObject.tag == "tiku")

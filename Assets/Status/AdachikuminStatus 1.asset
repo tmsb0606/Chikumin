@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: AdachikuminStatus 1
   m_EditorClassIdentifier: 
   moveSpeed: 8
-  level: 2
+  level: 3
+  hp: 10

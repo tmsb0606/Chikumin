@@ -112,6 +112,7 @@ public class GoalController : MonoBehaviour
         {
             other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.WAIT;
         }
+        other.gameObject.GetComponent<ChikuminBase>().canCall = false;
         List<GameObject> objlist = new List<GameObject>();
         foreach (GameObject obj in other.gameObject.GetComponent<ChikuminBase>().carryObjectList)
         {
@@ -122,9 +123,10 @@ public class GoalController : MonoBehaviour
                 obj.transform.parent = null;
             }
         }
-            other.GetComponent<ChikuminBase>().carryObjectList.Clear();
+        other.GetComponent<ChikuminBase>().carryObjectList.Clear();
+        other.gameObject.GetComponent<ChikuminBase>().canCall = true;
 
-        
+
         foreach (GameObject obj in objlist)
         {
             audioSource.PlayOneShot(GetSE);

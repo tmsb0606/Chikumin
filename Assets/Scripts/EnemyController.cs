@@ -19,15 +19,20 @@ public class EnemyController : MonoBehaviour, IDamageable
     public EnemyAiState aiState = EnemyAiState.RandomMove;
 
     public List<GameObject> targetObjects = new List<GameObject>();
+    public GameObject attackTarget;
 
     private float time =0f;
     public float limitTime = 5f;
 
     private GameDirector gameDirector;
+
+    public bool isAttack = false;
+    Animator animator;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         gameDirector = GameObject.Find("GameDirector").GetComponent<GameDirector>();
+        animator = this.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -54,6 +59,8 @@ public class EnemyController : MonoBehaviour, IDamageable
                 Chase();
                 break;
         }
+        animator.SetFloat("Speed",agent.velocity.sqrMagnitude);
+        animator.SetBool("Attack", isAttack);
     }
     public void RandomMove()
     {
@@ -80,6 +87,18 @@ public class EnemyController : MonoBehaviour, IDamageable
         hp -= value;
     }
 
+    public void Attack(GameObject gameObject)
+    {
+
+    }
+    public void AttackDamage()
+    {
+        if (attackTarget.GetComponent<ChikuminBase>())
+        {
+            attackTarget.GetComponent<IDamageable>().Damage(1);
+            isAttack = false;
+        }
+    }
     public void Death()
     {
         // Ç±Ç±Ç…ãÔëÃìIÇ»éÄñSèàóù
@@ -88,11 +107,5 @@ public class EnemyController : MonoBehaviour, IDamageable
 
 
     }
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            //targetObject = other.gameObject;
-        }
-    }
+
 }
