@@ -137,6 +137,8 @@ public class Adachikumin : ChikuminBase,IJampable
     private void Move()
     {
         changeStatus();
+        animator.SetBool("Attack", false);
+
         agent.stoppingDistance = 1.8f;
         print(gameObject.name+"ステータス更新");
         
@@ -195,6 +197,7 @@ public class Adachikumin : ChikuminBase,IJampable
     }
     private void Carry()
     {
+
         agent.stoppingDistance = 0f;
         if (carryObjectList.Count == 0)
         {
@@ -253,7 +256,7 @@ public class Adachikumin : ChikuminBase,IJampable
         }
         if(carryObjectList[0].GetComponent<Item>().minCarryNum <= carryObjectList[0].GetComponent<Item>().carryObjects.Count)
         {
-            changeStatus();
+            agent.speed = _carrySpeed;
             agent.SetDestination(goalObject.transform.position);
             //OnManualMove();
         }

@@ -71,6 +71,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 scalingEnd = new Vector3(3,3,3);
     private Vector3 scalingPrev = new Vector3(1.5f, 1.5f, 1.5f);
 
+    public GameObject particle;
+
+    private ParticleScript _particleScript; 
+
 
     void Start()
     {
@@ -81,6 +85,7 @@ public class PlayerController : MonoBehaviour
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
         _camera = _cameraObject.GetComponent<CameraController>();
         _gameDirector = GameObject.Find("GameDirector").GetComponent<GameDirector>();
+        _particleScript = particle.GetComponent<ParticleScript>();
     }
 
     void FixedUpdate()
@@ -125,7 +130,7 @@ public class PlayerController : MonoBehaviour
             this.transform.rotation = rot;
         }
 
-        if (isCall)
+/*        if (isCall)
         {
             scalingTime += Time.deltaTime * scalingSpeed;
             pointCircle.transform.localScale = Vector3.Lerp(scalingPrev,scalingEnd,scalingTime);
@@ -135,7 +140,7 @@ public class PlayerController : MonoBehaviour
         {
             scalingTime += Time.deltaTime * scalingSpeed;
             pointCircle.transform.localScale = Vector3.Lerp(scalingPrev,scalingStart, scalingTime);
-        }
+        }*/
 
 
     }
@@ -154,7 +159,29 @@ public class PlayerController : MonoBehaviour
         //int layerMask = LayerMask.GetMask(new string[] { LayerMask.LayerToName(6) });
         var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         var raycastHitList = Physics.RaycastAll(ray,layerMask).ToList();
-       // print(raycastHitList);
+
+        
+
+        foreach (var hit in raycastHitList)
+        {
+            print("レイキャスト:" + raycastHitList[0].collider);
+            if (hit.collider.tag == "ground")
+            {
+                if (pointCircle == null)
+                {
+                    pointCircle = Instantiate(circle);
+                }
+                var distance = Vector3.Distance(mainCamera.transform.position, hit.point);
+                var mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
+
+                currentPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+                // print(currentPosition);
+                currentPosition.y = 0;
+                pointCircle.transform.position = currentPosition;
+                pointCircle.GetComponent<CallCircle>().player = this;
+            }
+        }
+/*        // print(raycastHitList);
         if (raycastHitList.Any())
         {
             if (pointCircle == null)
@@ -179,7 +206,8 @@ public class PlayerController : MonoBehaviour
 
             }
 
-        }
+        }*/
+        particle.transform.position = pointCircle.transform.position + new Vector3(0,0.2f,0);
     }
     private void CallChikumin()
     {
@@ -198,6 +226,8 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCall()
     {
+        _particleScript.isScaling = true;
+        particle.SetActive(true);
         scalingPrev = pointCircle.transform.localScale;
         scalingTime = 0;
         print("call");
@@ -207,12 +237,15 @@ public class PlayerController : MonoBehaviour
         if (pointCircle != null)
         {
         }
+
+        
         
 
     }
 
     private void OnReleaseMouse()
     {
+        _particleScript.isScaling = false;
         scalingPrev = pointCircle.transform.localScale;
         scalingTime = 0;
         isCall = false;
