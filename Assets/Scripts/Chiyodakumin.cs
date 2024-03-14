@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Chiyodakumin : ChikuminBase, IJampable
+public class Chiyodakumin : ChikuminBase, IJampable, IDamageable
 {
     //public ChikuminAiState aiState = ChikuminAiState.MOVE;
     NavMeshAgent agent;
@@ -22,6 +22,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
     public AudioClip throwSE;
 
     Animator animator;
+    private float _hp;
 
     //public List<GameObject> hitList = new List<GameObject>();
 
@@ -33,6 +34,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
         changeStatus();
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
         animator = this.GetComponent<Animator>();
+        _hp = status.hp;
     }
 
     // Update is called once per frame
@@ -67,7 +69,10 @@ public class Chiyodakumin : ChikuminBase, IJampable
         }
         animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
         animator.SetBool("Have", carryObjectList.Count > 0);
-
+        if (_hp <= 0)
+        {
+            Death();
+        }
     }
 
     private void Wait()
@@ -324,5 +329,13 @@ public class Chiyodakumin : ChikuminBase, IJampable
         isGround = true;
         transform.position = endPos;
 
+    }
+    public void Death()
+    {
+        gameObject.SetActive(false);
+    }
+    public void Damage(int value)
+    {
+        _hp -= value;
     }
 }
