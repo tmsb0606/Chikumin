@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Adachikumin : ChikuminBase,IJampable
+public class Adachikumin : ChikuminBase,IJampable,IDamageable
 {
     //public ChikuminAiState aiState = ChikuminAiState.MOVE;
     NavMeshAgent agent;
@@ -29,6 +29,7 @@ public class Adachikumin : ChikuminBase,IJampable
     Animator animator;
 
     Rigidbody rb;
+    private int _hp;
 
     //public List<GameObject> hitList = new List<GameObject>();
 
@@ -44,6 +45,7 @@ public class Adachikumin : ChikuminBase,IJampable
 /*        agent.updatePosition = false;
         agent.updateRotation = false;*/
         rb = GetComponent<Rigidbody>();
+        _hp = status.hp;
     }
 
     // Update is called once per frame
@@ -79,6 +81,11 @@ public class Adachikumin : ChikuminBase,IJampable
 
         animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
         animator.SetBool("Have", carryObjectList.Count > 0);
+        print(_hp);
+        if (_hp <= 0)
+        {
+            Death();
+        }
 
 /*        changeStatus();
         agent.SetDestination(targetPlayer.transform.position);*/
@@ -458,5 +465,14 @@ public class Adachikumin : ChikuminBase,IJampable
 /*        agent.updatePosition = true;
         agent.updateRotation = true;*/
 
+    }
+
+    public void Death()
+    {
+        gameObject.SetActive(false);
+    }
+    public void Damage(int value)
+    {
+        _hp -= value;
     }
 }

@@ -18,6 +18,7 @@ TagManager:
   - search
   - wall
   - goalEnd
+  - body
   layers:
   - Default
   - TransparentFX

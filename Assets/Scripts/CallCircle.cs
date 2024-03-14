@@ -29,7 +29,10 @@ public class CallCircle : MonoBehaviour
        
         if (player.mouseState == PlayerController.MouseState.callTiku)
         {
-
+            if (!other.gameObject.GetComponent<ChikuminBase>().canCall)
+            {
+                return;
+            }
             //print(other.gameObject.name);
             other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.MOVE;
             other.gameObject.GetComponent<ChikuminBase>().isItem = false;
