@@ -81,7 +81,6 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
 
         animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
         animator.SetBool("Have", carryObjectList.Count > 0);
-        print(_hp);
         if (_hp <= 0)
         {
             Death();
