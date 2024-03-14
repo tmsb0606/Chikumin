@@ -23,7 +23,7 @@ public class GameDirector : MonoBehaviour
     }
     // Start is called before the first frame update
     private int _score = 0;
-    private float _timeLimit = 180f;
+    [SerializeField] private float _timeLimit = 18f;
     private GoalController _goalController;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timeText;
@@ -227,7 +227,7 @@ public class GameDirector : MonoBehaviour
             if (_goalController.itemDic[item.itemType] != 0)
             {
                 GameObject obj = Instantiate(ResultItemLine, ResultContent.transform);
-                obj.transform.Find("ItemNumText").GetComponent<TextMeshProUGUI>().text = _goalController.itemDic[item.itemType].ToString();
+                obj.transform.Find("NumberOfItems").GetComponent<TextMeshProUGUI>().text = _goalController.itemDic[item.itemType].ToString();
                 obj.transform.Find("ItemMoneyText").GetComponent<TextMeshProUGUI>().text = (_goalController.itemDic[item.itemType] * item.money).ToString();
                 obj.transform.Find("ItemImage").GetComponent<Image>().sprite = item.itemImage;
 
