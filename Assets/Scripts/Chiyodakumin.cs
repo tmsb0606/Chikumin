@@ -116,6 +116,8 @@ public class Chiyodakumin : ChikuminBase, IJampable
     private void Move()
     {
         agent.stoppingDistance = 1.8f;
+        animator.SetBool("Attack", false);
+
         changeStatus();
         agent.SetDestination(targetPlayer.transform.position);
         if (Vector3.Distance(targetPlayer.transform.position, this.transform.position) > moveDis)
@@ -161,6 +163,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
     }
     private void Carry()
     {
+
         agent.stoppingDistance = 0f;
         if (carryObjectList.Count == 0)
         {
@@ -213,7 +216,7 @@ public class Chiyodakumin : ChikuminBase, IJampable
         }
         if (carryObjectList[0].GetComponent<Item>().minCarryNum <= carryObjectList[0].GetComponent<Item>().carryObjects.Count)
         {
-            changeStatus();
+            agent.speed = _carrySpeed;
             agent.SetDestination(goalObject.transform.position);
         }
         else if (carryObjectList[0].GetComponent<Item>().minCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)

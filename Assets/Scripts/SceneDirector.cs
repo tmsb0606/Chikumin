@@ -67,4 +67,15 @@ public class SceneDirector : MonoBehaviour
 
 
     }
+
+    public void EndGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;//ゲームプレイ終了
+#elif UNITY_WEBGL
+
+#else 
+        Application.Quit();//ゲームプレイ終了
+#endif
+    }
 }

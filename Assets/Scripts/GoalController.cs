@@ -13,6 +13,7 @@ public class GoalController : MonoBehaviour
     public Dictionary<Item.Type, int> itemDic = new Dictionary<Item.Type, int>();
     private AudioSource audioSource;
     public AudioClip CoinSE;
+    public AudioClip GetSE;
     public ItemDataBase ItemDataBase;
 
     private List<GameObject> goalItemList = new List<GameObject>();
@@ -126,6 +127,7 @@ public class GoalController : MonoBehaviour
         
         foreach (GameObject obj in objlist)
         {
+            audioSource.PlayOneShot(GetSE);
             var isGoal = await obj.gameObject.GetComponent<Item>().Animation();
             //await UniTask.Delay(1000);
 

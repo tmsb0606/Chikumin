@@ -27,6 +27,7 @@ public class ChikuminBase : MonoBehaviour
     public bool isHit = false;
 
     public bool isItem = false;
+    public float _carrySpeed = 5f;
 
     // Start is called before the first frame update
     void Start()

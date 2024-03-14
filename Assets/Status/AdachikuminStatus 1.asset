@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c471c4b52e3bcc4caeb59e3020a30b9, type: 3}
   m_Name: AdachikuminStatus 1
   m_EditorClassIdentifier: 
-  moveSpeed: 6
-  level: 1
+  moveSpeed: 8
+  level: 2
