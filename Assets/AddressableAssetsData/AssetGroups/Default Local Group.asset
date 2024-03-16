@@ -16,11 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: e5aaf8f816322a544a6c7e838b2d3017
-  m_SerializeEntries:
-  - m_GUID: 1eb6baa5174089843ab55b27df9d411f
-    m_Address: CHIKMIN_woodyResult
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5160aafb4bdea89478a317ba11e3d159, type: 2}
   m_SchemaSet:

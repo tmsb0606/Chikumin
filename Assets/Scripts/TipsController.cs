@@ -12,16 +12,36 @@ public class TipsController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        tips = this.GetComponent<TipsReader>();
-        int num = Random.Range(0, tips.csvDatas[0][0].Length);
-        nametext.text = tips.csvDatas[num][1];
-        tipstext.text = tips.csvDatas[num][2];
+
+        /*        tips = this.GetComponent<TipsReader>();
+                int num = Random.Range(0, tips.csvDatas[0][0].Length);
+                nametext.text = tips.csvDatas[num][1];
+                tipstext.text = tips.csvDatas[num][2];*/
+
+
+        ShowTipsLoadToServer();
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void ShowTips()
+    {
+        tips = this.GetComponent<TipsReader>();
+        int num = Random.Range(0, tips.csvDatas[0][0].Length);
+        nametext.text = tips.csvDatas[num][1];
+        tipstext.text = tips.csvDatas[num][2];
+    }
+
+    public void ShowTipsLoadToServer()
+    {
+        tips = this.GetComponent<TipsReader>();
+        int num = Random.Range(0, TipsData.csvDatas[0][0].Length);
+        nametext.text = TipsData.csvDatas[num][1];
+        tipstext.text = TipsData.csvDatas[num][2];
     }
 }

@@ -14,7 +14,7 @@ public class EventTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Addressables.LoadAssetAsync<Sprite>("CHIKMIN_woodyResult").Completed += handle => {
+        Addressables.LoadAssetAsync<Sprite>("CHIKMIN_Rogo").Completed += handle => {
             m_SpriteHandle = handle;
             if (handle.Result == null)
             {
