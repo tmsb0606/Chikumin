@@ -810,9 +810,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 835088159}
-        m_TargetAssemblyTypeName: TweenText, Assembly-CSharp
-        m_MethodName: Tween
+      - m_Target: {fileID: 835088162}
+        m_TargetAssemblyTypeName: ScoreUpAnim, Assembly-CSharp
+        m_MethodName: TakeScoreAnim
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2197,7 +2197,7 @@ GameObject:
   - component: {fileID: 835088158}
   - component: {fileID: 835088161}
   - component: {fileID: 835088160}
-  - component: {fileID: 835088159}
+  - component: {fileID: 835088162}
   m_Layer: 5
   m_Name: TweenText
   m_TagString: Untagged
@@ -2225,21 +2225,6 @@ RectTransform:
   m_AnchoredPosition: {x: 24.080688, y: 166}
   m_SizeDelta: {x: 1366.999, y: 200.088}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &835088159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835088157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d1fbcf916ad08d409dd85a9ba0696e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenTime: 0.5
-  maxScale: 1.2
-  textMesh: {fileID: 835088160}
 --- !u!114 &835088160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2260,11 +2245,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: +1000000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 91bb5b1b5216d7548ada7a642a00d122, type: 2}
-  m_sharedMaterial: {fileID: -3721456989321147683, guid: 91bb5b1b5216d7548ada7a642a00d122,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 48c84cded35184d4f9b8cc76b7b6103f, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: f907f482b46f02f4982f5a6a6b2c43d3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2288,15 +2272,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 200
-  m_fontSizeBase: 200
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2338,6 +2322,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835088157}
   m_CullTransparentMesh: 1
+--- !u!114 &835088162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835088157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d1fbcf916ad08d409dd85a9ba0696e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tweenTime: 1
+  _fadeOutTime: 0.6
+  _offset: {x: 0, y: 40, z: 0}
+  _delay: 0.4
+  textMesh: {fileID: 835088160}
 --- !u!1 &853986602
 GameObject:
   m_ObjectHideFlags: 0
@@ -5171,7 +5172,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <size=200%><voffset=0px><rotate=0%>1</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>2</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>3</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>4</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>5</rotate></voffset></size><size=199.9949%><voffset=0px><rotate=0%>6</rotate></voffset></size><size=199.9782%><voffset=0px><rotate=0%>7</rotate></voffset></size><size=199.9813%><voffset=0px><rotate=0%>8</rotate></voffset></size><size=200.0053%><voffset=0px><rotate=0%>9</rotate></voffset></size>
+  m_text: <size=200%><voffset=0px><rotate=0%>1</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>2</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>3</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>4</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>5</rotate></voffset></size><size=200%><voffset=0px><rotate=0%>6</rotate></voffset></size><size=199.9912%><voffset=0px><rotate=0%>7</rotate></voffset></size><size=199.9767%><voffset=0px><rotate=0%>8</rotate></voffset></size><size=199.9847%><voffset=0px><rotate=0%>9</rotate></voffset></size>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
