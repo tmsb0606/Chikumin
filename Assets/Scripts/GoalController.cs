@@ -17,6 +17,10 @@ public class GoalController : MonoBehaviour
     public ItemDataBase ItemDataBase;
 
     private List<GameObject> goalItemList = new List<GameObject>();
+
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private GameObject _scoreUpPrefab;
+    [SerializeField] private Vector3 _scoreUpTextPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -144,6 +148,12 @@ public class GoalController : MonoBehaviour
             IEnumerable<ItemData> item = ItemDataBase.itemList.Where(e => e != null).Where(e => e.itemType == obj.gameObject.GetComponent<Item>().itemType);
             print("itemtype:" + item.First().itemType);
             score += item.First().money;
+            GameObject scoretext =  Instantiate(_scoreUpPrefab, _canvas.transform);
+            ScoreUpAnim scoreAnimation = scoretext.GetComponent<ScoreUpAnim>();
+            scoretext.transform.localPosition = _scoreUpTextPos;
+            scoreAnimation.setText(item.First().money);
+            scoreAnimation.TakeScoreAnim();
+            
             audioSource.PlayOneShot(CoinSE);
 
         }

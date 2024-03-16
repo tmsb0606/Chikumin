@@ -14,8 +14,7 @@ public class ScoreUpAnim : MonoBehaviour
     //[SerializeField] private float maxScale;
 
 
-    [Header("Reference")]
-    [SerializeField] private TextMeshProUGUI textMesh;
+    private TextMeshProUGUI textMesh;
 
     [Header("TextColor")]
     private Color color;
@@ -26,7 +25,7 @@ public class ScoreUpAnim : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         //ìßñæâªÇ∑ÇÈç€Ç…ïKóvÇ»èÓïÒÇΩÇø
         textMesh = this.gameObject.GetComponent<TextMeshProUGUI>();
