@@ -164,7 +164,7 @@ public class PlayerController : MonoBehaviour
 
         foreach (var hit in raycastHitList)
         {
-            print("レイキャスト:" + raycastHitList[0].collider);
+            //print("レイキャスト:" + raycastHitList[0].collider);
             if (hit.collider.tag == "ground")
             {
                 if (pointCircle == null)
