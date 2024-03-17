@@ -39,6 +39,10 @@ public class TipsController : MonoBehaviour
 
     public void ShowTipsLoadToServer()
     {
+        if(TipsData.csvDatas.Count == 0)
+        {
+            return;
+        }
         tips = this.GetComponent<TipsReader>();
         int num = Random.Range(0, TipsData.csvDatas[0][0].Length);
         nametext.text = TipsData.csvDatas[num][1];
