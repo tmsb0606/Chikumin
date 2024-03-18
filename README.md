@@ -1,6 +1,7 @@
 # チクミン　ミニ
+https://unityroom.com/games/tikumin
 ## デモ映像
-
+[!['デモ映像'](https://github.com/tmsb0606/Chikumin/assets/120014601/232b17a6-a52e-4eb8-b40a-f88acc7c9a12)](https://www.youtube.com/watch?v=I2N4IMqfBU0)
 ## 概要
 開発期間：2か月<br>
 メンバー：デザイナ1人、エンジニア1人<br>
