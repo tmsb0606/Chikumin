@@ -130,6 +130,11 @@ public class PlayerController : MonoBehaviour
             this.transform.rotation = rot;
         }
 
+        if(rb.velocity.sqrMagnitude <= 0.5f)
+        {
+            Rotation();
+        }
+
 /*        if (isCall)
         {
             scalingTime += Time.deltaTime * scalingSpeed;
@@ -143,6 +148,20 @@ public class PlayerController : MonoBehaviour
         }*/
 
 
+    }
+
+    private void Rotation()
+    {
+        //transform.rotation = Quaternion.Euler(0, (getAngle(pointCircle.transform.position, transform.position)*-1-90), 0);
+        Quaternion rot =  Quaternion.Slerp(rb.transform.rotation, Quaternion.Euler(0, (getAngle(pointCircle.transform.position, transform.position) * -1 - 90), 0),0.2f);
+        this.transform.rotation = rot;
+    }
+    private float getAngle(Vector3 pos1, Vector3 pos2)
+    {
+
+        float angle = Mathf.Atan2(pos2.z - pos1.z, pos2.x - pos1.x) * Mathf.Rad2Deg;
+        // print("Šp“x" + angle);
+        return angle;
     }
 
     void OnDrawGizmos()
