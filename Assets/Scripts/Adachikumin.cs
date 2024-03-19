@@ -146,10 +146,8 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
         animator.SetBool("Attack", false);
 
         agent.stoppingDistance = 1.8f;
-        print(gameObject.name+"ステータス更新");
         
         agent.SetDestination(targetPlayer.transform.position);
-        print(gameObject.name + "移動");
         /*        if (Vector3.Distance(targetPlayer.transform.position, this.transform.position) > moveDis)
                 {
                     changeStatus();
@@ -296,7 +294,7 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
     private void OnRush()
     {
         prevState = ChikuminAiState.ONRUSH;
-        cursorObject =  GameObject.Find("piku(Clone)");
+        cursorObject =  GameObject.Find("Reticle(Clone)");
         agent.SetDestination(cursorObject.transform.position);
         //OnManualMove();
 

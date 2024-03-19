@@ -297,7 +297,7 @@ public class Minatokumin : ChikuminBase, IJampable, IDamageable
     {
 
 
-        cursorObject = GameObject.Find("piku(Clone)");
+        cursorObject = GameObject.Find("Reticle(Clone)");
         agent.SetDestination(cursorObject.transform.position);
 
         //この下に状況判断を書く　waitと同じなので状況判断のメソッドにまとめる。

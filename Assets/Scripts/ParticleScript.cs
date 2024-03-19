@@ -49,7 +49,6 @@ public class ParticleScript : MonoBehaviour
 
     private void UpScaling()
     {
-        print("パーティクルアップ");
         if(transform.localScale.x < limitScale.x)
         {
             transform.localScale += new Vector3(scaleUpParam, scaleUpParam, scaleUpParam)*speed;
@@ -57,7 +56,6 @@ public class ParticleScript : MonoBehaviour
     }
     private void DownScaling()
     {
-        print("パーティクルダウン");
         if (transform.localScale.x >= downLimitScale.x)
         {
             transform.localScale -= new Vector3(scaleUpParam, scaleUpParam, scaleUpParam) * speed;

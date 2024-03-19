@@ -8,6 +8,7 @@ public class CallCircle : MonoBehaviour
 
     public PlayerController player;
     public List<GameObject> chikuminList = new List<GameObject>();
+    [SerializeField]private float offsetY = 90;
     void Start()
     {
         
@@ -16,8 +17,16 @@ public class CallCircle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.rotation = new Quaternion(0, Camera.main.transform.rotation.y, 0,this.transform.rotation.w);
-        transform.rotation = Quaternion.Euler(90, player.gameObject.transform.localEulerAngles.y, 0);
+
+        transform.rotation = Quaternion.Euler(0, (getAngle(player.transform.position,transform.position) * -1) + offsetY , 0);
+    }
+
+    private float getAngle(Vector3 pos1 , Vector3 pos2)
+    {
+        
+        float angle =  Mathf.Atan2(pos2.z - pos1.z, pos2.x - pos1.x) * Mathf.Rad2Deg;
+       // print("Šp“x" + angle);
+        return angle;
     }
     public void OnTriggerStay(Collider other)
     {
