@@ -3,8 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ChikuminBase : MonoBehaviour
+public partial class ChikuminBase : MonoBehaviour
 {
+
+    /// <summary>
+    /// ステートパターンのテスト
+    /// </summary>
+    private static readonly StateWaiting stateWaiting = new StateWaiting();
+    private static readonly StateMoving stateMoving = new StateMoving();
+    private static readonly StateCarrying stateCarrying = new StateCarrying();
+    [SerializeField]private GameObject goalObject;
+
+    protected ChikuminStateBase currentState = stateWaiting;
+    public GameObject targetObject;
+    private void ChangeState(ChikuminStateBase nextState)
+    {
+        currentState.OnExit(this, nextState);
+        nextState.OnEnter(this, currentState);
+        currentState = nextState;
+    }
+    /// <summary>
+    /// ここまで
+    /// </summary>
+
+
+
+
     public enum ChikuminAiState
     {
         WAIT,           //行動を一旦停止
@@ -18,7 +42,7 @@ public class ChikuminBase : MonoBehaviour
     public ChikuminAiState aiState = ChikuminAiState.MOVE;
 
     public ChikuminAiState prevState = ChikuminAiState.MOVE;
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
     public GameObject targetPlayer;
     public List<GameObject> hitList = new List<GameObject>();
     public List<GameObject> carryObjectList = new List<GameObject>();
@@ -28,6 +52,8 @@ public class ChikuminBase : MonoBehaviour
 
     public bool isItem = false;
     public float _carrySpeed = 5f;
+
+    Animator animator;
 
     public bool canCall = true;
 

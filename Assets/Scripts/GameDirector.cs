@@ -89,7 +89,7 @@ public class GameDirector : MonoBehaviour
             case GameState.Load:
                 break;
             case GameState.Start:
-                startTimeLine.SetActive(true);
+                //startTimeLine.SetActive(true);
                 
                 break;
             case GameState.Play:
