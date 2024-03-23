@@ -23,6 +23,9 @@ public class TerrainController : MonoBehaviour
     public GameObject LoadUI;
     public Image Image;
 
+    public bool endTerrainCreate = false;
+    [SerializeField]private GameStateController stateController;
+
     // Start is called before the first frame update
     async void Start()
     {
@@ -173,8 +176,29 @@ public class TerrainController : MonoBehaviour
             terrain.terrainData.treeInstances = trees.ToArray();
            
             //LoadUI.SetActive(false);
-            LoadUI.GetComponent<PlayableDirector>().Play();
+           // LoadUI.GetComponent<PlayableDirector>().Play();
+            endTerrainCreate = true;
         }
+    }
+    public async UniTask<bool> endCreate()
+    {
+        while (true)
+        {
+            if (endTerrainCreate)
+            {
+                break;
+            }
+            await Task.Delay(1000);
+        }
+        return true;
+    }
+    public async UniTask<bool> CreateTerrain()
+    {
+        while (true)
+        {
+
+        }
+        return true;
     }
 
     private async UniTask CraeateMapTask()
@@ -225,6 +249,10 @@ public class TerrainController : MonoBehaviour
     {
         LoadUI.SetActive(false);
         director.gameState = GameDirector.GameState.Start;
+        //stateController.ChangeState(stateController.playState);
+        var gameStateBase=  stateController.currentState;
+        
+        print(gameStateBase == stateController.playState);
     }
 
 }
