@@ -53,54 +53,12 @@ public class GoalController : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "item")
-        {
-            
-/*            other.gameObject.GetComponent<Item>().carryObjects[0].GetComponent<ChikuminBase>().carryObjectList.Clear();
-            //itemNum[(int)other.gameObject.GetComponent<Item>().itemType] += 1;
-            itemDic[other.gameObject.GetComponent<Item>().itemType] += 1;
-            print(other.gameObject.GetComponent<Item>().itemType + ":" + itemDic[other.gameObject.GetComponent<Item>().itemType]);
-            other.gameObject.transform.parent = null;
-            other.gameObject.SetActive(false);
-            IEnumerable<ItemData> item = ItemDataBase.itemList.Where(e => e != null).Where(e => e.itemType == other.gameObject.GetComponent<Item>().itemType);
-            print("itemtype:"+item.First().itemType);
-            score += item.First().money;
-            audioSource.PlayOneShot(CoinSE);*/
-        }
 
         
 
         if (other.gameObject.tag == "tiku")
         {
             ItemCalculation(other);
-
-/*            if (other.gameObject.GetComponent<ChikuminBase>())
-            {
-                if(other.gameObject.GetComponent<ChikuminBase>().carryObjectList.Count != 0)
-                {
-                    other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.WAIT;
-                }
-                foreach (GameObject obj in other.gameObject.GetComponent<ChikuminBase>().carryObjectList)
-                {
-                    print("goalobj"+obj);
-                    obj.gameObject.GetComponent<Item>().Absorbed();
-                    itemDic[obj.gameObject.GetComponent<Item>().itemType] += 1;
-                    print(obj.gameObject.GetComponent<Item>().itemType + ":" + itemDic[obj.gameObject.GetComponent<Item>().itemType]);
-                    obj.gameObject.transform.parent = null;
-                    foreach(GameObject tiku in obj.gameObject.GetComponent<Item>().carryObjects)
-                    {
-                        tiku.gameObject.GetComponent<ChikuminBase>().carryObjectList = new List<GameObject>();
-                    }
-                    //obj.gameObject.SetActive(false);
-                    IEnumerable<ItemData> item = ItemDataBase.itemList.Where(e => e != null).Where(e => e.itemType == obj.gameObject.GetComponent<Item>().itemType);
-                    print("itemtype:" + item.First().itemType);
-                    score += item.First().money;
-                    audioSource.PlayOneShot(CoinSE);
-                }
-
-                other.GetComponent<ChikuminBase>().carryObjectList.Clear();
-                
-            }*/
         }
     }
 

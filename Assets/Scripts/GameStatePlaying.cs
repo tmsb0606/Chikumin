@@ -10,6 +10,7 @@ public partial class GameStateController
         public override void OnEnter(GameStateController owner, GameStateBase prevState)
         {
             print("プレイシーン");
+            Cursor.visible = false;
             Time.timeScale = 1;
         }
         public override void OnUpdata(GameStateController owner)

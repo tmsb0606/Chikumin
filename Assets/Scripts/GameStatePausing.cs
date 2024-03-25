@@ -11,6 +11,7 @@ public partial class GameStateController
         public override void OnEnter(GameStateController owner, GameStateBase prevState)
         {
             print("プレイシーン");
+            Cursor.visible = true;
             Time.timeScale = 0;
             _prevState = prevState;
             owner._pausePanel.SetActive(true);

@@ -58,18 +58,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _cameraObject;
      private CameraController _camera;
 
-    public GameObject adachiWaitAreaAgent;
-    public GameObject chiyodaWaitAreaAgent;
-    public GameObject minatoWaitAreaAgent;
-    public GameObject waitAreaPrefab;
-    private GameDirector _gameDirector;
 
-    private bool isCall = false;
-    private float scalingTime = 0;
-    private float scalingSpeed = 5f;
-    private Vector3 scalingStart = new Vector3(1.5f,1.5f,1.5f);
-    private Vector3 scalingEnd = new Vector3(3,3,3);
-    private Vector3 scalingPrev = new Vector3(1.5f, 1.5f, 1.5f);
 
     [SerializeField] private GameStateController _gameStateController;
 
@@ -86,7 +75,6 @@ public class PlayerController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
         _camera = _cameraObject.GetComponent<CameraController>();
-        //_gameDirector = GameObject.Find("GameDirector").GetComponent<GameDirector>();
         _particleScript = particle.GetComponent<ParticleScript>();
     }
 
@@ -97,29 +85,23 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        //print(mouseState);
-        //print(hitTikuminList.Count);
         drawCursor();
         if (Input.GetMouseButton(0))
         {
             CallChikumin();
         }
         // 入力値を元に3軸ベクトルを作成
-        //float Mathf.Lerp(_camera.prevYRota, _cameraObject.transform.localEulerAngles.y,Time.deltaTime);
         float angle = (-_cameraObject.transform.localEulerAngles.y)* Mathf.Deg2Rad;
-        //print(Mathf.Sin( angle));
-        //print(angle);
+
 
         //ベクトルを回転
         float x = -Mathf.Sin(angle)*movementY +Mathf.Cos(angle)*movementX;
         float y = Mathf.Sin(angle) * movementX + Mathf.Cos(angle) * movementY;
         Vector3 movement = new Vector3(x, 0.0f, y) *speed;
-        //print(movementX + " : " + movementY);
-         //movement =movement.normalized;
+
 
         // rigidbodyのAddForceを使用してプレイヤーを動かす。
 
-        //Vector3 vec = movement * _camera.transform.localEulerAngles.y;
         rb.AddForce(movement-rb.velocity);
 
         Vector3 differenceDis = new Vector3(transform.position.x, 0, transform.position.z) - new Vector3(latestPos.x, 0, latestPos.z);
@@ -137,17 +119,7 @@ public class PlayerController : MonoBehaviour
             Rotation();
         }
 
-/*        if (isCall)
-        {
-            scalingTime += Time.deltaTime * scalingSpeed;
-            pointCircle.transform.localScale = Vector3.Lerp(scalingPrev,scalingEnd,scalingTime);
 
-        }
-        else
-        {
-            scalingTime += Time.deltaTime * scalingSpeed;
-            pointCircle.transform.localScale = Vector3.Lerp(scalingPrev,scalingStart, scalingTime);
-        }*/
 
 
     }
@@ -202,32 +174,6 @@ public class PlayerController : MonoBehaviour
                 pointCircle.GetComponent<CallCircle>().player = this;
             }
         }
-/*        // print(raycastHitList);
-        if (raycastHitList.Any())
-        {
-            if (pointCircle == null)
-            {
-                pointCircle = Instantiate(circle);
-            }
-            var distance = Vector3.Distance(mainCamera.transform.position, raycastHitList.First().point);
-            var mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
-
-            currentPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-           // print(currentPosition);
-            currentPosition.y = 0;
-            pointCircle.transform.position = currentPosition;
-            pointCircle.GetComponent<CallCircle>().player = this;
-        }
-        else
-        {
-            if (pointCircle != null)
-            {
-                pointCircle.SetActive(false);
-                pointCircle = null;
-
-            }
-
-        }*/
         particle.transform.position = pointCircle.transform.position + new Vector3(0,0.2f,0);
     }
     private void CallChikumin()
@@ -253,15 +199,9 @@ public class PlayerController : MonoBehaviour
         }
         _particleScript.isScaling = true;
         particle.SetActive(true);
-        scalingPrev = pointCircle.transform.localScale;
-        scalingTime = 0;
         print("call");
         audioSource.PlayOneShot(ComeOnSE);
         mouseState = MouseState.callTiku;
-        isCall = true;
-        if (pointCircle != null)
-        {
-        }
 
         
         
@@ -275,62 +215,11 @@ public class PlayerController : MonoBehaviour
             return;
         }
         _particleScript.isScaling = false;
-        scalingPrev = pointCircle.transform.localScale;
-        scalingTime = 0;
-        isCall = false;
         print("release");
-        if (pointCircle != null)
-        {
-
-        }
     }
     private void OnStay()
     {
-       /* mouseState = MouseState.waitTiku;
-        audioSource.PlayOneShot(WaitSE);
-        //if (waitArea != null)
-        // {
-        //   Destroy(waitArea);
-        //}
-        if (adachiWaitArea != null)
-        {
-            Destroy(adachiWaitArea);
-        }
-        if(minatoWaitArea != null)
-        {
-            Destroy(minatoWaitArea);
-        }
-        if(chiyodaWaitArea != null)
-        {
-            Destroy(chiyodaWaitArea);
-        }
-        adachiWaitArea = Instantiate(waitAreaPrefab);
-        adachiWaitArea.transform.position = adachiWaitAreaAgent.transform.position;
-        adachiWaitArea.gameObject.tag = "AdachiArea";
 
-        minatoWaitArea = Instantiate(waitAreaPrefab);
-        minatoWaitArea.transform.position = minatoWaitAreaAgent.transform.position;
-        minatoWaitArea.gameObject.tag = "MinatoArea";
-
-        chiyodaWaitArea = Instantiate(waitAreaPrefab);
-        chiyodaWaitArea.transform.position = chiyodaWaitAreaAgent.transform.position;
-        chiyodaWaitArea.gameObject.tag = "ChiyodaArea";
-        foreach (GameObject c in callTikuminList)
-        {
-            c.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.ALIGNMENT;
-            if (c.GetComponent<Adachikumin>())
-            {
-                c.GetComponent<ChikuminBase>().waitArea = adachiWaitArea;
-            }else if (c.GetComponent<Chiyodakumin>())
-            {
-                c.GetComponent<ChikuminBase>().waitArea = chiyodaWaitArea;
-            }
-            else
-            {
-                c.GetComponent<ChikuminBase>().waitArea = minatoWaitArea;
-            }
-            //callTikuminList.Remove(c);
-        }*/
         
 
         //ここから下に新しい整列を書く
@@ -369,16 +258,10 @@ public class PlayerController : MonoBehaviour
                 //回転した座標とプレイヤーの座標を加算することでプレイヤー付近の座標を順番に取得する
                 Vector3 pos = this.transform.position + new Vector3(rx, 0, rz);
 
-/*                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.position = pos;
-                cube.transform.localScale = new Vector3(r * 2, 5, r * 2);*/
 
-                //Vector3 vec = pos + transform.rotation*transform.forward;
                 if (!Physics.CheckSphere(pos, 4, layer)&& Physics.CheckSphere(pos, 4, 1 << 12))
                 {
-/*                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    sphere.transform.position = pos;
-                    sphere.transform.localScale = new Vector3(r * 2, 5, r * 2);*/
+
                     cnt++;
                     flag = true;
                     //j += r;
@@ -406,19 +289,24 @@ public class PlayerController : MonoBehaviour
 
         foreach (GameObject c in callTikuminList)
         {
-            c.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.ALIGNMENT;
-            if (c.GetComponent<Adachikumin>())
+            ChikuminBase chikumin = c.GetComponent<ChikuminBase>();
+            chikumin.aiState = ChikuminBase.ChikuminAiState.ALIGNMENT;
+
+            var classType = chikumin.GetType();
+            if (classType == typeof(Adachikumin))
             {
-                c.GetComponent<ChikuminBase>().waitPos = callPosList[0];
+                chikumin.waitPos = callPosList[0];
             }
-            else if (c.GetComponent<Chiyodakumin>())
+            else if(classType == typeof(Chiyodakumin))
             {
-                c.GetComponent<ChikuminBase>().waitPos = callPosList[1];
+                chikumin.waitPos = callPosList[1];
             }
             else
             {
-                c.GetComponent<ChikuminBase>().waitPos = callPosList[2];
+                chikumin.waitPos = callPosList[2];
             }
+
+
 
         }
 
@@ -456,11 +344,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnRotaionCamera()
     {
-        //print("rotaion");
-        //float x = _camera.transform.position.x * Mathf.Cos(this.transform.rotation.y) - _camera.transform.position.z*Mathf.Sin(this.transform.rotation.y);
-        //float z = _camera.transform.position.z * Mathf.Cos(this.transform.rotation.y) - _camera.transform.position.x * Mathf.Sin(this.transform.rotation.y);
-        //_camera.GetComponent<CinemachineCameraOffset>().m_Offset = new Vector3(x, _camera.transform.position.y, z);
-        //_camera.transform.position = new Vector3(x, _camera.transform.position.y, z);
+
         _camera.Rotaion();
     }
 
