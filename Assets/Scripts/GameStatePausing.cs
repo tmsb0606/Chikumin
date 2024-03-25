@@ -21,14 +21,14 @@ public partial class GameStateController
             
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                owner._pausePanel.SetActive(false);
+                
                 owner.ChangeState(_prevState);
             }
         }
 
         public override void OnExit(GameStateController owner, GameStateBase prevState)
         {
-
+            owner._pausePanel.SetActive(false);
         }
     }
 }

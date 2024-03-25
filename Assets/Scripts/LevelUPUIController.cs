@@ -23,7 +23,7 @@ public class LevelUPUIController : MonoBehaviour
     {
         levelText.text = "Lv." + status.level;
         moneyText.text = ((status.level) * 1000000).ToString();
-        if ((status.level*0.2) * 1000000 <= goalController.score)
+        if ((status.level*0.2) * 1000000 <= ScoreDirector.score)
         {
             print("レベルアップ可能");
             LevelUPImage.color = Color.Lerp(new Color32(255,255,255,0),new Color32(255,255,255,255), Mathf.PingPong(Time.time / 1.0f, 1.0f));

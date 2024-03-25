@@ -19,13 +19,22 @@ public partial class GameStateController : MonoBehaviour
 
     [SerializeField] private float _timeLimit = 18f;
     [SerializeField] private TextMeshProUGUI _timeText;
+    [SerializeField] private GameObject _uiPanel;
     [SerializeField] private GameObject _pausePanel;
     [SerializeField] private TerrainController _terrainController;
-    [SerializeField] private PlayableDirector startTimeline;
-    [SerializeField] private PlayableDirector loadTimeline;
+    [SerializeField] private PlayableDirector _startTimeline;
+    [SerializeField] private PlayableDirector _loadTimeline;
+    [SerializeField] private PlayableDirector _endTimeline;
+    [SerializeField] private PlayableDirector _resultTimeline;
+    [SerializeField] private ResultPanelController _resultPanelController;
+    [SerializeField] private LevelUpController _levelUpController;
+
+    [SerializeField]private SerializableKeyPair<KeyCode, CharacterStatus>[] _keyToStates = default;
+
 
     void Start()
     {
+
         currentState = loadState;
         currentState.OnEnter(this,null);
         

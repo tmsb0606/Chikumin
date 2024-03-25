@@ -7,10 +7,9 @@ using Cysharp.Threading.Tasks;
 
 public class GoalController : MonoBehaviour
 {
-    public int score = 0;
+    
     public int num = 10;
     //public int[] itemNum;
-    public Dictionary<Item.Type, int> itemDic = new Dictionary<Item.Type, int>();
     private AudioSource audioSource;
     public AudioClip CoinSE;
     public AudioClip GetSE;
@@ -31,7 +30,7 @@ public class GoalController : MonoBehaviour
         //取得アイテムリストを更新
         foreach (Item.Type Value in Enum.GetValues(typeof(Item.Type)))
         {
-            itemDic.Add(Value, 0);
+           // itemDic.Add(Value, 0);
         }
 
     }
@@ -49,7 +48,7 @@ public class GoalController : MonoBehaviour
 
             collision.gameObject.SetActive(false);
             IEnumerable<ItemData> item = ItemDataBase.itemList.Where(e => e.itemType == collision.gameObject.GetComponent<Item>().itemType);
-            score += item.First().money;
+            ScoreDirector.score += item.First().money;
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -137,8 +136,8 @@ public class GoalController : MonoBehaviour
             var isGoal = await obj.gameObject.GetComponent<Item>().Animation();
             //await UniTask.Delay(1000);
 
-            itemDic[obj.gameObject.GetComponent<Item>().itemType] += 1;
-            print(obj.gameObject.GetComponent<Item>().itemType + ":" + itemDic[obj.gameObject.GetComponent<Item>().itemType]);
+            ScoreDirector.itemDic[obj.gameObject.GetComponent<Item>().itemType] += 1;
+            print(obj.gameObject.GetComponent<Item>().itemType + ":" + ScoreDirector.itemDic[obj.gameObject.GetComponent<Item>().itemType]);
             obj.gameObject.transform.parent = null;
             foreach (GameObject tiku in obj.gameObject.GetComponent<Item>().carryObjects)
             {
@@ -147,7 +146,7 @@ public class GoalController : MonoBehaviour
             obj.gameObject.SetActive(false);
             IEnumerable<ItemData> item = ItemDataBase.itemList.Where(e => e != null).Where(e => e.itemType == obj.gameObject.GetComponent<Item>().itemType);
             print("itemtype:" + item.First().itemType);
-            score += item.First().money;
+            ScoreDirector.score += item.First().money;
             GameObject scoretext =  Instantiate(_scoreUpPrefab, _canvas.transform);
             ScoreUpAnim scoreAnimation = scoretext.GetComponent<ScoreUpAnim>();
             scoretext.transform.localPosition = _scoreUpTextPos;

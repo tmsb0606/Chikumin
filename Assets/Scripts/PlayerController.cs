@@ -71,6 +71,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 scalingEnd = new Vector3(3,3,3);
     private Vector3 scalingPrev = new Vector3(1.5f, 1.5f, 1.5f);
 
+    [SerializeField] private GameStateController _gameStateController;
+
     public GameObject particle;
 
     private ParticleScript _particleScript; 
@@ -84,15 +86,15 @@ public class PlayerController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
         _camera = _cameraObject.GetComponent<CameraController>();
-        _gameDirector = GameObject.Find("GameDirector").GetComponent<GameDirector>();
+        //_gameDirector = GameObject.Find("GameDirector").GetComponent<GameDirector>();
         _particleScript = particle.GetComponent<ParticleScript>();
     }
 
     void FixedUpdate()
     {
-        if(_gameDirector.gameState != GameDirector.GameState.Play)
+
+        if(_gameStateController.currentState != _gameStateController.playState)
         {
-            
             return;
         }
         //print(mouseState);
@@ -245,6 +247,10 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCall()
     {
+        if (_gameStateController.currentState != _gameStateController.playState)
+        {
+            return;
+        }
         _particleScript.isScaling = true;
         particle.SetActive(true);
         scalingPrev = pointCircle.transform.localScale;
@@ -264,6 +270,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnReleaseMouse()
     {
+        if (_gameStateController.currentState != _gameStateController.playState)
+        {
+            return;
+        }
         _particleScript.isScaling = false;
         scalingPrev = pointCircle.transform.localScale;
         scalingTime = 0;
@@ -424,7 +434,11 @@ public class PlayerController : MonoBehaviour
     }
     private void OnThrow()
     {
-        if(_gameDirector.gameState != GameDirector.GameState.Play)
+        if (_gameStateController.currentState != _gameStateController.playState)
+        {
+            return;
+        }
+        if (Time.timeScale != 1)
         {
             return;
         }

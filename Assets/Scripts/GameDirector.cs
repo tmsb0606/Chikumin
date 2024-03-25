@@ -71,7 +71,7 @@ public class GameDirector : MonoBehaviour
         _goalController = GameObject.Find("Goal").GetComponent<GoalController>();
         timeText.text = ((int)_timeLimit).ToString();
         //scoreEvent += EvaluateRichText();
-        scoreEvent.AddListener(()=> textAnime.setMessage(_goalController.score.ToString()));
+        scoreEvent.AddListener(()=> textAnime.setMessage(ScoreDirector.score.ToString()));
         //scoreEvent.AddListener(() => StartCoroutine(textAnime.RunAnimation(0f)));
         //scoreEvent.AddListener(() => textAnime.EvaluateRichText()));
         adachikumin.level = 1;
@@ -105,8 +105,8 @@ public class GameDirector : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
-                    Pause();
-                    gameState = GameState.Pause;
+/*                    Pause();
+                    gameState = GameState.Pause;*/
                 }
                 if (Input.GetKeyDown("1"))
                 {
@@ -122,21 +122,21 @@ public class GameDirector : MonoBehaviour
                 }
                 break;
             case GameState.End:
-                EndPlayableDirector.Play();
+                //EndPlayableDirector.Play();
                 break;
             case GameState.ResultProduction:
                 //SceneManager.LoadScene("ResultScene");
-                UIPanel.SetActive(false);
-                ResultPanel.SetActive(true);
+                //UIPanel.SetActive(false);
+                //ResultPanel.SetActive(true);
                 
                 
-                resultScore.text = _goalController.score.ToString();
+                //resultScore.text = _goalController.score.ToString();
                 //���U���g�p�l���͌�ŏ���������炵���B
                 //wedNum.text = _goalController.itemNum[0].ToString();
                 //wedScore.text = (_goalController.itemNum[0] * 1000000).ToString();
                 //jewelryNum.text = _goalController.itemNum[1].ToString();
                 //jewelryScore.text = (_goalController.itemNum[1] * 1000000).ToString();
-                ResultPlayableDirector.Play();
+                //ResultPlayableDirector.Play();
                 break;
             case GameState.Result:
                 Cursor.visible = true;
@@ -175,10 +175,10 @@ public class GameDirector : MonoBehaviour
     public void LevelUP(CharacterStatus status)
     {
         int money = (int)((status.level * 0.2f) * 1000000);
-        if(_goalController.score >= money)
+        if(ScoreDirector.score >= money)
         {
             print("levelUP");
-            _goalController.score -= money;
+            ScoreDirector.score -= money;
             status.level += 1;
             audioSource.PlayOneShot(LevelUPSE);
         }
@@ -224,11 +224,11 @@ public class GameDirector : MonoBehaviour
             
 
             print(item.itemType);
-            if (_goalController.itemDic[item.itemType] != 0)
+            if (ScoreDirector.itemDic[item.itemType] != 0)
             {
                 GameObject obj = Instantiate(ResultItemLine, ResultContent.transform);
-                obj.transform.Find("NumberOfItems").GetComponent<TextMeshProUGUI>().text = _goalController.itemDic[item.itemType].ToString();
-                obj.transform.Find("ItemMoneyText").GetComponent<TextMeshProUGUI>().text = (_goalController.itemDic[item.itemType] * item.money).ToString();
+                obj.transform.Find("NumberOfItems").GetComponent<TextMeshProUGUI>().text = ScoreDirector.itemDic[item.itemType].ToString();
+                obj.transform.Find("ItemMoneyText").GetComponent<TextMeshProUGUI>().text = (ScoreDirector.itemDic[item.itemType] * item.money).ToString();
                 obj.transform.Find("ItemImage").GetComponent<Image>().sprite = item.itemImage;
 
             }
