@@ -11,21 +11,24 @@ public partial class GameStateController
        
         public override async void OnEnter(GameStateController owner, GameStateBase prevState)
         {
+            owner._timeText.text = owner._timeLimit.ToString("0");
+            ScoreDirector.Initialization();
             await owner._terrainController.endCreate();
-            //owner.loadTimeline.gameObject.SetActive(true);
-            await owner.loadTimeline.PlayAsync();
+            owner._loadTimeline.Play();
+            owner._loadTimeline.gameObject.SetActive(true);
+            await owner._loadTimeline.PlayAsync();
             print("フェード");
-            owner.loadTimeline.gameObject.SetActive(false);
-            owner.startTimeline.gameObject.SetActive(true);
-            await owner.startTimeline.PlayAsync();
+            owner._loadTimeline.gameObject.SetActive(false);
+            owner._startTimeline.gameObject.SetActive(true);
+            await owner._startTimeline.PlayAsync();
             print("スタート");
-            owner.startTimeline.gameObject.SetActive(false);
+            owner._startTimeline.gameObject.SetActive(false);
             owner.ChangeState(owner.playState);
         }
         public override void OnUpdata(GameStateController owner)
         {
             
-            if (owner.startTimeline.time >= owner.startTimeline.duration)
+            if (owner._startTimeline.time >= owner._startTimeline.duration)
             {
                 
             }

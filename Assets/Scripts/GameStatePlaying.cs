@@ -26,6 +26,14 @@ public partial class GameStateController
             {
                 owner.ChangeState(owner.pauseState);
             }
+            foreach(var keyValuePair in owner._keyToStates)
+            {
+                if (Input.GetKeyDown(keyValuePair.Key))
+                {
+                    owner._levelUpController.LevelUP(keyValuePair.Value);
+                    
+                }
+            }
         }
 
         public override void OnExit(GameStateController owner, GameStateBase prevState)

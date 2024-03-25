@@ -26,13 +26,17 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     private GameDirector gameDirector;
 
+
     public bool isAttack = false;
+
+    private LevelUpController _levelUpController;
     Animator animator;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        gameDirector = GameObject.Find("GameDirector").GetComponent<GameDirector>();
+        //gameDirector = GameObject.Find("GameDirector").GetComponent<GameDirector>();
         animator = this.GetComponent<Animator>();
+        _levelUpController = GameObject.Find("LevelUpDirector").GetComponent<LevelUpController>();
     }
 
     // Update is called once per frame
@@ -103,7 +107,8 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         // Ç±Ç±Ç…ãÔëÃìIÇ»éÄñSèàóù
         this.gameObject.SetActive(false);
-        gameDirector.AllCharacterLevelUP();
+        //gameDirector.AllCharacterLevelUP();
+        _levelUpController.AllCharacterLevelUP();
 
 
     }

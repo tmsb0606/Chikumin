@@ -247,7 +247,7 @@ public class TerrainController : MonoBehaviour
 
     public void EndLoad()
     {
-        LoadUI.SetActive(false);
+        //LoadUI.SetActive(false);
         director.gameState = GameDirector.GameState.Start;
         //stateController.ChangeState(stateController.playState);
         var gameStateBase=  stateController.currentState;
