@@ -57,23 +57,6 @@ public class Item : MonoBehaviour, ICarriable
         carryObjects.Add(gameObject);
     }
 
-/*    public void Absorbed()
-    {
-        print("Absorbed");
-        StartCoroutine(Animation(2f));
-        
-    }
-
-     public IEnumerator Animation(float limitTime)
-    {
-        float time = 0;
-        while (time < limitTime)
-        {
-            time += Time.deltaTime;
-            this.transform.position += new Vector3(0,0.1f,0);
-            yield return null;
-        }
-    }*/
 
     public async UniTask<bool> Animation()
     {

@@ -8,6 +8,7 @@ public partial class GameStateController
         public override async void OnEnter(GameStateController owner, GameStateBase prevState)
         {
             print("エンドシーン");
+            Cursor.visible = true;
             //owner._uiPanel.SetActive(false);
             owner._endTimeline.gameObject.SetActive(true);
             await owner._endTimeline.PlayAsync();

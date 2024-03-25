@@ -6,9 +6,6 @@ using UnityEngine.AI;
 public class Adachikumin : ChikuminBase,IJampable,IDamageable
 {
     //public ChikuminAiState aiState = ChikuminAiState.MOVE;
-    NavMeshAgent agent;
-
-    public GameObject targetObject;
     private GameObject goalObject;
 
     public GameObject cursorObject; //カーソルを入れる。
@@ -107,33 +104,10 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
             print("!ground");
             return;
         }
-        //今後の動作判定
-        if(hitList.Count != 0)
-        {
-            print("wait : list > 0");
-            targetObject = NearObject(hitList);
-            //print(targetObject);
-            if (targetObject.tag == "enemy")
-            {
 
-          
-                hitList.Remove(targetObject);
-                aiState = ChikuminAiState.ATTACK;
-            }
-            else if(targetObject.tag == "item")
-            {
-                hitList.Remove(targetObject);
-                aiState = ChikuminAiState.CARRY;
-            }
-            else if (targetObject.tag == "atm")
-            {
-                //print("aaaaa");
-                //targetObject.GetComponent<ATMController>().ReleaseMoney();
-                //hitList.Remove(targetObject);
-                //aiState = ChikuminAiState.WAIT;
-            }
-        }
         
+        ActionJudgment();
+
 
     }
     private void Idle()
@@ -272,22 +246,19 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
         //Move();
     }
 
+
     private void Alignment()
     {
-        if (waitArea != null)
-        {
-            //agent.SetDestination(waitArea.transform.position);
-        }
+
         if (Vector3.Distance(waitPos, this.transform.position) > 1)
         {
             agent.SetDestination(waitPos);
-            //OnManualMove();
+
         }
         else
         {
             aiState = ChikuminAiState.WAIT;
-/*            agent.updatePosition = true;
-            agent.updateRotation = true;*/
+
         }
     }
 
@@ -296,9 +267,15 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
         prevState = ChikuminAiState.ONRUSH;
         cursorObject =  GameObject.Find("Reticle(Clone)");
         agent.SetDestination(cursorObject.transform.position);
-        //OnManualMove();
+        ActionJudgment();
 
-        //この下に状況判断を書く　waitと同じなので状況判断のメソッドにまとめる。
+    }
+
+    /// <summary>
+    /// 今後の行動を判断する。(突撃、待機時)
+    /// </summary>
+    private void ActionJudgment()
+    {
         if (hitList.Count != 0)
         {
             targetObject = NearObject(hitList);
@@ -315,67 +292,7 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
                 hitList.Remove(targetObject);
                 aiState = ChikuminAiState.CARRY;
             }
-            else if (targetObject.tag == "atm")
-            {
-                //print("aaaaa");
-                //targetObject.GetComponent<ATMController>().ReleaseMoney();
-                //hitList.Remove(targetObject);
-                //aiState = ChikuminAiState.WAIT;
-            }
         }
-
-    }
-
-    private void OnManualMove()
-    {
-        if (isGround)
-        {
-            agent.updatePosition = false;
-            agent.updateRotation = false;
-        }
-
-        // 次の位置への方向を求める
-        var dir = agent.nextPosition - transform.position;
-
-        // 方向と現在の前方との角度を計算（スムーズに回転するように係数を掛ける）
-        float smooth = Mathf.Min(1.0f, Time.deltaTime / 0.15f);
-        var angle = Mathf.Acos(Vector3.Dot(transform.forward, dir.normalized)) * Mathf.Rad2Deg * smooth;
-
-        // 回転軸を計算
-        var axis = Vector3.Cross(transform.forward, dir);
-
-        // 回転の更新
-        var rot = Quaternion.AngleAxis(angle, axis);
-        transform.forward = rot * transform.forward;
-
-        // 位置の更新
-        transform.position = agent.nextPosition;
-
-
-
-
-        /*        // 次に目指すべき位置を取得
-                var nextPoint = agent.steeringTarget;
-                Vector3 targetDir = nextPoint - transform.position;
-
-                // その方向に向けて旋回する(360度/秒)
-                Quaternion targetRotation = Quaternion.LookRotation(targetDir);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 360f * Time.deltaTime);
-
-                // 自分の向きと次の位置の角度差が30度以上の場合、その場で旋回
-                float angle = Vector3.Angle(targetDir, transform.forward);
-                if (angle < 30f)
-                {
-                    transform.position += transform.forward * 5.0f * Time.deltaTime;
-                    // もしもの場合の補正
-                    //if (Vector3.Distance(nextPoint, transform.position) < 0.5f)　transform.position = nextPoint;
-                }
-
-                // targetに向かって移動します。
-                agent.SetDestination(targetPlayer.transform.position);
-                agent.nextPosition = transform.position;*/
-
-
     }
     private GameObject NearObject(List<GameObject> gameObjects)
     {
@@ -459,8 +376,6 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
         isGround = true;
         transform.position = endPos;
         agent.enabled = true;
-/*        agent.updatePosition = true;
-        agent.updateRotation = true;*/
 
     }
 
