@@ -42,7 +42,7 @@ public class ScoreUpAnim : MonoBehaviour
        
     }
 
-    //テスト用：数値が段階的に増えて、バーンってなるアニメーション
+    //テスト用アニメーション
     /*public void Tween()
     {
         LeanTween.cancel(this.gameObject);
