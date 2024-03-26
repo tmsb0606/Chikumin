@@ -57,6 +57,8 @@ public class ScoreUpAnim : MonoBehaviour
         });
 
     }*/
+
+
     
 
     public void TakeScoreAnim()

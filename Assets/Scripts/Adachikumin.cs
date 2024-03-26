@@ -122,20 +122,6 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
         agent.stoppingDistance = 1.8f;
         
         agent.SetDestination(targetPlayer.transform.position);
-        /*        if (Vector3.Distance(targetPlayer.transform.position, this.transform.position) > moveDis)
-                {
-                    changeStatus();
-                    agent.SetDestination(targetPlayer.transform.position);
-                    //OnManualMove();
-
-
-
-                }
-                else
-                {
-                    agent.velocity = Vector3.zero;
-
-                }*/
     }
     private void Attack()
     {
@@ -217,17 +203,12 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
             }
             else
             {
-                //carryObjectList[0] = null;
                 aiState = prevState;
                 carryObjectList.Clear();
             }
 
-            //時間があったらアイテムの方向に移動して拾うモーションが欲しい。
-            //changeStatus();
-            //agent.SetDestination(targetObject.transform.position);
 
         }
-        //carryObject.transform.position = this.transform.position + (Vector3.forward*-0.5f);
         if(carryObjectList.Count == 0)
         {
             return;

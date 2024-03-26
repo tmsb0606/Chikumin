@@ -214,12 +214,12 @@ public class Minatokumin : ChikuminBase, IJampable, IDamageable
 
             print("carry");
             targetObject = NearObject(hitList);
-            //二つ目以降のアイテムは札束のみ。札束以外は複数個持てない。
+            //二つ目以降のアイテムはひとりで運べるアイテムのみ
             if(targetObject.gameObject.tag == "item")
             {
                 if (targetObject.GetComponent<Item>().maxCarryNum > targetObject.GetComponent<Item>().carryObjects.Count)
                 {
-                    if (targetObject.GetComponent<Item>().itemType != Item.Type.Car)
+                    if (targetObject.GetComponent<Item>().minCarryNum == 1)
                     {
                         if (targetObject.GetComponent<Item>().itemType == Item.Type.Jewelry)
                         {

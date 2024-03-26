@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Cysharp.Threading.Tasks;
 public partial class GameStateController
 {
 
@@ -9,9 +9,13 @@ public partial class GameStateController
         {
             print("エンドシーン");
             Cursor.visible = true;
-            //owner._uiPanel.SetActive(false);
-            owner._endTimeline.gameObject.SetActive(true);
-            await owner._endTimeline.PlayAsync();
+
+            owner._finishAnim.gameObject.SetActive(true);
+            await UniTask.Delay(1);
+            await owner._finishAnim.AsyncFinishTextAnim();
+
+
+
             print("end");
             owner._resultTimeline.transform.parent.gameObject.SetActive(true);
             await owner._resultTimeline.PlayAsync();

@@ -127,6 +127,10 @@ public class PlayerController : MonoBehaviour
     private void Rotation()
     {
         //transform.rotation = Quaternion.Euler(0, (getAngle(pointCircle.transform.position, transform.position)*-1-90), 0);
+        if(pointCircle == null)
+        {
+            return;
+        }
         Quaternion rot =  Quaternion.Slerp(rb.transform.rotation, Quaternion.Euler(0, (getAngle(pointCircle.transform.position, transform.position) * -1 - 90), 0),0.2f);
         this.transform.rotation = rot;
     }
@@ -173,6 +177,10 @@ public class PlayerController : MonoBehaviour
                 pointCircle.transform.position = currentPosition;
                 pointCircle.GetComponent<CallCircle>().player = this;
             }
+        }
+        if(pointCircle == null)
+        {
+            return;
         }
         particle.transform.position = pointCircle.transform.position + new Vector3(0,0.2f,0);
     }

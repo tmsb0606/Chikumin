@@ -13,6 +13,8 @@ public class ResultPanelController : MonoBehaviour
     [SerializeField] private GoalController _goalController;
     [SerializeField] private TextMeshProUGUI _totalScoreText;
     [SerializeField] private ScrollRect _scrollRect;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip itemSE;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,16 +40,19 @@ public class ResultPanelController : MonoBehaviour
                 obj.transform.Find("NumberOfItems").GetComponent<TextMeshProUGUI>().text = ScoreDirector.itemDic[item.itemType].ToString();
                 obj.transform.Find("ItemMoneyText").GetComponent<TextMeshProUGUI>().text = (ScoreDirector.itemDic[item.itemType] * item.money).ToString();
                 obj.transform.Find("ItemImage").GetComponent<Image>().sprite = item.itemImage;
-                _scrollRect.velocity = new Vector2(0, 1000f);
 
-                //アニメーションが終わるまで待機するように書き換える。
-                await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+                _audioSource.PlayOneShot(itemSE);
+                _scrollRect.velocity = new Vector2(0, 1000f);
+                await obj.GetComponent<ResultAnim>().AsyncItemAnim();
+                
                 
 
 
             }
 
         }
+        await UniTask.Delay(500);
+        _audioSource.PlayOneShot(itemSE);
         _totalScoreText.text = ScoreDirector.score.ToString("0");
         return true;
     }

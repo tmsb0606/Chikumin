@@ -35,10 +35,11 @@ public class CallCircle : MonoBehaviour
         {
             return;
         }
+        ChikuminBase chikumin = other.GetComponent<ChikuminBase>();
        
         if (player.mouseState == PlayerController.MouseState.callTiku)
         {
-            if (!other.gameObject.GetComponent<ChikuminBase>().canCall)
+            if (!chikumin.canCall)
             {
                 return;
             }
@@ -46,36 +47,24 @@ public class CallCircle : MonoBehaviour
 
 
             //print(other.gameObject.name);
-            other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.MOVE;
-            other.gameObject.GetComponent<ChikuminBase>().isItem = false;
-            if (other.gameObject.GetComponent<ChikuminBase>().carryObjectList.Count > 0)
+            chikumin.aiState = ChikuminBase.ChikuminAiState.MOVE;
+            chikumin.isItem = false;
+            if (chikumin.carryObjectList.Count > 0)
             {
-                other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0].GetComponent<Rigidbody>().isKinematic = false;
-                other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0].GetComponent<Rigidbody>().useGravity = true;
-                other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0].GetComponent<Item>().carryObjects.Remove(other.gameObject);
-                other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0].transform.parent = null;
-                //other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0] = null;
+                chikumin.carryObjectList[0].GetComponent<Rigidbody>().isKinematic = false;
+                chikumin.carryObjectList[0].GetComponent<Rigidbody>().useGravity = true;
+                chikumin.carryObjectList[0].GetComponent<Item>().carryObjects.Remove(other.gameObject);
+                chikumin.carryObjectList[0].transform.parent = null;
 
                 //å„Ç≈Ç±ÇÍÇèCê≥Ç∑ÇÈ
-                other.gameObject.GetComponent<ChikuminBase>().carryObjectList.RemoveAt(0);
+                chikumin.carryObjectList.RemoveAt(0);
 
-                //other.gameObject.GetComponent<ChikuminBase>().carryObjectList.Remove(other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0]);
-
-                //other.gameObject.GetComponent<ChikuminBase>().hitList.Remove(other.gameObject.GetComponent<ChikuminBase>().carryObjectList[0]);
             }
     
             if (!player.callTikuminList.Contains(other.gameObject))
             {
                 player.callTikuminList.Add(other.gameObject);
             }
-        }else if(player.mouseState == PlayerController.MouseState.waitTiku)
-        {
-            //print(other.gameObject.name);
-            //ëSÉLÉÉÉâé~ÇﬂÇÈÇ»ÇÁÇ¢ÇÁÇ»Ç¢
-            //other.gameObject.GetComponent<ChikuminBase>().aiState = ChikuminBase.ChikuminAiState.IDLE;
-
-            //player.callTikuminList.Remove(other.gameObject);
-
         }
     }
 
