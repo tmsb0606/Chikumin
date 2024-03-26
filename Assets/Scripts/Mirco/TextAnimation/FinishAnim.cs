@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Threading.Tasks;
+using System.Threading;
 
 public class FinishAnim : MonoBehaviour
 {
@@ -54,6 +56,34 @@ public class FinishAnim : MonoBehaviour
             LeanTween.value(this.gameObject, updateValueExampleCallback, fadeInColor, fadeOutColor, fadeOutTime).setEase(LeanTweenType.easeOutCirc).setDelay(fadeOutDelay);
         });
     }
+
+    public async Task AsyncFinishTextAnim(CancellationToken cancellationToken = default)
+    {
+        LeanTween.cancel(this.gameObject);
+        LeanTween.value(this.gameObject, updateValueExampleCallback, color, fadeInColor, fadeInTime).setEase(LeanTweenType.easeOutCirc);
+        /*        var tween =  LeanTween.scale(this.gameObject, Vector3.one, scaleTime).setEaseOutBack().setOnComplete(() =>
+                {
+                    LeanTween.scaleY(this.gameObject, bounceScale, bounceTime).setEaseOutExpo().setDelay(bounceDelay);
+                    LeanTween.moveLocalY(this.gameObject, moveYOffset, bounceTime).setEaseInOutBack().setDelay(bounceDelay);
+                    LeanTween.scaleY(this.gameObject, 1.1f, 0.5f).setEaseOutExpo().setDelay(bounceDelay).setDelay(bounceDelay + 0.5f);
+                    LeanTween.value(this.gameObject, updateValueExampleCallback, fadeInColor, fadeOutColor, fadeOutTime).setEase(LeanTweenType.easeOutCirc).setDelay(fadeOutDelay);
+                });*/
+
+        //await tween.AwaitCompletionAsync(cancellationToken);
+
+        LeanTween.scale(this.gameObject, Vector3.one, scaleTime).setEaseOutBack().setOnComplete(() =>
+        {
+            LeanTween.scaleY(this.gameObject, bounceScale, bounceTime).setEaseOutExpo().setDelay(bounceDelay);
+            LeanTween.moveLocalY(this.gameObject, moveYOffset, bounceTime).setEaseInOutBack().setDelay(bounceDelay);
+            LeanTween.scaleY(this.gameObject, 1.1f, 0.5f).setEaseOutExpo().setDelay(bounceDelay).setDelay(bounceDelay + 0.5f);
+            LeanTween.value(this.gameObject, updateValueExampleCallback, fadeInColor, fadeOutColor, fadeOutTime).setEase(LeanTweenType.easeOutCirc).setDelay(fadeOutDelay);
+        });
+        await Task.Delay(2900);
+
+
+
+    }
+
 
     void updateValueExampleCallback(Color val)
     {

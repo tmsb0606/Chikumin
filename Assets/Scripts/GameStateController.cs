@@ -29,6 +29,8 @@ public partial class GameStateController : MonoBehaviour
     [SerializeField] private ResultPanelController _resultPanelController;
     [SerializeField] private LevelUpController _levelUpController;
 
+    [SerializeField] private FinishAnim _finishAnim;
+
     [SerializeField]private SerializableKeyPair<KeyCode, CharacterStatus>[] _keyToStates = default;
 
 
