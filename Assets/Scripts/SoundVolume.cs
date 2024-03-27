@@ -14,6 +14,13 @@ public class SoundVolume : MonoBehaviour
     void Start()
     {
         _soundDirector = GetComponent<SoundDirector>();
+
+
+        if(_bgmSlider == null)
+        {
+            return;
+        }
+
         _bgmSlider.value = _soundDirector.bgmSource.volume;
         _seSlider.value = _soundDirector. seSource.volume;
 
