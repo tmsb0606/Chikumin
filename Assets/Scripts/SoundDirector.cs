@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SoundDirector : MonoBehaviour
 {
+    public AudioSource bgmSource;
+    public AudioSource seSource;
     public static SoundDirector instance;
     private void Awake()
     {
