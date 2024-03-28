@@ -25,7 +25,7 @@ public class GoalController : MonoBehaviour
     {
         //itemNum = new int[num];
         //Array.Fill(itemNum, 0);
-        audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
+        audioSource = GameObject.Find("SoundDirector").GetComponent<SoundDirector>().seSource;
 
         //取得アイテムリストを更新
         foreach (Item.Type Value in Enum.GetValues(typeof(Item.Type)))

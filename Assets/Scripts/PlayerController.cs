@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
         mouseState = MouseState.nothing;
         mainCamera = Camera.main;
         rb = gameObject.GetComponent<Rigidbody>();
-        audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
+        audioSource = GameObject.Find("SoundDirector").GetComponent<SoundDirector>().seSource;
         _camera = _cameraObject.GetComponent<CameraController>();
         _particleScript = particle.GetComponent<ParticleScript>();
     }

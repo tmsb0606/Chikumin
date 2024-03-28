@@ -10,6 +10,7 @@ public class LevelUpController : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GameObject.Find("SoundDirector").GetComponent<SoundDirector>().seSource;
         foreach (CharacterStatus characterStatus in _characterStatuses)
         {
             characterStatus.level = 1;

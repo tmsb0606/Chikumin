@@ -7,25 +7,20 @@ public class SoundVolume : MonoBehaviour
     // Start is called before the first frame update
 
     private SoundDirector _soundDirector;
-    [SerializeField] private Slider _bgmSlider;
-    [SerializeField] private Slider _seSlider;
+    [SerializeField] public Slider bgmSlider;
+    [SerializeField] public Slider seSlider;
 
 
     void Start()
     {
-        _soundDirector = GetComponent<SoundDirector>();
+        _soundDirector = GameObject.Find("SoundDirector").GetComponent<SoundDirector>();
 
 
-        if(_bgmSlider == null)
-        {
-            return;
-        }
+        bgmSlider.value = _soundDirector.bgmSource.volume;
+        seSlider.value = _soundDirector. seSource.volume;
 
-        _bgmSlider.value = _soundDirector.bgmSource.volume;
-        _seSlider.value = _soundDirector. seSource.volume;
-
-        _bgmSlider.onValueChanged.AddListener(delegate { VolumeChange(_bgmSlider, _soundDirector.bgmSource); });
-        _seSlider.onValueChanged.AddListener(delegate { VolumeChange(_seSlider, _soundDirector.seSource); });
+        bgmSlider.onValueChanged.AddListener(delegate { VolumeChange(bgmSlider, _soundDirector.bgmSource); });
+        seSlider.onValueChanged.AddListener(delegate { VolumeChange(seSlider, _soundDirector.seSource); });
     }
 
     // Update is called once per frame
