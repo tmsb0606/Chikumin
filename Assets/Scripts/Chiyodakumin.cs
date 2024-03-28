@@ -32,7 +32,7 @@ public class Chiyodakumin : ChikuminBase, IJampable, IDamageable
         goalObject = GameObject.Find("Goal");
         agent = GetComponent<NavMeshAgent>();
         changeStatus();
-        audioSource = GameObject.Find("SoundDirector").GetComponent<AudioSource>();
+        audioSource = GameObject.Find("SoundDirector").GetComponent<SoundDirector>().seSource;
         animator = this.GetComponent<Animator>();
         _hp = status.hp;
     }

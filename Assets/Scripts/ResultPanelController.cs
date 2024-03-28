@@ -18,6 +18,7 @@ public class ResultPanelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _audioSource = GameObject.Find("SoundDirector").GetComponent<SoundDirector>().seSource;
         _totalScoreText.text = "0";
     }
 
