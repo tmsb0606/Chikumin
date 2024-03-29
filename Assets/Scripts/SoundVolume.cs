@@ -10,6 +10,8 @@ public class SoundVolume : MonoBehaviour
     [SerializeField] public Slider bgmSlider;
     [SerializeField] public Slider seSlider;
 
+    [SerializeField]private AudioClip _testSE;
+
 
     void Start()
     {
@@ -32,5 +34,9 @@ public class SoundVolume : MonoBehaviour
     public void VolumeChange(Slider slider ,AudioSource audioSource)
     {
         audioSource.volume = slider.value;
+    }
+    public void PlaySE()
+    {
+        _soundDirector.seSource.PlayOneShot(_testSE);
     }
 }

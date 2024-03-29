@@ -30,9 +30,11 @@ public class ResultAnim : MonoBehaviour
     public async Task AsyncItemAnim(CancellationToken cancellationToken = default)
     {
         LeanTween.value(0f, 1f, fadeTime).setOnUpdate(UpdateitemLineAlpha);
-        var tween =  LeanTween.scale(this.gameObject, Vector3.one, scaleTime).setEaseOutBack();
-        await tween.AwaitCompletionAsync(cancellationToken);
-        await Task.Delay(100);
+        /*        var tween =  LeanTween.scale(this.gameObject, Vector3.one, scaleTime).setEaseOutBack();
+                await tween.AwaitCompletionAsync(cancellationToken);*/
+
+        LeanTween.scale(this.gameObject, Vector3.one, scaleTime).setEaseOutBack();
+        await Task.Delay(500);
     }
 
     void UpdateitemLineAlpha(float value)
