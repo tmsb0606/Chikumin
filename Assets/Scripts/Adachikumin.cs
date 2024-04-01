@@ -43,6 +43,7 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
         agent.updateRotation = false;*/
         rb = GetComponent<Rigidbody>();
         _hp = status.hp;
+        carrySeTime = carrySE.length;
     }
 
     // Update is called once per frame
@@ -137,6 +138,7 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
         {
             agent.speed = 0;
             animator.SetBool("Attack", isHit);
+            
             /*            agent.updatePosition = true;
                         agent.updateRotation = true;*/
 
@@ -157,6 +159,7 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
         {
             return;
         }
+        audioSource.PlayOneShot(punchSE);
         targetObject.gameObject.GetComponent<IDamageable>().Damage(10 * status.level);
     }
     private void Carry()
@@ -217,6 +220,9 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
         {
             agent.speed = _carrySpeed;
             agent.SetDestination(goalObject.transform.position);
+
+            CarrySE();
+
             //OnManualMove();
         }
         else if(carryObjectList[0].GetComponent<Item>().minCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
@@ -225,6 +231,17 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
         }
 
         //Move();
+    }
+
+    
+    private void CarrySE()
+    {
+        carrySeTime += Time.deltaTime;
+        if(carrySeTime >= carrySE.length)
+        {
+            audioSource.PlayOneShot(carrySE);
+            carrySeTime = 0;
+        }
     }
 
 

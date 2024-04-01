@@ -14,6 +14,10 @@ public partial class ChikuminBase : MonoBehaviour
     private static readonly StateCarrying stateCarrying = new StateCarrying();
     [SerializeField]private GameObject goalObject;
 
+    [SerializeField] protected AudioClip punchSE;
+    [SerializeField] protected AudioClip carrySE;
+    protected float carrySeTime;
+
     protected ChikuminStateBase currentState = stateWaiting;
     public GameObject targetObject;
     private void ChangeState(ChikuminStateBase nextState)
