@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviour
     public AudioClip WaitSE;
     public AudioClip GoSE;
 
+    [SerializeField] private AudioClip hanautaSE;
+    private float hanautaTime;
+
     //[SerializeField] private GameObject _camera;
 
     [SerializeField] private GameObject _cameraObject;
@@ -76,6 +79,7 @@ public class PlayerController : MonoBehaviour
         audioSource = GameObject.Find("SoundDirector").GetComponent<SoundDirector>().seSource;
         _camera = _cameraObject.GetComponent<CameraController>();
         _particleScript = particle.GetComponent<ParticleScript>();
+        hanautaTime = hanautaSE.length;
     }
 
     void FixedUpdate()
@@ -119,9 +123,24 @@ public class PlayerController : MonoBehaviour
             Rotation();
         }
 
+        ChikuminVoice();
 
 
 
+
+    }
+
+    private void ChikuminVoice()
+    {
+        if(callTikuminList.Count > 10)
+        {
+            hanautaTime += Time.deltaTime;
+            if(hanautaTime >= hanautaSE.length)
+            {
+                audioSource.PlayOneShot(hanautaSE);
+                hanautaTime = 0;
+            }
+        }
     }
 
     private void Rotation()
