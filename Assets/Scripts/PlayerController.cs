@@ -54,7 +54,9 @@ public class PlayerController : MonoBehaviour
     public AudioClip GoSE;
 
     [SerializeField] private AudioClip hanautaSE;
+    [SerializeField] private List<AudioClip> hanautaList = new List<AudioClip>();
     private float hanautaTime;
+    private int hanautaIndex = 0;
 
     //[SerializeField] private GameObject _camera;
 
@@ -79,7 +81,9 @@ public class PlayerController : MonoBehaviour
         audioSource = GameObject.Find("SoundDirector").GetComponent<SoundDirector>().seSource;
         _camera = _cameraObject.GetComponent<CameraController>();
         _particleScript = particle.GetComponent<ParticleScript>();
-        hanautaTime = hanautaSE.length;
+        //hanautaTime = hanautaSE.length;
+        hanautaIndex = UnityEngine.Random.Range(0,hanautaList.Count);
+        hanautaTime = hanautaList[hanautaIndex].length;
     }
 
     void FixedUpdate()
@@ -135,9 +139,11 @@ public class PlayerController : MonoBehaviour
         if(callTikuminList.Count > 10)
         {
             hanautaTime += Time.deltaTime;
-            if(hanautaTime >= hanautaSE.length)
+            if(hanautaTime >= hanautaList[hanautaIndex].length)
             {
-                audioSource.PlayOneShot(hanautaSE);
+                hanautaIndex = UnityEngine.Random.Range(0, hanautaList.Count);
+                audioSource.PlayOneShot(hanautaList[hanautaIndex]);
+                
                 hanautaTime = 0;
             }
         }
