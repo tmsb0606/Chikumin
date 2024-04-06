@@ -17,12 +17,14 @@ public class SoundVolume : MonoBehaviour
     {
         _soundDirector = GameObject.Find("SoundDirector").GetComponent<SoundDirector>();
 
+        if(bgmSlider != null)
+        {
+            bgmSlider.value = _soundDirector.bgmSource.volume;
+            seSlider.value = _soundDirector.seSource.volume;
+            bgmSlider.onValueChanged.AddListener(delegate { VolumeChange(bgmSlider, _soundDirector.bgmSource); });
+            seSlider.onValueChanged.AddListener(delegate { VolumeChange(seSlider, _soundDirector.seSource); });
+        }
 
-        bgmSlider.value = _soundDirector.bgmSource.volume;
-        seSlider.value = _soundDirector. seSource.volume;
-
-        bgmSlider.onValueChanged.AddListener(delegate { VolumeChange(bgmSlider, _soundDirector.bgmSource); });
-        seSlider.onValueChanged.AddListener(delegate { VolumeChange(seSlider, _soundDirector.seSource); });
     }
 
     // Update is called once per frame

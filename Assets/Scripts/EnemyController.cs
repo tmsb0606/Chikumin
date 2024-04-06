@@ -39,6 +39,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     private GameObject _canvas;
     private Image _hpImage;
     private bool isDamage = false;
+    private bool isDeath = false;
     void Start()
     {
         _canvas = Instantiate((GameObject)Resources.Load("HPBar"));
@@ -57,7 +58,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         //_hpImage.fillAmount = (float)hp / maxHP;
 
 
-        if (hp < 0)
+        if (hp < 0 && !isDeath)
         {
             Death();
         }
@@ -147,9 +148,12 @@ public class EnemyController : MonoBehaviour, IDamageable
             isAttack = false;
         }
     }
-    public void Death()
+    public async void Death()
     {
         // ‚±‚±‚É‹ï‘Ì“I‚ÈŽ€–Sˆ—
+        isDeath = true;
+        animator.SetBool("Death", true);
+        await UniTask.Delay(1000);
         this.gameObject.SetActive(false);
         //gameDirector.AllCharacterLevelUP();
         _levelUpController.AllCharacterLevelUP();
