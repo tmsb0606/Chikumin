@@ -292,21 +292,7 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
             }
         }
     }
-    private GameObject NearObject(List<GameObject> gameObjects)
-    {
-        GameObject nearObj = gameObjects[0];
-        float dis = Vector3.Distance(gameObjects[0].transform.position, this.transform.position) ;
-        foreach(GameObject obj in gameObjects)
-        {
-            float dis2 = Vector3.Distance(obj.transform.position, this.transform.position);
-            if (dis>= dis2)
-            {
-                dis = dis2;
-                nearObj = obj;
-            }
-        }
-        return nearObj;
-    }
+
 
     private void  changeStatus()
     {

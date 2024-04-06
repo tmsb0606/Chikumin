@@ -68,29 +68,59 @@ public partial class ChikuminBase : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-        switch (aiState)
-        {
-            case ChikuminAiState.WAIT:
-                Wait();
-                break;
-            case ChikuminAiState.MOVE:
-                Move();
-                break;
-
-        }
-    }
 
     private void Wait()
+    {
+
+    }
+    private void Idle()
     {
 
     }
     private void Move()
     {
         agent.SetDestination(targetPlayer.transform.position);
+    }
+    private void Attack()
+    {
+
+    }
+    private void AttackDamage()
+    {
+
+    }
+    private void Carry()
+    {
+
+    }
+    private void Alignment()
+    {
+
+    }
+
+    private void OnRush()
+    {
+
+    }
+    protected GameObject NearObject(List<GameObject> gameObjects)
+    {
+        GameObject nearObj = gameObjects[0];
+        float dis = Vector3.Distance(gameObjects[0].transform.position, this.transform.position);
+        foreach (GameObject obj in gameObjects)
+        {
+            float dis2 = Vector3.Distance(obj.transform.position, this.transform.position);
+            if (dis >= dis2)
+            {
+                dis = dis2;
+                nearObj = obj;
+            }
+        }
+        return nearObj;
+    }
+
+    private void Death()
+    {
+
     }
 
 }

@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 7941563079436803302}
   - component: {fileID: 7941563079436803303}
   - component: {fileID: 7941563079436803296}
+  - component: {fileID: -4087989981628672278}
   m_Layer: 0
   m_Name: HPBar
   m_TagString: Untagged
@@ -204,7 +205,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -1.359, y: 0.63}
+  m_AnchoredPosition: {x: -1.3590088, y: 0.6300049}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7941563079436803297
@@ -280,3 +281,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a99bd130e8091ed48885d97b6e803c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &-4087989981628672278
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7941563079436803301}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

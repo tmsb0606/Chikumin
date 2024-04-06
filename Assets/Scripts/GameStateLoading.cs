@@ -14,6 +14,7 @@ public partial class GameStateController
             Cursor.visible = true;
             owner._timeText.text = owner._timeLimit.ToString("0");
             ScoreDirector.Initialization();
+            print("ƒeƒ‰ƒCƒ“ì¬");
             await owner._terrainController.endCreate();
             owner._loadTimeline.Play();
             owner._loadTimeline.gameObject.SetActive(true);
