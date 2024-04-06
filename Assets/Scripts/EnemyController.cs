@@ -38,6 +38,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     private GameObject _canvas;
     private Image _hpImage;
+    private bool isDamage = false;
     void Start()
     {
         _canvas = Instantiate((GameObject)Resources.Load("HPBar"));
@@ -104,11 +105,17 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         // ここに具体的なダメージ処理
         hp -= value;
+        isDamage = true;
         await HpGaugeAnimation();
     }
 
     public async UniTask<bool> HpGaugeAnimation()
     {
+        if(_canvas.GetComponent<CanvasGroup>().alpha < 1)
+        {
+            _canvas.GetComponent<CanvasGroup>().alpha = 1;
+        }
+        
         while (true)
         {
             _hpImage.fillAmount -= 0.05f;
@@ -118,7 +125,15 @@ public class EnemyController : MonoBehaviour, IDamageable
                 break;
             }
         }
+        isDamage = false;
+        await UniTask.Delay(2500);
+        if (!isDamage)
+        {
+            _canvas.GetComponent<CanvasGroup>().alpha = 0;
+        }
+        
         return true;
+        
     }
     public void Attack(GameObject gameObject)
     {

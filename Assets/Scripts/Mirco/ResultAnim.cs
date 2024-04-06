@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public class ResultAnim : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class ResultAnim : MonoBehaviour
                 await tween.AwaitCompletionAsync(cancellationToken);*/
 
         LeanTween.scale(this.gameObject, Vector3.one, scaleTime).setEaseOutBack();
-        await Task.Delay(500);
+        await UniTask.Delay(500);
     }
 
     void UpdateitemLineAlpha(float value)

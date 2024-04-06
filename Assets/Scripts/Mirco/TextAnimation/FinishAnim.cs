@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System.Threading.Tasks;
 using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public class FinishAnim : MonoBehaviour
 {
@@ -78,7 +79,7 @@ public class FinishAnim : MonoBehaviour
             LeanTween.scaleY(this.gameObject, 1.1f, 0.5f).setEaseOutExpo().setDelay(bounceDelay).setDelay(bounceDelay + 0.5f);
             LeanTween.value(this.gameObject, updateValueExampleCallback, fadeInColor, fadeOutColor, fadeOutTime).setEase(LeanTweenType.easeOutCirc).setDelay(fadeOutDelay);
         });
-        await Task.Delay(2900);
+        await UniTask.Delay(2900);
 
 
 

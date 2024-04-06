@@ -40,7 +40,7 @@ public class TerrainController : MonoBehaviour
 
     private  void Update()
     {
-        if (director.gameState == GameDirector.GameState.Load)
+        if (!endTerrainCreate)
         {
             for (int j = 0; j < 30; j++)
             {
@@ -57,7 +57,6 @@ public class TerrainController : MonoBehaviour
         if (i < treeterrain.terrainData.treeInstanceCount)
         {
 
-
             TreeInstance treeInstance = treeterrain.terrainData.treeInstances[i];
             
 
@@ -73,7 +72,7 @@ public class TerrainController : MonoBehaviour
 
             if (i % 1000 == 0)
             {
-                GarbageCollector.CollectIncremental(nanoseconds: 0UL);
+                //GarbageCollector.CollectIncremental(nanoseconds: 0UL);
             }
 
             Image.fillAmount = (float)i / treeterrain.terrainData.treeInstanceCount;
@@ -81,11 +80,12 @@ public class TerrainController : MonoBehaviour
         }
         else
         {
-            
+
             terrain.terrainData.treeInstances = trees.ToArray();
            
             endTerrainCreate = true;
         }
+        
     }
     public async UniTask<bool> endCreate()
     {
@@ -93,9 +93,10 @@ public class TerrainController : MonoBehaviour
         {
             if (endTerrainCreate)
             {
+                
                 break;
             }
-            await Task.Delay(100);
+            await UniTask.Delay(1);
         }
         return true;
     }
