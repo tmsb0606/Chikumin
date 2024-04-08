@@ -17,7 +17,7 @@ public partial class GameStateController : MonoBehaviour
 
 
 
-    [SerializeField] private float _timeLimit = 18f;
+    [SerializeField] public float timeLimit = 18f;
     [SerializeField] private TextMeshProUGUI _timeText;
     [SerializeField] private GameObject _uiPanel;
     [SerializeField] private GameObject _pausePanel;

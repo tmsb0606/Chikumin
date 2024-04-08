@@ -128,6 +128,13 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
     {
         //print("attack");
         //changeStatus();
+
+        if(targetObject.tag == "item")
+        {
+            aiState = ChikuminAiState.CARRY;
+            return;
+        }
+
         agent.stoppingDistance = 0f;
         if (!targetObject.gameObject.active)
         {
@@ -292,6 +299,8 @@ public class Adachikumin : ChikuminBase,IJampable,IDamageable
             }
         }
     }
+
+    
 
 
     private void  changeStatus()

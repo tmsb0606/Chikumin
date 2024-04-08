@@ -16,10 +16,10 @@ public partial class GameStateController
         public override void OnUpdata(GameStateController owner)
         {
             print("プレイシーンupdate");
-            owner._timeLimit -= Time.deltaTime;
-            owner._timeText.text = owner._timeLimit.ToString("0");
-            print(owner._timeLimit);
-            if(owner._timeLimit <= 0)
+            owner.timeLimit -= Time.deltaTime;
+            owner._timeText.text = owner.timeLimit.ToString("0");
+            print(owner.timeLimit);
+            if(owner.timeLimit <= 0)
             {
                 owner.ChangeState(owner.endState);
             }
