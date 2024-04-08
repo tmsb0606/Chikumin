@@ -108,6 +108,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         hp -= value;
         isDamage = true;
         await HpGaugeAnimation();
+        
     }
 
     public async UniTask<bool> HpGaugeAnimation()
@@ -127,6 +128,10 @@ public class EnemyController : MonoBehaviour, IDamageable
             }
         }
         isDamage = false;
+        if(_hpImage.fillAmount <= 0)
+        {
+            _canvas.SetActive(false);
+        }
         await UniTask.Delay(2500);
         if (!isDamage)
         {
@@ -154,11 +159,18 @@ public class EnemyController : MonoBehaviour, IDamageable
         isDeath = true;
         animator.SetBool("Death", true);
         await UniTask.Delay(1000);
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
+
+        this.gameObject.tag = "item";
+        agent.enabled = false;
+        this.enabled = false;
+
         //gameDirector.AllCharacterLevelUP();
         _levelUpController.AllCharacterLevelUP();
 
 
     }
+
+
 
 }

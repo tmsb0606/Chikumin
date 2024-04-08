@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class EnemyBody : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private EnemyController enemyController;
     void Start()
     {
-        
+        enemyController = transform.root.gameObject.GetComponent<EnemyController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (enemyController.enabled == false)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
     public void OnTriggerStay(Collider other)
     {
@@ -25,8 +28,8 @@ public class EnemyBody : MonoBehaviour
         {
             if (other.gameObject.GetComponent<ChikuminBase>())
             {
-                transform.root.gameObject.GetComponent<EnemyController>().isAttack = true;
-                transform.root.gameObject.GetComponent<EnemyController>().attackTarget = other.gameObject;
+                enemyController.isAttack = true;
+                enemyController.attackTarget = other.gameObject;
             }
             
         }

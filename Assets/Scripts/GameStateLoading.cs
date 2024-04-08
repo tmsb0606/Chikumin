@@ -12,7 +12,7 @@ public partial class GameStateController
         public override async void OnEnter(GameStateController owner, GameStateBase prevState)
         {
             Cursor.visible = true;
-            owner._timeText.text = owner._timeLimit.ToString("0");
+            owner._timeText.text = owner.timeLimit.ToString("0");
             ScoreDirector.Initialization();
             print("ƒeƒ‰ƒCƒ“ì¬");
             await owner._terrainController.endCreate();

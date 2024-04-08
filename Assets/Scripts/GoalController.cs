@@ -92,6 +92,7 @@ public class GoalController : MonoBehaviour
         {
             audioSource.PlayOneShot(GetSE);
             var isGoal = await obj.gameObject.GetComponent<Item>().Animation();
+            obj.gameObject.GetComponent<Item>().Effect();
             //await UniTask.Delay(1000);
 
             ScoreDirector.itemDic[obj.gameObject.GetComponent<Item>().itemType] += 1;

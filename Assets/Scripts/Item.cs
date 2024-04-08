@@ -14,6 +14,8 @@ public class Item : MonoBehaviour, ICarriable
         Branch,
         Car,
         Bike,
+        Police,
+        Clock,
 
     }
     // Start is called before the first frame update
@@ -21,10 +23,12 @@ public class Item : MonoBehaviour, ICarriable
     public List<GameObject> carryObjects = new List<GameObject>();
     public int minCarryNum = 1;
     public int maxCarryNum = 1;
-    GameObject canvas;
-    TextMeshProUGUI text;
+    protected GameObject canvas;
+    protected TextMeshProUGUI text;
 
-    private bool isGoal = false;
+    protected bool isGoal = false;
+
+    private ItemEffectBase[] itemEffects;
 
 
     void Start()
@@ -36,6 +40,8 @@ public class Item : MonoBehaviour, ICarriable
 
         //canvas = gameObject.transform.Find("Canvas").gameObject;
         text = canvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+
+        itemEffects = GetComponents<ItemEffectBase>();
     }
 
     // Update is called once per frame
@@ -55,6 +61,18 @@ public class Item : MonoBehaviour, ICarriable
     public void Carry(GameObject gameObject)
     {
         carryObjects.Add(gameObject);
+    }
+
+    public void Effect()
+    {
+        if(itemEffects != null)
+        {
+            foreach(ItemEffectBase itemEffect in itemEffects)
+            {
+                itemEffect.Effect();
+            }
+            
+        }
     }
 
 
