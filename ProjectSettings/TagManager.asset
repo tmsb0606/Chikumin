@@ -3,7 +3,22 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - tiku
+  - ground
+  - item
+  - enemy
+  - circle
+  - goal
+  - atm
+  - WaitArea
+  - AdachiArea
+  - ChiyodaArea
+  - MinatoArea
+  - search
+  - wall
+  - goalEnd
+  - body
   layers:
   - Default
   - TransparentFX
@@ -11,19 +26,19 @@ TagManager:
   - 
   - Water
   - UI
-  - ground
-  - a
-  - pikumin
   - player
   - 
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - waitArea
+  - ground
+  - tiku
+  - pikumin
+  - throwarea
+  - Pivot
+  - Wall
+  - map
   - 
   - 
   - 

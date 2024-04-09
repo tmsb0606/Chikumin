@@ -1,0 +1,76 @@
+{
+  "entries": [
+    {
+      "name": "road4_0",
+      "prefab_name": "road4",
+      "repeat_num": 0,
+      "rotation": 0.0,
+      "scale": 1.0,
+      "connect_direction": null
+    },
+    {
+      "name": "road1_1",
+      "prefab_name": "road1",
+      "repeat_num": 0,
+      "rotation": 0.0,
+      "scale": 1.0,
+      "connect_direction": "+z"
+    },
+    {
+      "name": "road2_2",
+      "prefab_name": "road2",
+      "repeat_num": 0,
+      "rotation": 180.0,
+      "scale": 1.0,
+      "connect_direction": "+z"
+    },
+    {
+      "name": "road2_3",
+      "prefab_name": "road2",
+      "repeat_num": 0,
+      "rotation": 270.0,
+      "scale": 1.0,
+      "connect_direction": "+x/road2_2"
+    },
+    {
+      "name": "road1_4",
+      "prefab_name": "road1",
+      "repeat_num": 0,
+      "rotation": 0.0,
+      "scale": 1.0,
+      "connect_direction": "-z/road2_3"
+    },
+    {
+      "name": "road2_5",
+      "prefab_name": "road2",
+      "repeat_num": 0,
+      "rotation": 0.0,
+      "scale": 1.0,
+      "connect_direction": "-z/road1_4"
+    },
+    {
+      "name": "road2_6",
+      "prefab_name": "road2",
+      "repeat_num": 0,
+      "rotation": 0.0,
+      "scale": 1.0,
+      "connect_direction": "-z/road4_0"
+    },
+    {
+      "name": "road2_7",
+      "prefab_name": "road2",
+      "repeat_num": 0,
+      "rotation": 90.0,
+      "scale": 1.0,
+      "connect_direction": "-x/road2_6"
+    },
+    {
+      "name": "road2_8",
+      "prefab_name": "road2",
+      "repeat_num": 0,
+      "rotation": 180.0,
+      "scale": 1.0,
+      "connect_direction": "+z"
+    }
+  ]
+}

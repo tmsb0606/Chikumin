@@ -3,46 +3,381 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Adachikumin : ChikuminBase
+public class Adachikumin : ChikuminBase,IJampable,IDamageable
 {
     //public ChikuminAiState aiState = ChikuminAiState.MOVE;
-    NavMeshAgent agent;
-    private GameObject targetPlayer;
+    private GameObject goalObject;
+
+    public GameObject cursorObject; //カーソルを入れる。
+    
     public CharacterStatus status;
+
+
+    //private bool isHit = false;
+    
+    private bool isGround = true;
+    private bool isStop = false;
+
+    public float moveDis = 1.0f;
+
+    private AudioSource audioSource;
+    public AudioClip throwSE;
+
+    Animator animator;
+
+    Rigidbody rb;
+    private int _hp;
+
+    //public List<GameObject> hitList = new List<GameObject>();
+
     void Start()
     {
         targetPlayer = GameObject.Find("Player");
+        goalObject = GameObject.Find("Goal");
         agent = GetComponent<NavMeshAgent>();
         changeStatus();
+        audioSource = GameObject.Find("SoundDirector").GetComponent<SoundDirector>().seSource;
+        animator = this.GetComponent<Animator>();
+
+/*        agent.updatePosition = false;
+        agent.updateRotation = false;*/
+        rb = GetComponent<Rigidbody>();
+        _hp = status.hp;
+        carrySeTime = carrySE.length;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //print(isHit);
 
         switch (aiState)
         {
+            case ChikuminAiState.IDLE:
+                Idle();
+                break;
             case ChikuminAiState.WAIT:
                 Wait();
                 break;
             case ChikuminAiState.MOVE:
                 Move();
                 break;
+            case ChikuminAiState.ATTACK:
+                Attack();
+                break;
+            case ChikuminAiState.CARRY:
+                Carry();
+                break;
+            case ChikuminAiState.ALIGNMENT:
+                Alignment();
+                break;
+            case ChikuminAiState.ONRUSH:
+                OnRush();
+                break;
 
         }
+
+        animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
+        animator.SetBool("Have", carryObjectList.Count > 0);
+        if (_hp <= 0)
+        {
+            Death();
+        }
+
+/*        changeStatus();
+        agent.SetDestination(targetPlayer.transform.position);*/
+
+
+
+
     }
 
     private void Wait()
+    {
+/*        agent.updatePosition = true;
+        agent.updateRotation = true;*/
+        prevState = ChikuminAiState.WAIT;
+        agent.speed = 0;
+        //print(isGround);
+        animator.SetBool("Attack", false);
+        if (!isGround)
+        {
+            print("!ground");
+            return;
+        }
+
+        
+        ActionJudgment();
+
+
+    }
+    private void Idle()
     {
         agent.speed = 0;
     }
     private void Move()
     {
         changeStatus();
+        animator.SetBool("Attack", false);
+
+        agent.stoppingDistance = 1.8f;
+        
         agent.SetDestination(targetPlayer.transform.position);
     }
+    private void Attack()
+    {
+        //print("attack");
+        //changeStatus();
+
+        if(targetObject.tag == "item")
+        {
+            aiState = ChikuminAiState.CARRY;
+            return;
+        }
+
+        agent.stoppingDistance = 0f;
+        if (!targetObject.gameObject.active)
+        {
+            isHit = false;
+            aiState = ChikuminAiState.WAIT;
+        }
+        if (isHit)
+        {
+            agent.speed = 0;
+            animator.SetBool("Attack", isHit);
+            
+            /*            agent.updatePosition = true;
+                        agent.updateRotation = true;*/
+
+        }
+        else
+        {
+            changeStatus();
+            agent.SetDestination(targetObject.transform.position);
+            //OnManualMove();
+            print("AttackMove");
+        }
+        
+        
+    }
+    public void AttackDamage()
+    {
+        if (!targetObject.activeSelf)
+        {
+            return;
+        }
+        audioSource.PlayOneShot(punchSE);
+        targetObject.gameObject.GetComponent<IDamageable>().Damage(10 * status.level);
+    }
+    private void Carry()
+    {
+
+        agent.stoppingDistance = 0f;
+        if (carryObjectList.Count == 0)
+        {
+            if (targetObject.GetComponent<Item>().maxCarryNum == targetObject.GetComponent<Item>().carryObjects.Count)
+            {
+                aiState = ChikuminAiState.WAIT;
+
+            }
+            if (targetObject.GetComponent<Item>().itemType == Item.Type.Jewelry)
+            {
+                isItem = true;
+            }
+            if (isItem == false)
+            {
+                changeStatus();
+                agent.SetDestination(targetObject.transform.position);
+                //OnManualMove();
+                return;
+            }
+            isItem = false;
+            carryObjectList.Add(targetObject.gameObject);
+            if (carryObjectList[0].GetComponent<Item>().maxCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+            {
+
+                carryObjectList[0].GetComponent<ICarriable>().Carry(this.gameObject);
+
+                carryObjectList[0].GetComponent<Rigidbody>().isKinematic = true;
+                carryObjectList[0].GetComponent<Rigidbody>().useGravity = false;
+
+                if (carryObjectList[0].GetComponent<Item>().carryObjects.Count == 1)
+                {
+                    agent.velocity = Vector3.zero;
+                    //agent.Stop();
+                    carryObjectList[0].transform.parent = this.transform;
+                    carryObjectList[0].transform.localPosition = new Vector3(0, 1, 1);
+                    carryObjectList[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                }
+
+            }
+            else
+            {
+                aiState = prevState;
+                carryObjectList.Clear();
+            }
+
+
+        }
+        if(carryObjectList.Count == 0)
+        {
+            return;
+        }
+        if(carryObjectList[0].GetComponent<Item>().minCarryNum <= carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+        {
+            agent.speed = _carrySpeed;
+            agent.SetDestination(goalObject.transform.position);
+
+            CarrySE();
+
+            //OnManualMove();
+        }
+        else if(carryObjectList[0].GetComponent<Item>().minCarryNum > carryObjectList[0].GetComponent<Item>().carryObjects.Count)
+        {
+            agent.speed = 0;
+        }
+
+        //Move();
+    }
+
+    
+    private void CarrySE()
+    {
+        carrySeTime += Time.deltaTime;
+        if(carrySeTime >= carrySE.length)
+        {
+            audioSource.PlayOneShot(carrySE);
+            carrySeTime = 0;
+        }
+    }
+
+
+    private void Alignment()
+    {
+
+        if (Vector3.Distance(waitPos, this.transform.position) > 1)
+        {
+            agent.SetDestination(waitPos);
+
+        }
+        else
+        {
+            aiState = ChikuminAiState.WAIT;
+
+        }
+    }
+
+    private void OnRush()
+    {
+        prevState = ChikuminAiState.ONRUSH;
+        cursorObject =  GameObject.Find("Reticle(Clone)");
+        agent.SetDestination(cursorObject.transform.position);
+        ActionJudgment();
+
+    }
+
+    /// <summary>
+    /// 今後の行動を判断する。(突撃、待機時)
+    /// </summary>
+    private void ActionJudgment()
+    {
+        if (hitList.Count != 0)
+        {
+            targetObject = NearObject(hitList);
+            //print(targetObject);
+            if (targetObject.tag == "enemy")
+            {
+
+
+                hitList.Remove(targetObject);
+                aiState = ChikuminAiState.ATTACK;
+            }
+            else if (targetObject.tag == "item")
+            {
+                hitList.Remove(targetObject);
+                aiState = ChikuminAiState.CARRY;
+            }
+        }
+    }
+
+    
+
+
     private void  changeStatus()
     {
         agent.speed = status.moveSpeed;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag != "ground" && other.gameObject.tag != "Player"&& other.gameObject.tag !="search" && other.gameObject.tag != "tiku" && other.gameObject.tag != "Untagged")
+        {
+            isStop = true;
+        }
+
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "enemy")
+        {
+            isHit = false;
+        }
+
+        if (other.gameObject.tag != "ground" && other.gameObject.tag != "Player" && other.gameObject.tag != "search" && other.gameObject.tag != "tiku" && other.gameObject.tag != "Untagged")
+        {
+            isStop = false;
+        }
+    }
+
+
+    public IEnumerator Jump(Vector3 endPos, float flightTime, float speedRate, float gravity)
+    {
+        changeStatus();
+        audioSource.PlayOneShot(throwSE);
+        agent.enabled = false;
+        isGround = false;
+        
+        var startPos = transform.position; // 初期位置
+        var diffY = (endPos - startPos).y; // 始点と終点のy成分の差分
+        var vn = (diffY - gravity * 0.5f * flightTime * flightTime) / flightTime; // 鉛直方向の初速度vn
+
+        // 放物運動
+        for (var t = 0f; t < flightTime; t += (Time.deltaTime * speedRate))
+        {
+            print(t);
+
+            var p = Vector3.Lerp(startPos, endPos, t / flightTime);   //水平方向の座標を求める (x,z座標)
+            if (isStop)
+            {
+                print("ストップだよ");
+                endPos = this.transform.position;
+                p.x = this.transform.position.x;
+                p.z = this.transform.position.z;
+
+
+            }
+
+            p.y = startPos.y + vn * t + 0.5f * gravity * t * t; // 鉛直方向の座標 y
+            
+            transform.position = p;
+
+            yield return null; //1フレーム経過
+        }
+        // 終点座標へ補正
+        isGround = true;
+        transform.position = endPos;
+        agent.enabled = true;
+
+    }
+
+    public void Death()
+    {
+        gameObject.SetActive(false);
+    }
+    public void Damage(int value)
+    {
+        _hp -= value;
     }
 }
