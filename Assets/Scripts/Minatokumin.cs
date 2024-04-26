@@ -142,6 +142,13 @@ public class Minatokumin : ChikuminBase, IJampable, IDamageable
     {
         //print("attack");
         //changeStatus();
+
+        if (targetObject.tag == "item")
+        {
+            aiState = ChikuminAiState.CARRY;
+            return;
+        }
+
         agent.stoppingDistance = 0f;
         if (!targetObject.gameObject.active)
         {
@@ -168,6 +175,7 @@ public class Minatokumin : ChikuminBase, IJampable, IDamageable
         {
             return;
         }
+        audioSource.PlayOneShot(punchSE);
         targetObject.gameObject.GetComponent<IDamageable>().Damage(status.level);
     }
     private void Carry()

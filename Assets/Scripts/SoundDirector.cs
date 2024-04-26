@@ -29,7 +29,7 @@ public class SoundDirector : MonoBehaviour
     private void Start()
     {
         _gameBGM = Resources.Load<AudioClip>("BGM/oriental-drift");
-        _titleBGM = Resources.Load<AudioClip>("BGM/MusMus-BGM-162");
+        _titleBGM = Resources.Load<AudioClip>("BGM/MusMus-BGM-097");
 
         string sceneName = SceneManager.GetActiveScene().name;
 

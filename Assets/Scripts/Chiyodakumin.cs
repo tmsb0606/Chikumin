@@ -138,6 +138,14 @@ public class Chiyodakumin : ChikuminBase, IJampable, IDamageable
     {
         //print("attack");
         //changeStatus();
+
+
+        if (targetObject.tag == "item")
+        {
+            aiState = ChikuminAiState.CARRY;
+            return;
+        }
+
         if (!targetObject.gameObject.active)
         {
             isHit = false;
@@ -164,6 +172,7 @@ public class Chiyodakumin : ChikuminBase, IJampable, IDamageable
         {
             return;
         }
+        audioSource.PlayOneShot(punchSE);
         targetObject.gameObject.GetComponent<IDamageable>().Damage(status.level);
     }
     private void Carry()
