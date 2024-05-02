@@ -9,6 +9,8 @@ public class TitleDirector : MonoBehaviour
     public GameObject fade;
     void Start()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
         Time.timeScale = 1;
 
     }
