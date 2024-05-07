@@ -341,6 +341,17 @@
                 },
                 {
                     "name": "",
+                    "id": "decbcdf6-6bb2-4f75-8b24-2132c14e7199",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Stay",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c59e4169-ce5c-4fac-b3b4-8985f831eac8",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
