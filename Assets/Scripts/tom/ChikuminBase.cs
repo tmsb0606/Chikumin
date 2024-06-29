@@ -6,29 +6,14 @@ using UnityEngine.AI;
 public partial class ChikuminBase : MonoBehaviour
 {
 
-    /// <summary>
-    /// ステートパターンのテスト
-    /// </summary>
-    private static readonly StateWaiting stateWaiting = new StateWaiting();
-    private static readonly StateMoving stateMoving = new StateMoving();
-    private static readonly StateCarrying stateCarrying = new StateCarrying();
+
     [SerializeField]private GameObject goalObject;
 
     [SerializeField] protected AudioClip punchSE;
     [SerializeField] protected AudioClip carrySE;
     protected float carrySeTime;
 
-    protected ChikuminStateBase currentState = stateWaiting;
     public GameObject targetObject;
-    private void ChangeState(ChikuminStateBase nextState)
-    {
-        currentState.OnExit(this, nextState);
-        nextState.OnEnter(this, currentState);
-        currentState = nextState;
-    }
-    /// <summary>
-    /// ここまで
-    /// </summary>
 
 
 
